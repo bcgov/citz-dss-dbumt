@@ -1,0 +1,35 @@
+# Auto Label Git Action Config
+# https://github.com/marketplace/actions/labeler
+
+#################
+# Project
+
+'Github Actions':
+  - .github/workflows/**/*
+
+Openshift:
+  - openshift/**/*
+
+Docker:
+  - docker-compose.yml
+  - '**/Dockerfile'
+
+Dependencies:
+  - '**/package.json'
+  - '**/*.csproj'
+
+Documentation:
+  - '**/*.md'
+
+
+#################
+# Frontend
+# to be added
+
+################
+# Backend
+# to be added
+
+#################
+# Testing
+# to be added
