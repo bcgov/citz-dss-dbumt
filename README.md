@@ -25,10 +25,14 @@ Instructions on how to implement DBUMT on your local machine to come.
 
 ## Directory
 
-| Item        | Description                           |
-| ----------- | ------------------------------------- |
-| `LICENSE`   | The Apache 2.0 license documentation. |
-| `README.md` | This document                         |
+| Item                 | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `.github`            | Files and folders related to github content.       |
+| `.gitattributes`     | Setting standard EOL notation                      |
+| `.gitignore`         | List of files and types to not be captured by git  |
+| `CODE_OF_CONDUCT.md` | Standards and guidelines for contributors of DBUMT |
+| `LICENSE`            | The Apache 2.0 license documentation.              |
+| `README.md`          | This document                                      |
 
 ## License
 
