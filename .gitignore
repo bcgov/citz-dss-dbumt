@@ -11,20 +11,25 @@ coverage/
 
 #### Production ####
 build/
+dist
+dist-ssr
 
 #### Docker ####
 docker-compose.override.yml
 -docker-compose.override.yml
 
-#### misc ####
+#### Editor ####
+.vscode/*
+!.vscode/extensions.json
 .vs
 .DS_Store
-npm-debug.log*
 
 #### env files ####
 *.env
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+*.local
+
+### Logs ###
+logs
+*.log
+npm-debug.log*

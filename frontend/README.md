@@ -1,0 +1,20 @@
+# DBUMT Frontend
+
+This service was built using the Vite and the React framework. It runs using Node.
+
+## Commands
+
+These commands can be found and edited in this folder `citz-dss-dbumt/frontend`. To use the commands as shown below run with `npm run <command>`.
+
+| Command    | Description                                                              |
+| ---------- | ------------------------------------------------------------------------ |
+| `dev`      | Uses `vite` to run the applicaiton in development mode.                  |
+| `build`    | Builds the app as a distributable. Can be found in the `./dist` folder   |
+| `lint`     | Runs `eslint` to find any linting errors                                 |
+| `lint:fix` | Runs `eslint` with `--fix` flag to find and fix linting errors           |
+| `format`   | Runs `prettier` with `--write` flag to find and update formatting errors |
+| `check`    | Runs `prettier` with `--check` flag to find formatting errors            |
+
+## Usage
+
+Run the application locally (use command above for development mode) and use a web browser to view the applicaiton locally. `5173` is the default port (`http://localhost:5173/`).
