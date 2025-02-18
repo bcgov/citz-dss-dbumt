@@ -5,13 +5,18 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  // ignore specific directories from linting
+  { ignores: ['node_modules/', 'package-lock.json', 'dist/', '/coverage'] },
   {
+    // extend from the default configs to use reccomended rules
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    // Override settings for these specific file types
+    files: ['**/*.ts', '**/*.js', '**/*.tsx', '**/*.jsx'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      // enable all global variables
+      globals: { ...globals.browser},
+      // Use a parser for TypeScript
+      parser: tseslint.parser,
     },
     plugins: {
       'react-hooks': reactHooks,
