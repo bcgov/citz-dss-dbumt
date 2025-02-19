@@ -1,7 +1,44 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  // Find more information on the following here: https://www.typescriptlang.org/tsconfig/
+  "compilerOptions": {
+    // -- TYPE CHECKING --
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    // -- MODULES --
+    "allowImportingTsExtensions": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    // -- EMIT --
+    "noEmit": true,
+    // -- INTEROP CONSTRAINTS
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    // -- LANGUAGE & ENVIRONMENT --
+    "jsx": "react-jsx",
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "moduleDetection": "force",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    // -- PROJECTS --
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    // -- COMPLETENESS --
+    "skipLibCheck": true,
+  },
+  // File names and patterns to include in the program
+  "include": [
+    "src/**/*",
+    "vite.config.ts"
   ]
 }
