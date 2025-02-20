@@ -25,10 +25,16 @@ Instructions on how to implement DBUMT on your local machine to come.
 
 ## Directory
 
-| Item        | Description                           |
-| ----------- | ------------------------------------- |
-| `LICENSE`   | The Apache 2.0 license documentation. |
-| `README.md` | This document                         |
+| Item                 | Description                                                              |
+| -------------------- | ------------------------------------------------------------------------ |
+| `.github/`           | Holds Github related files. See `.github/README.md` for more informaiton |
+| `backend/`           | Backend services. See `backend/README.md` for more information           |
+| `frontend/`          | Frontend application. See `frontend/README.md` for more information      |
+| `.gitattributes`     | Sets standards for development between different environments            |
+| `.gitignore`         | Defined files not to be tracked by Github                                |
+| `CODE_OF_CONDUCT.md` | Sets standards for contributing to this repository.                      |
+| `LICENSE`            | The Apache 2.0 license documentation.                                    |
+| `README.md`          | This document                                                            |
 
 ## License
 
