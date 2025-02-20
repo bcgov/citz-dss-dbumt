@@ -11,8 +11,8 @@ coverage/
 
 #### Production ####
 build/
-dist
-dist-ssr
+dist/
+
 
 #### Docker ####
 docker-compose.override.yml
