@@ -2,55 +2,43 @@
   // Find more information on the following here: https://www.typescriptlang.org/tsconfig/
   "compilerOptions": {
     // -- TYPE CHECKING --
-    // All files parsed in ECMAScript mode. All Strict options set to true
-    "strict": true,
-    // TypeScript issue an error when a variable's type can not be infered
-    "noImplicitAny": true,
-    // Allows optional properties to be defined as "undefined" without error
-    "exactOptionalPropertyTypes": true,
+    "strict": true, // All files parsed in ECMAScript mode. All Strict options set to true
+    "noImplicitAny": true, // TypeScript issue an error when a variable's type can not be infered
+    "exactOptionalPropertyTypes": true, // Allows optional properties to be defined as "undefined" without error
     // -- MODULES --
-    // Set base directory to resolve bare specifier module names
-    "baseUrl": ".",
-    // Set module system for the program
-    "module": "Node16",
-    // Import modules with .json extension
-    "resolveJsonModule": true,
-    // Set module resolution strategy, support for ECMAScript imports and CommonJS require
-    "moduleResolution": "node16",
-    // import lookup location relative to baseUrl
-    // With this (and tsconfig-paths) we can use `@/` for pathing from `src/`
-    "paths": {
-      "@/*": ["src/*"]
+    "baseUrl": ".", // Set base directory to resolve bare specifier module names
+    "module": "Node16", // Set module system for the program
+    "resolveJsonModule": true, // Import modules with .json extension
+    "moduleResolution": "node16", // Set module resolution strategy, support for ECMAScript imports and CommonJS require
+    "paths": { // import lookup location relative to baseUrl
+      "@/*": [
+        "src/*"
+      ] // With this (and tsconfig-paths) we can use `@/` for pathing from `src/`
     },
     // -- EMIT --
-    // Files created by `tsc` command will be stored here
-    "outDir": "dist",
-    // Enables source map files to be generated (debuggers can see original TypeScript file)
-    "sourceMap": true,
-    // Strips all comments when converting to JS
-    "removeComments": true,
+    "outDir": "dist", // Files created by `tsc` command will be stored here
+    "sourceMap": true, // Enables source map files to be generated (debuggers can see original TypeScript file)
+    "removeComments": true, // Strips all comments when converting to JS
     // -- INTEROP CONSTRAINTS --
-    // allows imports from modules without explicitly specified default export
-    // TBD if needed
-    // "allowSyntheticDefaultImports": true,
-    // Treats commonJS modules into ES6 modules. No more `require()`
-    "esModuleInterop": true,
-    // Standardizes case-sensitivity between systems
-    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true, // allows imports from modules without explicitly specified default export.
+    "esModuleInterop": true, // Treats commonJS modules into ES6 modules. No more `require()`
+    "forceConsistentCasingInFileNames": true, // Standardizes case-sensitivity between systems
     // -- LANGUAGE AND ENVIRONMENT --
-    // Support for emitting type metadata
-    "emitDecoratorMetadata": true,
-    // Enables decorator support with TypeScript
-    "experimentalDecorators": true,
-    // Set JS features before es2022 to be downgraded
-    "target": "es2022"
+    "emitDecoratorMetadata": true, // Support for emitting type metadata
+    "experimentalDecorators": true, // Enables decorator support with TypeScript
+    "target": "es2022" // Set JS features before es2022 to be downgraded
     // -- COMPLETENESS --
-    // Skip type checking of declaration files
-    // TBD if needed
-    // "skipLibCheck": true,
+    // "skipLibCheck": true,                   // Skip type checking of declaration files. Unsure if needed.
   },
   // Patterns to include in the program. Currently everything
-  "include": ["./**/*"],
+  "include": [
+    "./**/*"
+  ],
   // Patterns to skip when resolving `include`
-  "exclude": ["tsconfig.json", "node_modules/", "build/", "coverage/"]
+  "exclude": [
+    "tsconfig.json",
+    "node_modules/",
+    "build/",
+    "coverage/"
+  ]
 }
