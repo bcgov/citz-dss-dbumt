@@ -30,7 +30,7 @@ docker-compose.override.yml
 *.local
 
 ### Kong Config files ###
-gw-config.yaml
+gw-config*.yaml
 
 ### Logs ###
 logs
