@@ -36,6 +36,27 @@ Instructions on how to implement DBUMT on your local machine to come.
 | `LICENSE`            | The Apache 2.0 license documentation.                                    |
 | `README.md`          | This document                                                            |
 
+## .github
+
+<!-- This section is included here as a README in `.github` directory will take precedence over any root file -->
+
+### Overview
+
+The `/github` folder holds any content that is to be used by Github (workflows, actions, templates, ect.).
+
+### Directory
+
+| Item                    | Description                            |
+| ----------------------- | -------------------------------------- |
+| `ISSUE_TEMPLATE`        | Folder holding issue templates created |
+|  ---- `bug_report.yml`  | Standard issue for reporting a bug     |
+| `workflows`             | Folder holding all workfolows          |
+|  ---- `pr-labeller.yml` | Action to add `labeler.yaml` to PRs    |
+| `CODEOWNERS`            | List of github users with owner role   |
+| `labeler.yaml`          | Labels to be applied to pull requests. |
+| `PULL_REQUEST_TEMPLATE` | Standard pull request template         |
+| `README.md`             | This document                          |
+
 ## License
 
 ```md
