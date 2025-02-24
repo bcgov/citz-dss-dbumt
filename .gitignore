@@ -1,5 +1,5 @@
-#### Node-specific ####
-# dependencies
+####  ####
+# Node-specific Dependencies
 **/node_modules
 node_modules/
 package-lock.json
@@ -24,10 +24,13 @@ docker-compose.override.yml
 .vs
 .DS_Store
 
-#### env files ####
+#### Environment Files ####
 *.env
 .env
 *.local
+
+### Kong Config files ###
+gw-config.yaml
 
 ### Logs ###
 logs
