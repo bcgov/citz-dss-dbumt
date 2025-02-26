@@ -4,7 +4,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "${PORT}:${PORT}"
+      - ${PORT}:${PORT}
     volumes:
       - ./backend:/app
       - /app/node_modules
