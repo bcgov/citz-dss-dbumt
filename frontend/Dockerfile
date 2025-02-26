@@ -4,8 +4,8 @@ FROM node:22.9-bullseye-slim AS builder
 # set current directory
 WORKDIR /app
 
-# copy necessary node files
-COPY package.json package-lock.json ./
+# copy application files
+COPY . .
 
 # install node dependencies
 RUN npm install
