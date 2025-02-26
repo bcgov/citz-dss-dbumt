@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # run the backend
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
