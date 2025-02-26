@@ -9,10 +9,6 @@ COPY . .
 
 # install node dependencies
 RUN npm install
-
-# copy application files
-COPY . .
-
 # build the frontend fles
 RUN npm run build
 
