@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # use nginx with an openshift-compatible environment
-FROM nginx:alpine
+FROM nginx:alpine-slim
 
 # set current nginx directory
 WORKDIR /usr/share/nginx/html
