@@ -9,7 +9,7 @@ services:
       - ./backend:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=${PORT}  # uses backend port from .env file
     env_file:
       - ./backend/.env
