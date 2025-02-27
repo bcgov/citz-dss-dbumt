@@ -2,10 +2,11 @@ import express, { Express, Request, Response } from "express";
 import middleware from "./middleware";
 import { ENV } from "./config"
 
-// set env variables from .env to process.env
+// Access environment variables from ./config
 const { PORT } =
   ENV;
 
+// Access all functions from ./middleware
 const { connectDatabase } = middleware;
 
 // set up MONGODB

@@ -3,9 +3,9 @@
   "license": "Apache-2.0",
   "scripts": {
     "up": "docker compose up -d",
-    "down": "docker compose down -v --remove-orphans",
+    "down": "docker compose down",
     "build": "docker compose up -d --build",
-    "prune": "docker compose down --rmi all --volumes && npm run clear-docker-cache",
+    "prune": "docker compose down --remove-orphans --rmi all --volumes && npm run clear-docker-cache",
     "rebuild": "npm run prune && npm run up -- --force-recreate",
     "clear-docker-cache": "docker builder prune -f",
     "shell:mongo": "docker exec -it mongo bash"
