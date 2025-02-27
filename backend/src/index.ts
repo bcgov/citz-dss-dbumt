@@ -1,6 +1,5 @@
 import express, { Express, Request, Response } from "express";
 import middleware from "./middleware";
-import mongoose from "mongoose";
 import { ENV } from "./config"
 
 // set env variables from .env to process.env
