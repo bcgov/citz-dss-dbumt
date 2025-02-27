@@ -4,6 +4,7 @@
   "scripts": {
     "up": "docker compose up -d",
     "down": "docker compose down -v --remove-orphans",
+    "build": "docker compose up -d --build",
     "prune": "docker compose down --rmi all --volumes && npm run clear-docker-cache",
     "rebuild": "npm run prune && npm run up -- --force-recreate",
     "clear-docker-cache": "docker builder prune -f",
