@@ -8,5 +8,5 @@ const { FOREGROUND: FG, BACKGROUND: BG, FORMATTING: FM } = ANSI_CODES;
 
 const expressJS = ` ${BG.CYAN}${FG.GREY}| ExpressJS |${FM.RESET} `;
 export const API = {
-  SERVER_STARTED: `${expressJS}${FG.LIME}DBUMT Server Started Successfully. Listening on port: ${FM.RESET}`,
+  SERVER_STARTED: `${expressJS}${FG.CYAN}DBUMT Server Started Successfully. Listening on port: ${FM.RESET}`,
 };
