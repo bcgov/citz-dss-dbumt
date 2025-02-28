@@ -1,10 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import middleware from "./middleware";
-import { ENV } from "./config"
+import { ENV } from "./config";
 
 // Access environment variables from ./config
-const { PORT } =
-  ENV;
+const { PORT } = ENV;
 
 // Access all functions from ./middleware
 const { connectDatabase } = middleware;

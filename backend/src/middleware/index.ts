@@ -1,5 +1,5 @@
-import { connectDatabase } from './database'
+import { connectDatabase } from "./database";
 
 export default {
-  connectDatabase
+  connectDatabase,
 };
