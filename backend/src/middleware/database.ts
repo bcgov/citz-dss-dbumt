@@ -29,7 +29,7 @@ export const connectDatabase = async () => {
 
     // log changes to connection to MongoDB
     mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
-    mongoose.connection.on('open', () => console.log('Oonnection to MongoDB is open'));
+    mongoose.connection.on('open', () => console.log('Connection to MongoDB is open'));
     mongoose.connection.on('disconnected', () => console.log('Disconnected from MongoDB'));
     mongoose.connection.on('reconnected', () => console.log('Reconnected to MongoDB'));
     mongoose.connection.on('disconnecting', () => console.log('Disconnecting from MongoDB'));
