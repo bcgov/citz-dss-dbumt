@@ -24,11 +24,11 @@ Documentation:
 
 #################
 # Frontend
-# to be added
+  - 'frontend/'
 
 ################
 # Backend
-# to be added
+  - 'backend/'
 
 #################
 # Testing
