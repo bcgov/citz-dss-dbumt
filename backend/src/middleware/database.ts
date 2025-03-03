@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ENV } from "../config";
+import { logs } from "@/utilities";
 
 // set env variables from .env to process.env
 const {
@@ -18,10 +19,12 @@ const {
 
 export const connectDatabase = async () => {
   // Throw an error if the environment variables are not set.
-  if (!(MONGO_SERVICE_NAME && APPLICATION_NAME && MONGO_USER && MONGO_PASSWORD))
+  if (!(MONGO_SERVICE_NAME && APPLICATION_NAME && MONGO_USER && MONGO_PASSWORD)) {
+    console.log(logs.MONGODB.MISSING_VARS);
     throw new Error(
-      "One or more of [MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE_NAME, MONGO_HOST] env vars is undefined.",
+      "Missing one or more of [MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE_NAME, MONGO_HOST].",
     );
+  }
 
   try {
     // Connection from local ExpressJS server
@@ -35,29 +38,30 @@ export const connectDatabase = async () => {
 
     // log changes to connection to MongoDB
     mongoose.connection.on("connected", () =>
-      console.log("Connected to MongoDB"),
+      console.log(logs.MONGODB.CONNECTION_SUCCESS),
     );
     mongoose.connection.on("open", () =>
-      console.log("Connection to MongoDB is open"),
+      console.log(logs.MONGODB.CONNECTION_OPEN),
     );
     mongoose.connection.on("disconnected", () =>
-      console.log("Disconnected from MongoDB"),
+      console.log(logs.MONGODB.CONNECTION_DISCONNECTED),
     );
     mongoose.connection.on("reconnected", () =>
-      console.log("Reconnected to MongoDB"),
+      console.log(logs.MONGODB.CONNECTION_RECONNECT),
     );
     mongoose.connection.on("disconnecting", () =>
-      console.log("Disconnecting from MongoDB"),
+      console.log(logs.MONGODB.CONNECTION_DISCONNECTING),
     );
     mongoose.connection.on("close", () =>
-      console.log("Close connection to MongoDB"),
+      console.log(logs.MONGODB.CONNECTION_CLOSED),
     );
 
     // Build the mongoose connection to MongoDB
     await mongoose.connect(`mongodb://${mongoURI}`);
+
   } catch (err) {
     // catch and log any errors
-    console.log("Error connecting to MongoDB");
+    console.log(logs.MONGODB.CONNECTION_ERROR);
     console.log(err);
   }
 };
