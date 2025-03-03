@@ -14,7 +14,6 @@ export const ANSI_CODES = {
     YELLOW: "\x1b[1m\x1b[33m",
     LIGHT_BLUE: "\x1b[1m\x1b[34m",
     MAGENTA: "\x1b[1m\x1b[35m",
-    AQUA: "\x1b[1m\x1b[36m",
   },
   BACKGROUND: {
     BLACK: "\x1b[40m",
