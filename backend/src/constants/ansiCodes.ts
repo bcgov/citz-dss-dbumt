@@ -1,5 +1,6 @@
 export const ANSI_CODES = {
-  FOREGROUND: { // Changes colour of text
+  FOREGROUND: {
+    // Changes colour of text
     GREY: "\x1b[30m",
     RED: "\x1b[31m",
     GREEN: "\x1b[32m",
@@ -9,7 +10,8 @@ export const ANSI_CODES = {
     CYAN: "\x1b[36m",
     WHITE: "\x1b[37m",
   },
-  BACKGROUND: { // Changes colour behind text
+  BACKGROUND: {
+    // Changes colour behind text
     GREY: "\x1b[40m",
     RED: "\x1b[41m",
     GREEN: "\x1b[42m",
@@ -26,6 +28,6 @@ export const ANSI_CODES = {
     REVERSE: "\x1b[7m", // Swaps foreground and background colouring
     ITALIC: "\x1b[3m", // Prints text with Italic formatting
     STRIKETHROUGH: "\x1b[9m", // Strikethrough text
-    BOLD: "\x1b[1m" // Increases text weight
+    BOLD: "\x1b[1m", // Increases text weight
   },
 };
