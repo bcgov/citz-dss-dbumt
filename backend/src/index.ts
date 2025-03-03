@@ -1,13 +1,18 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import middleware from "./middleware";
+import { ENV } from "./config";
 
-// set env variables from .env to process.env
-dotenv.config();
+// Access environment variables from ./config
+const { PORT } = ENV;
+
+// Access all functions from ./middleware
+const { connectDatabase } = middleware;
+
+// set up MONGODB
+connectDatabase();
 
 // create Express application
 const app: Express = express();
-// get PORT variable from `.env`
-const PORT = process.env.PORT;
 
 // Setup health endpoint
 app.get("/health", (req: Request, res: Response) => {
