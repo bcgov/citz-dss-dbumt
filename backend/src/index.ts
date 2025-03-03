@@ -17,9 +17,6 @@ connectDatabase();
 // create Express application
 const app: Express = express();
 
-// get PORT variable from `.env`
-const PORT = process.env.BACKEND_PORT;
-
 // Setup health endpoint
 app.get("/health", (req: Request, res: Response) => {
   res.status(200);
