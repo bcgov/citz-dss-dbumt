@@ -33,8 +33,26 @@ Instructions on how to implement DBUMT on your local machine to come.
 | `.gitattributes`     | Sets standards for development between different environments            |
 | `.gitignore`         | Defined files not to be tracked by Github                                |
 | `CODE_OF_CONDUCT.md` | Sets standards for contributing to this repository.                      |
+| `docker-compose.yml` | Used to build a collection of containers (frontend, backend, mongodb)    |
+| `env-template.txt`   | All environment variable names required to run DBUMT locally             |
 | `LICENSE`            | The Apache 2.0 license documentation.                                    |
+| `package.json`       | Contains run commands for Docker containers                              |
 | `README.md`          | This document                                                            |
+
+## Commands
+
+These commands can be found and edited in this folder `citz-dss-dbumt/`. To use the commands as shown below run with `npm run <command>`.
+
+| Command              | Description                                                           |
+| -------------------- | --------------------------------------------------------------------- |
+| `up`                 | Build, (re)create, start containers in the background                 |
+| `down`               | Stops and removes containers, networks, volumes, and images from `up` |
+| `build`              | The same as `up` but faster (build images before starting containers) |
+| `prune`              | Same as `down` & remove all Docker elements then `clear-docker-cache` |
+| `rebuild`            | Runs `prune` and `up` but will force rebuilding containers            |
+| `clear-docker-cache` | Removes the build cache without comfirmation                          |
+| `shell:mongo`        | Runs an instance of MongoDB shell in the terminal                     |
+
 
 ## .github
 
