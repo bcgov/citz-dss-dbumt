@@ -1,9 +1,7 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 import middleware from "./middleware";
 import { logs } from "./utilities";
 import { ENV } from "./config";
-
 
 // Access environment variables from ./config
 const { PORT } = ENV;

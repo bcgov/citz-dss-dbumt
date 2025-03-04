@@ -19,7 +19,9 @@ const {
 
 export const connectDatabase = async () => {
   // Throw an error if the environment variables are not set.
-  if (!(MONGO_SERVICE_NAME && APPLICATION_NAME && MONGO_USER && MONGO_PASSWORD)) {
+  if (
+    !(MONGO_SERVICE_NAME && APPLICATION_NAME && MONGO_USER && MONGO_PASSWORD)
+  ) {
     console.log(logs.MONGODB.MISSING_VARS);
     throw new Error(
       "Missing one or more of [MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE_NAME, MONGO_HOST].",
@@ -58,7 +60,6 @@ export const connectDatabase = async () => {
 
     // Build the mongoose connection to MongoDB
     await mongoose.connect(`mongodb://${mongoURI}`);
-
   } catch (err) {
     // catch and log any errors
     console.log(logs.MONGODB.CONNECTION_ERROR);
