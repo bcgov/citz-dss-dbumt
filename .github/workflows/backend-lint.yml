@@ -1,0 +1,35 @@
+name: Backend Express Linting & Formatting Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-lint.yml"
+  workflow_dispatch:
+
+jobs:
+  lint-api:
+    name: Lint Backend Express API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Install dev dependencies
+      - name: Install Dependencies
+        working-directory: ./backend
+        run: npm i --only=dev
+
+      # Run linting check with ESLint
+      - name: Run ESLint
+        working-directory: ./backend
+        run: npm run lint
+
+      # Run formatting check with Prettier
+      - name: Run Prettier
+        working-directory: ./backend
+        run: npm run check
