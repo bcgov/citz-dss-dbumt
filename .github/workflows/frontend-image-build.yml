@@ -1,0 +1,63 @@
+
+# GitHub Actions workflow for building and tagging the frontend image on PR
+name: Frontend (React) Image Build on PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review] # Triggered by opened or changed pull requests.
+    branches: [main]
+    paths:
+      - 'frontend/**' # Triggers on changes to files in the frontend/ directory.
+
+jobs:
+  # Job to build, tag, and push the frontend image
+  Frontend-Build-Tag-Push:
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Login to/ Authenticate with BC Gov Docker Image Repository
+      - name: Login to Openshift Docker
+        run: | # Need to wait for artifactory to set up the PUBLIC_IMAGE_REPO, OPENSHIFT_USERNAME, and OPENSHIFT_PASSWORD
+          docker login ${{ secrets.PUBLIC_IMAGE_REPO }} -u ${{ secrets.OPENSHIFT_SA_USERNAME }} -p ${{ secrets.OPENSHIFT_SA_PASSWORD }}
+
+      # Build the frontend image Using Docker.
+      - name: Build Frontend Image
+        run: | # Need to wait for artifactory to set up the PUBLIC_IMAGE_REPO. -t sets the tag of the image, using the PR # ensures that image tags are unique. -f sets the name of the dockerfile
+          cd frontend && docker build -t ${{ secrets.PUBLIC_IMAGE_REPO }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-backend:${{github.event.pull_request.number}} -f Dockerfile .
+
+      # Push the APP image to BC Gov Docker Image Repository.
+      - name: Push APP Image
+        run: | # Need to wait for artifactory to set up the PUBLIC_IMAGE_REPO. The push command sends the image to the specified registry
+          docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/pims-app-v2:${{github.event.pull_request.number}}
+
+  # Add comment to PR that triggered the workflow
+  Comment-On-PR:
+    needs: [Frontend-Build-Tag-Push]
+    name: Add Comment on PR
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Add Comment To the PR
+      - name: Add Comment To the PR
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🚀 **Deployment Information**\n\nThe Frontend React Image has been built with the tag: **`${{github.event.pull_request.number}}`**. Please make sure to utilize this specific tag when promoting these changes to the TEST and PROD environments during the APP deployment."
+            })
