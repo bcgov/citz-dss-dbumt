@@ -1,5 +1,1 @@
-import { connectDatabase } from "./database";
-
-export default {
-  connectDatabase,
-};
+export { database } from "./mongoDB";
