@@ -12,13 +12,19 @@ export const API = {
 };
 
 const mongoDb = ` ${BG.GREEN}${FG.GREY}| MongoDB |${FM.RESET} `;
+const mongoDbOK = `${mongoDb}${FG.GREEN}`
+const mongoDbWarn = `${mongoDb}${FG.RED}`
+const mongoDbErr = `${mongoDb}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`
 export const MONGODB = {
-  CONNECTION_SUCCESS: `${mongoDb}${FG.GREEN}Connection successful.${FM.RESET}`,
-  CONNECTION_OPEN: `${mongoDb}${FG.GREEN}Connection open.${FM.RESET}`,
-  CONNECTION_DISCONNECTED: `${mongoDb}${FG.RED}Disconnected.${FM.RESET}`,
-  CONNECTION_RECONNECT: `${mongoDb}${FG.GREEN}Reconnected.${FM.RESET}`,
+  // Connection strings
+  CONNECTION_SUCCESS: `${mongoDbOK}Connection successful.${FM.RESET}`,
+  CONNECTION_OPEN: `${mongoDbOK}Connection open.${FM.RESET}`,
+  CONNECTION_DISCONNECTED: `${mongoDbWarn}Disconnected.${FM.RESET}`,
+  CONNECTION_RECONNECT: `${mongoDbOK}Reconnected.${FM.RESET}`,
   CONNECTION_DISCONNECTING: `${mongoDb}${FG.GOLD}Disconnecting...${FM.RESET}`,
-  CONNECTION_CLOSED: `${mongoDb}${FG.RED}Closed.${FM.RESET}`,
-  MISSING_VARS: `${mongoDb}${FG.GREEN}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}One or more of required env vars is undefined.${FM.RESET}`,
-  CONNECTION_ERROR: `${mongoDb}${FG.GREEN}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}Connecting to the database hit the following:${FM.RESET}`,
+  CONNECTION_CLOSED: `${mongoDbWarn}Closed.${FM.RESET}`,
+  MISSING_VARS: `${mongoDbErr}One or more of required env vars is undefined.${FM.RESET}`,
+  CONNECTION_ERROR: `${mongoDbErr}Connecting to the database hit the following:${FM.RESET}`,
+  // Entity strings
+  EXISTING_ENTITITY: `${mongoDbWarn}Entity already exists.${FM.RESET}`
 };
