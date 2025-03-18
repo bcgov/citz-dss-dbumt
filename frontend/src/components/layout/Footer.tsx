@@ -2,9 +2,9 @@ import { Footer, FooterLinks } from "@bcgov/design-system-react-components";
 import React from "react";
 
 const AppFooter: React.FC = () => {
-    return (
-        <div style={{ marginTop: "auto", width: "100%" }}>
-<Footer>
+  return (
+    <div style={{ marginTop: "auto", width: "100%" }}>
+      <Footer>
         <React.Fragment key=".0">
           <FooterLinks
             links={[
@@ -25,7 +25,7 @@ const AppFooter: React.FC = () => {
           />
         </React.Fragment>
       </Footer>
-      </div>
-    );
+    </div>
+  );
 };
 export default AppFooter;
