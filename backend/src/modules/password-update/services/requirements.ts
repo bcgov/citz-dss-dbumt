@@ -18,7 +18,8 @@ export const addPasswordRequirement = async (newReq: typeof PasswordReqModel) =>
   const existingReq = await PasswordReqModel.exists({ name: newReq.name });
   if (existingReq) {
     // Throw an error if the entity already exists
-    throw new ErrorWithCode(`${MONGODB.EXISTING_ENTITITY} Password Requirement with name "${newReq.name}" already exists.`);
+    console.warn(MONGODB.EXISTING_ENTITITY)
+    throw new ErrorWithCode(`Password Requirement with name "${newReq.name}" already exists.`);
   }
   // create a new entry of PasswordReqModel
   const addRequirement = new PasswordReqModel(newReq);
@@ -30,5 +31,35 @@ export const addPasswordRequirement = async (newReq: typeof PasswordReqModel) =>
   } catch (err) {
     // catch any errors and rethrow them to be handled in the controller
     throw new ErrorWithCode(`${err instanceof Error ? err.message : err}`)
+  }
+}
+
+/**
+ * Look for and return a password requirement in MongoDB matching the given string.
+ *
+ * @param reqName: String to search for in MongoDB
+ * @throws ErrorWithCode if an error occurs in the search
+ */
+export const findPasswordRequirementByName = async (reqName: string) => {
+  try {
+    // check if a requirement with the given name exists
+    const existingReqID = await PasswordReqModel.exists({ name: reqName });
+    if (!existingReqID) {
+      console.warn(logs.MONGODB.FIND_ERROR);
+      return null;
+    }
+    const existingReq = await PasswordReqModel.findById(existingReqID);
+    return existingReq;
+  } catch (err) {
+    throw new ErrorWithCode(`${logs.MONGODB.FIND_ERROR} ${err instanceof Error ? err.message : err}`)
+  }
+}
+
+export const getAllPasswordRequirements = async () => {
+  try {
+    const requirements = await PasswordReqModel.find({});
+    return requirements;
+  } catch (err) {
+    throw new ErrorWithCode(`${logs.MONGODB.FIND_ERROR} ${err instanceof Error ? err.message : err}`)
   }
 }

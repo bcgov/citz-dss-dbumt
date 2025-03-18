@@ -34,5 +34,6 @@ export const MONGODB = {
   CONNECTION_ERROR: `${mongoDbErr}Connecting to the database hit the following:${FM.RESET}`,
   // Entity strings
   EXISTING_ENTITITY: `${mongoDbWarn}Entity already exists.${FM.RESET}`,
-  ENTITY_ADDED: `${mongoDbOK}Entity added.${FM.RESET}`
+  ENTITY_ADDED: `${mongoDbOK}Entity added.${FM.RESET}`,
+  FIND_ERROR: `${mongoDbWarn}Failed to find entry.${FM.RESET}`
 };
