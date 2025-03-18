@@ -19,7 +19,7 @@ function App() {
               <a href="https://www2.gov.bc.ca/gov/content/home/copyright">
                 Copyright
               </a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/get-help-with-government-services">
+              <a href="https://dpdd.atlassian.net/servicedesk/customer/portal/1/group/5">
                 Contact Us
               </a>,
             ]}
