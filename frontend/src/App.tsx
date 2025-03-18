@@ -1,33 +1,14 @@
-import React from "react";
 import { Home } from "./pages/Home";
-import { Footer, FooterLinks } from "@bcgov/design-system-react-components";
+import AppFooter from "./components/layout/Footer"
 
 function App() {
   return (
-    <>
-      <Home />
-      <Footer>
-        <React.Fragment key=".0">
-          <FooterLinks
-            links={[
-              <a href="https://www2.gov.bc.ca/gov/content/home/disclaimer">
-                Disclaimer
-              </a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/privacy">
-                Privacy
-              </a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/copyright">
-                Copyright
-              </a>,
-              <a href="https://dpdd.atlassian.net/servicedesk/customer/portal/1/group/5">
-                Contact Us
-              </a>,
-            ]}
-            title=""
-          />
-        </React.Fragment>
-      </Footer>
-    </>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <main style={{ flexGrow: 1 }}>
+        <Home />
+      </main>
+      <AppFooter />
+    </div>
   );
 }
 
