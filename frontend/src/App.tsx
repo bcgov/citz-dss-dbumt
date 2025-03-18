@@ -10,10 +10,18 @@ function App() {
         <React.Fragment key=".0">
           <FooterLinks
             links={[
-              <a href="https://www2.gov.bc.ca/gov/content/home/disclaimer">Disclaimer</a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/privacy">Privacy</a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/copyright">Copyright</a>,
-              <a href="https://www2.gov.bc.ca/gov/content/home/get-help-with-government-services">Contact Us</a>
+              <a href="https://www2.gov.bc.ca/gov/content/home/disclaimer">
+                Disclaimer
+              </a>,
+              <a href="https://www2.gov.bc.ca/gov/content/home/privacy">
+                Privacy
+              </a>,
+              <a href="https://www2.gov.bc.ca/gov/content/home/copyright">
+                Copyright
+              </a>,
+              <a href="https://www2.gov.bc.ca/gov/content/home/get-help-with-government-services">
+                Contact Us
+              </a>,
             ]}
             title=""
           />
