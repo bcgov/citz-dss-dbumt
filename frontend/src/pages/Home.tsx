@@ -1,5 +1,4 @@
 import { Text } from "@bcgov/design-system-react-components";
-import AppHeader from "../components/AppHeader";
 import { Heading, Text } from "@bcgov/design-system-react-components";
 
 export const Home = () => {
