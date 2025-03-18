@@ -1,11 +1,23 @@
 import { Request, Response } from "express";
 import { addPasswordRequirement } from "@/modules/password-update/services"
-import { passwordReqInterface } from "@/modules/password-update/schemas"
+import { HTTP_STATUS_CODES } from "@/constants";
+import { logs } from "@/utilities";
 
 /**
  * Handle request to add new password requirement to mongoDB
  */
 export const addRequirement = async (req: Request, res: Response) => {
-  //const { name, description, active, numCharReq } = req;
-  console.log(req);
+  // TODO: Add user validation
+  var newReq;
+  try {
+    newReq = await addPasswordRequirement(req.body);
+  } catch (err) {
+    // if we catch an error create a message and send back
+    let err_message = `${logs.API.UNEXPECTED_ERR}`
+    if (err instanceof Error) err_message = err.message;
+    console.error(`${logs.MONGODB.MONGO_ERR} ${err instanceof Error ? err.message : err}`)
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send(err_message)
+  }
+  console.log(logs.MONGODB.ENTITY_ADDED)
+  res.status(HTTP_STATUS_CODES.OK).send(newReq);
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ENV } from "../../config";
+import { ENV } from "@/config";
 import { logs } from "@/utilities";
 
 // set env variables from .env to process.env
@@ -30,7 +30,7 @@ export const connectDatabase = async () => {
 
   try {
     // Connection from local ExpressJS server
-    const localDBUri = `localhost:${MONGO_EXTERNAL_PORT}/${MONGO_SERVICE_NAME}`;
+    const localDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:${MONGO_EXTERNAL_PORT}/${MONGO_SERVICE_NAME}?authSource=admin`;
     // Connection from containerized ExpressJS server
     const containerDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_SERVICE_NAME}:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=admin`;
 
