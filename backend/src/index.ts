@@ -1,4 +1,3 @@
-import express, { Express } from "express";
 import app from "./express";
 import { database } from "@/middleware";
 import { logs } from "@/utilities";

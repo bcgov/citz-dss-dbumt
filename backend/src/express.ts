@@ -1,5 +1,5 @@
 import "dotenv/config.js";
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import * as modules from "./modules";
 
 // Define and create the express app
