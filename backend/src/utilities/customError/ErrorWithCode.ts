@@ -21,7 +21,10 @@ import { HTTP_STATUS_CODES } from "@/constants";
 export class ErrorWithCode extends Error {
   public code: number;
 
-  constructor(message: string, code: number = HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR) {
+  constructor(
+    message: string,
+    code: number = HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+  ) {
     super(message);
     this.code = code;
   }

@@ -1,6 +1,6 @@
-import { ErrorWithCode } from '@/utilities/customError/ErrorWithCode';
-import { HTTP_STATUS_CODES } from '@/constants';
-import { NextFunction, Request, Response } from 'express';
+import { ErrorWithCode } from "@/utilities/customError/ErrorWithCode";
+import { HTTP_STATUS_CODES } from "@/constants";
+import { NextFunction, Request, Response } from "express";
 
 /**
  * Handles errors and sends appropriate response.
@@ -18,7 +18,7 @@ const errorHandler = (
   next: NextFunction,
 ) => {
   // Is this one of the valid input options?
-  if (!(typeof err === 'string' || err instanceof Error)) {
+  if (!(typeof err === "string" || err instanceof Error)) {
     const message = `Unknown server error.`;
     console.error(message);
     return res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send(message);

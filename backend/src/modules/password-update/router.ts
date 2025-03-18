@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { addRequirement, findReqByName, getAllReq } from "./controllers/requirements";
+import {
+  addRequirement,
+  findReqByName,
+  getAllReq,
+} from "./controllers/requirements";
 
 const router = Router();
 

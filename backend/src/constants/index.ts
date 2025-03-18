@@ -1,2 +1,2 @@
 export * from "./ansiCodes";
-export * from "./httpStatusCodes"
+export * from "./httpStatusCodes";

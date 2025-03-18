@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
 export interface passwordReqInterface {
-  name: string,
-  description: string,
-  active: boolean,
-  numCharReq: number
+  name: string;
+  description: string;
+  active: boolean;
+  numCharReq: number;
 }
 
 /**Summary:
@@ -39,4 +39,7 @@ const passwordReqSchema = new Schema<passwordReqInterface>(
 
 // Create the model in the mongo database, and export it to use elsewhere.
 // Note - a mongoose model = a mongodb collection
-export const PasswordReqModel = model<passwordReqInterface>("PasswordReqModel", passwordReqSchema);
+export const PasswordReqModel = model<passwordReqInterface>(
+  "PasswordReqModel",
+  passwordReqSchema,
+);
