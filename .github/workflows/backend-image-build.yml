@@ -8,12 +8,9 @@ on:
      - 'backend/**' # Triggers on changes to files in the backend/ directory.
 
 env: # variables for jobs
-  # SHA for version 4.2.2 of actions/checkout.
-  ACTIONS-CHECKOUT-VERSION: 11bd71901bbe5b1630ceea73d27597364c9af683
-  # SHA for version 7.0.1 of actions/github/script.
-  ACTIONS-GH-SCRIPT-VERSION: 60a0d83039c74a4aee543508d2ffcb1c3799cdea
-  # SHA for version 1 of redhat-actions/oc-login.
-  RH-ACTIONS-LOGIN-VERSION: 5eb45e848b168b6bf6b8fe7f1561003c12e3c99d
+  ACTIONS-CHECKOUT-VERSION: 11bd71901bbe5b1630ceea73d27597364c9af683 # SHA for version 4.2.2 of actions/checkout.
+  ACTIONS-GH-SCRIPT-VERSION: 60a0d83039c74a4aee543508d2ffcb1c3799cdea # SHA for version 7.0.1 of actions/github/script.
+  RH-ACTIONS-LOGIN-VERSION: 5eb45e848b168b6bf6b8fe7f1561003c12e3c99d # SHA for version 1 of redhat-actions/oc-login.
 
 jobs:
   Build-Push:
