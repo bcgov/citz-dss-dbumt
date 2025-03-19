@@ -19,13 +19,13 @@ jobs:
     steps:
       # check out the repo
       - name: Checkout Repository
-        uses: actions/checkout@${{ACTIONS-CHECKOUT-VERSION}}
+        uses: actions/checkout@${{env.ACTIONS-CHECKOUT-VERSION}}
         with:
           fetch-depth: 0
 
       # login to the Openshift Cluster
       - name: Login to Openshift
-        uses: redhat-actions/oc-login@${{RH-ACTIONS-LOGIN-VERSION}}
+        uses: redhat-actions/oc-login@${{env.RH-ACTIONS-LOGIN-VERSION}}
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
           openshift_token: ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
@@ -54,13 +54,13 @@ jobs:
     steps:
       # check out the repo
       - name: Checkout
-        uses: actions/checkout@${{ACTIONS-CHECKOUT-VERSION}}
+        uses: actions/checkout@${{env.ACTIONS-CHECKOUT-VERSION}}
         with:
           fetch-depth: 0
 
       - name: Add Comment To the PR
         if: github.event.action == 'opened'
-        uses: actions/github-script@${{ACTIONS-GH-SCRIPT-VERSION}}
+        uses: actions/github-script@${{env.ACTIONS-GH-SCRIPT-VERSION}}
         with:
           script: |
             github.rest.issues.createComment({
