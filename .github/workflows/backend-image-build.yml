@@ -1,0 +1,74 @@
+name: Backend Image Build on PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review] # Triggered by opened or changed pull requests.
+    branches: [main]
+    paths:
+     - 'backend/**' # Triggers on changes to files in the backend/ directory.
+
+env: # variables for jobs
+  # SHA for version 4.2.2 of actions/checkout.
+  ACTIONS-CHECKOUT-VERSION: 11bd71901bbe5b1630ceea73d27597364c9af683
+  # SHA for version 7.0.1 of actions/github/script.
+  ACTIONS-GH-SCRIPT-VERSION: 60a0d83039c74a4aee543508d2ffcb1c3799cdea
+  # SHA for version 1 of redhat-actions/oc-login.
+  RH-ACTIONS-LOGIN-VERSION: 5eb45e848b168b6bf6b8fe7f1561003c12e3c99d
+
+jobs:
+  Build-Push:
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      # check out the repo
+      - name: Checkout Repository
+        uses: actions/checkout@${{ACTIONS-CHECKOUT-VERSION}}
+        with:
+          fetch-depth: 0
+
+      # login to the Openshift Cluster
+      - name: Login to Openshift
+        uses: redhat-actions/oc-login@${{RH-ACTIONS-LOGIN-VERSION}}
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
+          openshift_token: ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
+          namespace: ${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}
+
+      # Login to OpenShift Docker Image Repository
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
+
+      # Build the api Image and add tag "dbumt-api:<pull-request-number>"
+      - name: Build & Tag backend Image
+        run: |
+          cd backend && docker build . -f Dockerfile -t dbumt-api:${{github.event.pull_request.number}}
+
+      # Push the api Image to OpenShift tools namespace Docker Image Repository
+      - name: Push Image
+        run: |
+          docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
+
+  Add-Comment:
+    needs: [Build-Push]
+    name: Add Comment to PR
+    runs-on: ubuntu-latest
+
+    steps:
+      # check out the repo
+      - name: Checkout
+        uses: actions/checkout@${{ACTIONS-CHECKOUT-VERSION}}
+        with:
+          fetch-depth: 0
+
+      - name: Add Comment To the PR
+        if: github.event.action == 'opened'
+        uses: actions/github-script@${{ACTIONS-GH-SCRIPT-VERSION}}
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🚀 **Deployment Information**\n\nThe API Image has been built with the tag: **`${{github.event.pull_request.number}}`**. Please make sure to utilize this specific tag when promoting these changes to the TEST and PROD environments during the API deployment."
+            })
