@@ -10,7 +10,7 @@ on:
 jobs:
   Build-Push:
     environment: dev
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       # check out the repo
       - name: Checkout Repository
