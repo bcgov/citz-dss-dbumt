@@ -8,5 +8,4 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// trying to test a new run
 export default app;

@@ -31,7 +31,7 @@ jobs:
       # Build the api Image and add tag "dbumt-api:<pull-request-number>"
       - name: Build & Tag backend Image
         run: |
-          cd backend && docker build . -f Dockerfile -t dbumt-api:${{github.event.pull_request.number}}
+          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
 
       # Push the api Image to OpenShift tools namespace Docker Image Repository
       - name: Push Image
