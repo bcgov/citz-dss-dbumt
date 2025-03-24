@@ -20,11 +20,8 @@ jobs:
 
       # login to the Openshift Cluster
       - name: Login to Openshift
-        uses: redhat-actions/oc-login@5eb45e848b168b6bf6b8fe7f1561003c12e3c99d
-        with:
-          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
-          openshift_token: ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
-          namespace: ${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}
+        run: |
+          docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
 
       # Login to OpenShift Docker Image Repository
       - name: Login to Openshift Docker
