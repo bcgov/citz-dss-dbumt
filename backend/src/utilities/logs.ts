@@ -9,6 +9,7 @@ const { FOREGROUND: FG, BACKGROUND: BG, FORMATTING: FM } = ANSI_CODES;
 const expressJS = ` ${BG.BLUE}${FG.GREY}| ExpressJS |${FM.RESET} `;
 const expressJSErr = `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`;
 export const API = {
+  ERROR_SIMPLE: `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`,
   SERVER_STARTED: `${expressJS}${FG.BLUE}DBUMT Server Started Successfully. Listening on port: ${FM.RESET}`,
   UNEXPECTED_ERR: `${expressJSErr}An unexpected error occurred.${FM.RESET}`,
 };
@@ -35,5 +36,7 @@ export const MONGODB = {
   // Entity strings
   EXISTING_ENTITITY: `${mongoDbWarn}Entity already exists.${FM.RESET}`,
   ENTITY_ADDED: `${mongoDbOK}Entity added.${FM.RESET}`,
+  ENTITY_FOUND: `${mongoDbOK}Entity found: ${FM.RESET}`,
+  ENTITY_ALL: `${mongoDbOK}Returning all Entities.${FM.RESET}`,
   FIND_ERROR: `${mongoDbWarn}Failed to find entry.${FM.RESET}`,
 };

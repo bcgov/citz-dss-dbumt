@@ -20,7 +20,7 @@ export const addRequirement = async (req: Request, res: Response) => {
     let err_message = `${logs.API.UNEXPECTED_ERR}`;
     // if we hit an Error we can use the message provided
     if (err instanceof Error) err_message = err.message;
-    console.error(err_message);
+    console.error(logs.API.ERROR_SIMPLE, err_message);
     return res
       .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
       .send(err_message);
@@ -44,6 +44,7 @@ export const findReqByName = async (req: Request, res: Response) => {
       .status(HTTP_STATUS_CODES.NOT_FOUND)
       .send("Requirement not found");
   }
+  console.log(logs.MONGODB.ENTITY_FOUND, req.params.name);
   return res.status(HTTP_STATUS_CODES.OK).send(foundReq);
 };
 
@@ -55,5 +56,6 @@ export const getAllReq = async (req: Request, res: Response) => {
       .status(HTTP_STATUS_CODES.NOT_FOUND)
       .send("No Requirements found");
   }
+  console.log(logs.MONGODB.ENTITY_ALL);
   return res.status(HTTP_STATUS_CODES.OK).send(allReq);
 };
