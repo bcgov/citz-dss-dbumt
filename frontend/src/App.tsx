@@ -1,17 +1,12 @@
 import { Home } from "./pages/Home";
-import AppFooter from "./components/layout/Footer";
-import "./styles/globals.css";
+import { Header } from "@bcgov/design-system-react-components";
 
 function App() {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-    >
-      <main style={{ flexGrow: 1 }}>
-        <Home />
-      </main>
-      <AppFooter />
-    </div>
+    <>
+      <Header title="Database User Management Tool" titleElement="h1" />
+      <Home />
+    </>
   );
 }
 
