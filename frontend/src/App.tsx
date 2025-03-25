@@ -1,6 +1,8 @@
 import { Home } from "./pages/Home";
 import { Header } from "@bcgov/design-system-react-components";
 
+// testing frontend build on PR
+
 function App() {
   return (
     <>
