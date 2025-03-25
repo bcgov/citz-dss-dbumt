@@ -7,12 +7,12 @@
     "exactOptionalPropertyTypes": true, // Allows optional properties to be defined as "undefined" without error
     // -- MODULES --
     "baseUrl": ".", // Set base directory to resolve bare specifier module names
-    "module": "Node16", // Set module system for the program
+    "module": "CommonJS", // Set module system for the program
     "resolveJsonModule": true, // Import modules with .json extension
-    "moduleResolution": "node16", // Set module resolution strategy, support for ECMAScript imports and CommonJS require
+    "moduleResolution": "node", // Set module resolution strategy, support for ECMAScript imports and CommonJS require
     "paths": { // import lookup location relative to baseUrl
       "@/*": [
-        "src/*"
+        "./src/*"
       ] // With this (and tsconfig-paths) we can use `@/` for pathing from `src/`
     },
     // -- EMIT --
