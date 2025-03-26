@@ -39,7 +39,6 @@
   // File names and patterns to include in the program
   "include": [
     "./src/**/*",
-    "./vite.config.ts",
-    "prettierrc.cjs"
+    "./vite.config.ts"
   ]
 }
