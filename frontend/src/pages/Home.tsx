@@ -1,5 +1,5 @@
-import { Header, Text } from "@bcgov/design-system-react-components";
-import { AppFooter } from "../components/layout/Footer";
+import { Header, Text } from '@bcgov/design-system-react-components';
+import { AppFooter } from '../components/layout/Footer';
 
 export const Home = () => {
   return (

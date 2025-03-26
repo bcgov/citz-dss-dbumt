@@ -1,5 +1,5 @@
-import { Footer, FooterLinks } from "@bcgov/design-system-react-components";
-import React from "react";
+import { Footer, FooterLinks } from '@bcgov/design-system-react-components';
+import React from 'react';
 
 export const AppFooter = () => {
   return (

@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss}\"",
-    "check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx,css,scss}\"",
-    "test": "prettier --find-config-path ./src/index.tsx"
+    "check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx,css,scss}\""
   },
   "dependencies": {
     "@bcgov/design-system-react-components": "0.5.1",
