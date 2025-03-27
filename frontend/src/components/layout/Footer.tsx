@@ -28,3 +28,11 @@ export const AppFooter = () => {
     </div>
   );
 };
+
+export const HideFooter = () => {
+  return (
+    <div>
+      <Footer hideAcknowledgement hideLogoAndLinks />
+    </div>
+  );
+};
