@@ -1,2 +1,10 @@
 @import 'tailwindcss';
-/* basic css reset */
+
+@theme {
+    --color-gold: #F8BB47;
+    --color-blue: #1E5189;
+    --color-light-blue: #D8EAFD;
+    --color-dark-blue: #013366;
+    --color-grey: #FAF9F8;
+
+  }
