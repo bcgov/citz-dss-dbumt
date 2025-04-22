@@ -1,12 +1,10 @@
-import { Home } from "./pages/Home";
-import { Header } from "@bcgov/design-system-react-components";
+import { Home } from './pages/Home';
 
 function App() {
   return (
-    <>
-      <Header title="Database User Management Tool" titleElement="h1" />
+    <div>
       <Home />
-    </>
+    </div>
   );
 }
 
