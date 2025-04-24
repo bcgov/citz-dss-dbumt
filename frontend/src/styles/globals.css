@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 /* basic css reset */
+
+@theme {
+  --color-gold: #f8bb47;
+}
