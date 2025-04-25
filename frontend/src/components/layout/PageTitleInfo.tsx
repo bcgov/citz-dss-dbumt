@@ -1,0 +1,71 @@
+import { Button, Heading, Text } from '@bcgov/design-system-react-components';
+import { useState } from 'react';
+
+/**
+ * PageTitleInfo component props
+ *
+ * @param title - The title of the page
+ * @param collapseText - The text to be displayed when the button is clicked
+ * @param text - Additional text to be displayed below the title
+ */
+interface PageTitleInfoProps {
+  title: string;
+  collapseText?: string;
+  text?: string;
+};
+
+/**
+ * Page Title Info component that displays a page's title.
+ * Optionally it can display text in a collapsible format and additional text.
+ * The component is designed to be used in the header of a page.
+ *
+ * @param props - PageTitleInfoProps object
+ * @returns JSX element to be used as page title and optional elements
+ */
+export const PageTitleInfo = (props: PageTitleInfoProps) => {
+  // State to manage the open/closed state of the collapsible text
+  const [open, setOpen] = useState(false);
+  // Function to toggle the open/closed state
+  const toggleOpen = () => {
+    setOpen(!open);
+  };
+
+  // Function to render the collapsible text and button
+  // If collapseText is provided, it will be displayed in a collapsible format
+  // If collapseText is not provided, it will not be displayed
+  const Collapse = () => {
+    if (props.collapseText) {
+      return (
+        <>
+          <Button variant="secondary" onPress={toggleOpen}>
+            {!open && (<Text>Show More</Text>)}
+            {open && (<Text>Show Less</Text>)}
+          </Button>
+          {open && (
+            <Text>{props.collapseText}</Text>
+          )}</>
+      );
+    }
+  }
+
+  // Function to render additional text
+  // If text is provided, it will be displayed below the title
+  // If text is not provided, it will not be displayed
+  const AdditionalText = () => {
+    if (props.text) {
+      return (
+        <Text>{props.text}</Text>
+      );
+    }
+  }
+
+  return (
+    <>
+      <Heading level={1}>{props.title}</Heading>
+      <Collapse />
+      <br />
+      <AdditionalText />
+      <br />
+    </>
+  );
+}
