@@ -10,15 +10,12 @@ import { AppFooter } from './Footer';
  */
 export const BaseLayout = (props: PropsWithChildren) => {
   return (
-    <div className='flex flex-col h-dvh w-dvw'>
+    <div className="flex h-dvh w-dvw flex-col">
       <Header title="Database User Management Tool" titleElement="h1" />
       <div className="flex-grow">
-        <div className='grid grid-cols-8 grid-rows-auto gap-2'>
-          <div className='col-start-2 col-end-8'>
-            {props.children}
-          </div>
+        <div className="grid-rows-auto grid grid-cols-8 gap-2">
+          {props.children}
         </div>
-
       </div>
       <AppFooter />
     </div>
