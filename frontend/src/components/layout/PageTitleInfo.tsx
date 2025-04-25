@@ -37,10 +37,10 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
     if (props.collapseText) {
       return (
         <>
-          <Button variant="secondary" onPress={toggleOpen}>
-            {!open && (<Text>Show More</Text>)}
-            {open && (<Text>Show Less</Text>)}
-          </Button>
+          <div className='w-100'>
+            <Button variant="secondary" size="medium" onPress={toggleOpen}>
+              {!open ? 'Show More' : 'Show Less'}
+            </Button></div>
           {open && (
             <Text>{props.collapseText}</Text>
           )}</>

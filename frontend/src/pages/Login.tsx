@@ -26,9 +26,12 @@ export const Login = () => {
       <br />
       <div className="col-start-2 sm:col-end-8 md:col-end-6">
         <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-          <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-          <TextField />
-          <Button>Continue</Button>
+          <div className='box-content w-100 px-10'>
+            <InfoBoxFieldTitle titleText="BCGW Account/Username" />
+            <TextField className='mb-2 w-md' />
+            <br />
+            <Button>Continue</Button>
+          </div>
         </InfoBox>
       </div>
     </BaseLayout>
