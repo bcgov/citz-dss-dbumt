@@ -8,9 +8,7 @@ export const AppFooter = () => {
           <a href="https://www2.gov.bc.ca/gov/content/home/disclaimer">
             Disclaimer
           </a>,
-          <a href="https://www2.gov.bc.ca/gov/content/home/privacy">
-            Privacy
-          </a>,
+          <a href="https://www2.gov.bc.ca/gov/content/home/privacy">Privacy</a>,
           <a href="https://www2.gov.bc.ca/gov/content/home/copyright">
             Copyright
           </a>,

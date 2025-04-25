@@ -12,6 +12,7 @@
     "check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx,css,scss}\""
   },
   "dependencies": {
+    "@bcgov/bc-sans": "2.1.0",
     "@bcgov/design-system-react-components": "0.5.1",
     "@tailwindcss/vite": "4.0.16",
     "react": "19.0.0",
