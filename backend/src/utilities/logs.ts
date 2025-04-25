@@ -40,37 +40,3 @@ export const MONGODB = {
   ENTITY_ALL: `${mongoDbOK}Returning all Entities.${FM.RESET}`,
   FIND_ERROR: `${mongoDbWarn}Failed to find entry.${FM.RESET}`,
 };
-
-const oracleDB = ` ${BG.CYAN}${FG.GREY}| OracleDB |${FM.RESET} `;
-const oracleOK = `${oracleDB}${FG.GREEN}`;
-const oracleWarn = `${oracleDB}${FG.RED}`;
-const oracleErr = `${oracleDB}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`;
-export const ORACLE = {
-  // Connection strings
-  CONNECTION_SUCCESS: `${oracleOK}Connection successful.${FM.RESET}`,
-  CONNECTION_FAILED: `${oracleErr}Failed to connect to Oracle DB.${FM.RESET}`,
-  // Entity strings
-  ENTITY_FOUND: `${oracleOK}Entity found.${FM.RESET}`,
-  ENTITY_NOT_FOUND: `${oracleWarn}Entity not found.${FM.RESET}`,
-  ENTITY_RETURNING: `${oracleOK}Returning entity data.${FM.RESET}`,
-  ENTITY_ERROR: `${oracleErr}Failed to retrieve entity.${FM.RESET}`,
-  INVALID_USERNAME: `${oracleWarn}Invalid username parameter.${FM.RESET}`,
-};
-
-const passwordUpdate = ` ${BG.GOLD}${FG.GREY}| Password Update |${FM.RESET} `;
-const passwordOK = `${passwordUpdate}${FG.GREEN}`;
-const passwordWarn = `${passwordUpdate}${FG.RED}`;
-const passwordErr = `${passwordUpdate}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`;
-export const PASSWORD_UPDATE = {
-  // Validator status
-  VALIDATION_PASSED: `${passwordOK}Password passed all active validation rules.${FM.RESET}`,
-  VALIDATION_FAILED: `${passwordWarn}Password failed one or more validation rules.${FM.RESET}`,
-  MISSING_VALIDATOR: `${passwordWarn}No validator implemented for rule:${FM.RESET}`,
-  RULES_LOADED: `${passwordOK}Loaded active password rules from MongoDB.${FM.RESET}`,
-
-  // Future dynamic features
-  DYNAMIC_RULE_UNSUPPORTED: `${passwordWarn}Dynamic rule execution not yet supported.${FM.RESET}`,
-
-  // Errors
-  VALIDATION_ERROR: `${passwordErr}Error occurred during password validation.${FM.RESET}`,
-};
