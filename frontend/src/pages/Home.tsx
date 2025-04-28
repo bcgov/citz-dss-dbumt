@@ -1,10 +1,7 @@
 import { Heading, Text } from '@bcgov/design-system-react-components';
 import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
-import {
-  InfoBox,
-  InfoBoxField,
-} from '../components/element/InfoBox';
+import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 
 export const Home = () => {
   return (

@@ -12,7 +12,7 @@ interface PageTitleInfoProps {
   title: string;
   collapseText?: string;
   text?: string;
-};
+}
 
 /**
  * Page Title Info component that displays a page's title.
@@ -37,27 +37,25 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
     if (props.collapseText) {
       return (
         <>
-          <div className='w-100'>
+          <div className="w-100">
             <Button variant="secondary" size="medium" onPress={toggleOpen}>
               {!open ? 'Show More' : 'Show Less'}
-            </Button></div>
-          {open && (
-            <Text>{props.collapseText}</Text>
-          )}</>
+            </Button>
+          </div>
+          {open && <Text>{props.collapseText}</Text>}
+        </>
       );
     }
-  }
+  };
 
   // Function to render additional text
   // If text is provided, it will be displayed below the title
   // If text is not provided, it will not be displayed
   const AdditionalText = () => {
     if (props.text) {
-      return (
-        <Text>{props.text}</Text>
-      );
+      return <Text>{props.text}</Text>;
     }
-  }
+  };
 
   return (
     <>
@@ -68,4 +66,4 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
       <br />
     </>
   );
-}
+};

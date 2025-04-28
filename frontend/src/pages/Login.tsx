@@ -2,10 +2,7 @@ import { Button, TextField } from '@bcgov/design-system-react-components';
 import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
-import {
-  InfoBox,
-  InfoBoxFieldTitle,
-} from '../components/element/InfoBox';
+import { InfoBox, InfoBoxFieldTitle } from '../components/element/InfoBox';
 
 export const Login = () => {
   const title = 'Manage your BCGW Oracle account';
@@ -26,9 +23,9 @@ export const Login = () => {
       <br />
       <div className="col-start-2 sm:col-end-8 md:col-end-6">
         <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-          <div className='box-content w-100 px-10'>
+          <div className="w-100 box-content px-10">
             <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-            <TextField className='mb-2 w-md' />
+            <TextField className="w-md mb-2" />
             <br />
             <Button>Continue</Button>
           </div>
