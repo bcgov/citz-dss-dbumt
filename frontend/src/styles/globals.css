@@ -1,15 +1,6 @@
 @import '@bcgov/bc-sans/css/BC_Sans.css';
 @import 'tailwindcss';
 
-@font-face {
-  font-family: 'BC Sans';
-  src:
-    url('../fonts/BCSans-Regular.woff2') format('woff2'),
-    url('../fonts/BCSans-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
-
 @theme inline {
   /* Setting font formatting to BC Sans specifics*/
   --font-display: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
@@ -22,8 +13,11 @@
 
   /* Colour Variables*/
   --color-gold: #f8bb47;
+  --color-red: #ce3e39;
   --color-blue: #1e5189;
+  --color-white-blue: #f1f8fe;
   --color-light-blue: #d8eafd;
   --color-dark-blue: #013366;
   --color-grey: #faf9f8;
+  --color-white-orange: #e0dedc;
 }
