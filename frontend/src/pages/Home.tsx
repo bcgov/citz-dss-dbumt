@@ -34,23 +34,26 @@ export const Home = () => {
    * TESTING PURPOSES ONLY. Once we connect to the backend and BCGW this will be populated
    * with data from the BCGW and passed in through props.
    */
-  const rowArray = useMemo(() => [
-    {
-      key: 1,
-      nameText: 'Production',
-      date: new Date('2024-11-25T00:00:00-07:00'),
-    },
-    {
-      key: 2,
-      nameText: 'Test',
-      date: new Date('2026-04-30T00:00:00-07:00'),
-    },
-    {
-      key: 3,
-      nameText: 'Development',
-      date: new Date('2025-05-07T00:00:00-07:00'),
-    },
-  ], []);
+  const rowArray = useMemo(
+    () => [
+      {
+        key: 1,
+        nameText: 'Production',
+        date: new Date('2024-11-25T00:00:00-07:00'),
+      },
+      {
+        key: 2,
+        nameText: 'Test',
+        date: new Date('2026-04-30T00:00:00-07:00'),
+      },
+      {
+        key: 3,
+        nameText: 'Development',
+        date: new Date('2025-05-07T00:00:00-07:00'),
+      },
+    ],
+    [],
+  );
 
   // If the rowArray updates check if we need to show the warning info and add the database name to the warning array
   useEffect(() => {
@@ -78,14 +81,14 @@ export const Home = () => {
     let dbNames = '';
     let plural = '';
     if (warningDbArray.length === 1) {
-      dbNames = warningDbArray[0]
+      dbNames = warningDbArray[0];
     } else if (warningDbArray.length > 1) {
       dbNames = JoinArrayWithLast(warningDbArray, ', ', ' & ');
       plural = 's';
     }
-    return `Your BCGW ${dbNames} database password${plural} expire${(plural === 's') ? '' : 's'} within 10 days.
-        Please reset your password${plural} by selecting 'Change Password' action below.`
-  }
+    return `Your BCGW ${dbNames} database password${plural} expire${plural === 's' ? '' : 's'} within 10 days.
+        Please reset your password${plural} by selecting 'Change Password' action below.`;
+  };
 
   const alertDescription = () => {
     let dbNames = '';
@@ -100,7 +103,7 @@ export const Home = () => {
     }
     return `Your BCGW ${dbNames} database password${plural} ${hasHave} expired.
       To reset your password${plural} please contact NRM Service Desk at NRMenquiries@gov.bc.ca.`;
-  }
+  };
 
   return (
     <BaseLayout>
@@ -109,51 +112,50 @@ export const Home = () => {
         <PageTitleInfo title={title} collapseText={collapseText} />
       </div>
       <br />
-      <div className="col-start-2 sm:col-end-8 md:col-end-6 mb-8">
+      <div className="col-start-2 mb-8 sm:col-end-8 md:col-end-6">
         <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-          <div className='m-2'>
+          <div className="m-2">
             <InfoBoxField
               titleText="BCGW Account/Username:"
               contentText="TEST HOLDER" // TODO: This will be replaced with the username from the backend
-            /></div>
-          <div className='m-2'>
+            />
+          </div>
+          <div className="m-2">
             <RoundedTable
-              nameHeader='BCGW databases for this account'
-              detailHeader='Password Expiry date'
+              nameHeader="BCGW databases for this account"
+              detailHeader="Password Expiry date"
               rowArray={rowArray}
-            /></div>
+            />
+          </div>
           {showAlertInfo && (
-            <div className='m-4'>
+            <div className="m-4">
               <InlineAlert
                 description={alertDescription()}
-                title='Password Expired'
-                variant='danger' /></div>
+                title="Password Expired"
+                variant="danger"
+              />
+            </div>
           )}
           {showWarningInfo && (
-            <div className='m-4'>
+            <div className="m-4">
               <InlineAlert
                 description={warningDescription()}
-                title='Password Expires Soon'
-                variant='warning' /></div>
+                title="Password Expires Soon"
+                variant="warning"
+              />
+            </div>
           )}
-
         </InfoBox>
 
         <GoldBar />
-        <div className='flex flex-col max-w-md'>
-          <div className='mb-4'>
-            <Button
-              variant="primary"
-              size="medium"
-              onPress={() => { }}>
+        <div className="flex max-w-md flex-col">
+          <div className="mb-4">
+            <Button variant="primary" size="medium" onPress={() => {}}>
               Change Password
             </Button>
           </div>
-          <div className='mb-2'>
-            <Button
-              variant="primary"
-              size="medium"
-              onPress={() => { }}>
+          <div className="mb-2">
+            <Button variant="primary" size="medium" onPress={() => {}}>
               Query an Account
             </Button>
           </div>

@@ -53,14 +53,20 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
   // If text is not provided, it will not be displayed
   const AdditionalText = () => {
     if (props.text) {
-      return <><Text>{props.text}</Text><br /></>;
+      return (
+        <>
+          <Text>{props.text}</Text>
+          <br />
+        </>
+      );
     }
   };
 
   return (
     <>
-      <div className='py-4'>
-        <Heading level={1}>{props.title}</Heading></div>
+      <div className="py-4">
+        <Heading level={1}>{props.title}</Heading>
+      </div>
       <Collapse />
       <br />
       <AdditionalText />
