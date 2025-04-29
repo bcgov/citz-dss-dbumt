@@ -33,7 +33,7 @@ export const InfoBox = (props: InfoBoxProps) => {
   return (
     <div className="bg-grey shadow-sm">
       <InfoBoxHeader headerText={props.header} />
-      <div className="px-[27px] pt-[27px] pb-[50px] font-[BC_Sans]">
+      <div className="px-5 pt-5 pb-4 font-[BC_Sans]">
         {props.children}
       </div>
     </div>
