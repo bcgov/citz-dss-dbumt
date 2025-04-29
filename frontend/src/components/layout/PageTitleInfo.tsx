@@ -37,7 +37,7 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
     if (props.collapseText) {
       return (
         <>
-          <div className="w-100">
+          <div className="max-w-3xs">
             <Button variant="secondary" size="medium" onPress={toggleOpen}>
               {!open ? 'Show More' : 'Show Less'}
             </Button>
@@ -53,17 +53,17 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
   // If text is not provided, it will not be displayed
   const AdditionalText = () => {
     if (props.text) {
-      return <Text>{props.text}</Text>;
+      return <><Text>{props.text}</Text><br /></>;
     }
   };
 
   return (
     <>
-      <Heading level={1}>{props.title}</Heading>
+      <div className='py-4'>
+        <Heading level={1}>{props.title}</Heading></div>
       <Collapse />
       <br />
       <AdditionalText />
-      <br />
     </>
   );
 };
