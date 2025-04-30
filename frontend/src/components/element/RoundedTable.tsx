@@ -30,6 +30,7 @@ const RoundedRow = (props: RoundedRowProps) => {
   // State for showing warning icon and red text colour
   const [showWarningIcon, setShowWarning] = useState(false);
   const [showAlertIcon, setShowAlert] = useState(false);
+  let textColour = 'black';
 
   // When props.date changes, check if the red text and warning icon should be shown
   useEffect(() => {
@@ -38,7 +39,7 @@ const RoundedRow = (props: RoundedRowProps) => {
     setShowAlert(isPast);
   }, [props.date]);
 
-  const textColour = showWarningIcon || showAlertIcon ? 'red' : 'black';
+  textColour = showWarningIcon || showAlertIcon ? 'red' : 'black';
 
   return (
     <div className="bg-white-blue border-1 border-white-orange ml-2 rounded-lg p-4">
