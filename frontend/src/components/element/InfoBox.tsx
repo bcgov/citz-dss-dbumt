@@ -33,7 +33,7 @@ export const InfoBox = (props: InfoBoxProps) => {
   return (
     <div className="bg-grey shadow-sm">
       <InfoBoxHeader headerText={props.header} />
-      <div className="px-5 pb-4 pt-5 font-[BC_Sans]">{props.children}</div>
+      <div className="p-5">{props.children}</div>
     </div>
   );
 };
@@ -48,7 +48,7 @@ export const InfoBox = (props: InfoBoxProps) => {
 export const InfoBoxHeader = ({ headerText }: { headerText: string }) => {
   return (
     <div className="bg-blue space-before flex h-[65px] items-center justify-start">
-      <p className="mx-[17px] text-[20px] font-[BC_Sans] font-bold text-white">
+      <p className="mx-5 text-[20px] font-bold text-white">
         {headerText}
       </p>
     </div>
@@ -63,7 +63,7 @@ export const InfoBoxHeader = ({ headerText }: { headerText: string }) => {
  */
 export const InfoBoxFieldTitle = ({ titleText }: { titleText: string }) => {
   return (
-    <p className="m-2 text-[16px] font-[BC_Sans] font-bold">{titleText}</p>
+    <p className="m-2 font-bold">{titleText}</p>
   );
 };
 
@@ -78,7 +78,7 @@ export const InfoBoxField = (props: InfoBoxFieldProps) => {
   return (
     <div className="justify-left m-2 flex flex-row items-center space-x-8">
       <InfoBoxFieldTitle titleText={props.titleText} />
-      <p className="text-[16px] font-[BC_Sans]">{props.contentText}</p>
+      <p >{props.contentText}</p>
     </div>
   );
 };

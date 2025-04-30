@@ -20,12 +20,10 @@ export const Login = () => {
       <PageTitleInfo title={title} collapseText={collapseText} text={text} />
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-        <div className="w-100 box-content px-10">
-          <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-          <TextField className="w-md mb-2" />
-          <br />
-          <Button>Continue</Button>
-        </div>
+        <InfoBoxFieldTitle titleText="BCGW Account/Username" />
+        <TextField className="w-md mb-2" />
+        <br />
+        <Button>Continue</Button>
       </InfoBox>
     </BaseLayout>
   );
