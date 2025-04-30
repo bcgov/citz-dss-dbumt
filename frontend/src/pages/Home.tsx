@@ -4,7 +4,7 @@ import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 import { RoundedTable } from '../components/element/RoundedTable';
 import { useEffect, useState, useMemo } from 'react';
-import { InlineAlert, Button } from '@bcgov/design-system-react-components';
+import { Heading, InlineAlert, Button } from '@bcgov/design-system-react-components';
 import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
 
@@ -107,55 +107,58 @@ export const Home = () => {
 
   return (
     <BaseLayout>
-      <div className="col-start-2 col-end-8 grid">
+      <div className="grid">
         <GoldBar />
         <PageTitleInfo title={title} collapseText={collapseText} />
       </div>
       <br />
-      <div className="col-start-2 mb-8 sm:col-end-8 md:col-end-6">
-        <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-          <div className="m-2">
-            <InfoBoxField
-              titleText="BCGW Account/Username:"
-              contentText="TEST HOLDER" // TODO: This will be replaced with the username from the backend
+      <InfoBox header="BC Geographic Warehouse Oracle Account Information">
+        <div className="m-2">
+          <InfoBoxField
+            titleText="BCGW Account/Username:"
+            contentText="TEST HOLDER" // TODO: This will be replaced with the username from the backend
+          />
+        </div>
+        <div className="m-2">
+          <RoundedTable
+            nameHeader="BCGW databases for this account"
+            detailHeader="Password Expiry date"
+            rowArray={rowArray}
+          />
+        </div>
+        {showAlertInfo && (
+          <div className="m-4">
+            <InlineAlert
+              description={alertDescription()}
+              title="Password Expired"
+              variant="danger"
             />
           </div>
-          <div className="m-2">
-            <RoundedTable
-              nameHeader="BCGW databases for this account"
-              detailHeader="Password Expiry date"
-              rowArray={rowArray}
+        )}
+        {showWarningInfo && (
+          <div className="m-4">
+            <InlineAlert
+              description={warningDescription()}
+              title="Password Expires Soon"
+              variant="warning"
             />
           </div>
-          {showAlertInfo && (
-            <div className="m-4">
-              <InlineAlert
-                description={alertDescription()}
-                title="Password Expired"
-                variant="danger"
-              />
-            </div>
-          )}
-          {showWarningInfo && (
-            <div className="m-4">
-              <InlineAlert
-                description={warningDescription()}
-                title="Password Expires Soon"
-                variant="warning"
-              />
-            </div>
-          )}
-        </InfoBox>
-
+        )}
+      </InfoBox>
+      {/* TODO: may want to create a component for this button nav */}
+      <div className="py-4">
         <GoldBar />
+        <div className='my-4'>
+          <Heading level={1}>Select an Action</Heading>
+        </div>
         <div className="flex max-w-md flex-col">
           <div className="mb-4">
-            <Button variant="primary" size="medium" onPress={() => {}}>
+            <Button variant="primary" size="medium" onPress={() => { }}>
               Change Password
             </Button>
           </div>
           <div className="mb-2">
-            <Button variant="primary" size="medium" onPress={() => {}}>
+            <Button variant="primary" size="medium" onPress={() => { }}>
               Query an Account
             </Button>
           </div>

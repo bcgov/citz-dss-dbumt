@@ -16,21 +16,17 @@ export const Login = () => {
 
   return (
     <BaseLayout>
-      <div className="col-start-2 col-end-8 grid">
-        <GoldBar />
-        <PageTitleInfo title={title} collapseText={collapseText} text={text} />
-      </div>
+      <GoldBar />
+      <PageTitleInfo title={title} collapseText={collapseText} text={text} />
       <br />
-      <div className="col-start-2 sm:col-end-8 md:col-end-6">
-        <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-          <div className="w-100 box-content px-10">
-            <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-            <TextField className="w-md mb-2" />
-            <br />
-            <Button>Continue</Button>
-          </div>
-        </InfoBox>
-      </div>
+      <InfoBox header="BC Geographic Warehouse Oracle Account Information">
+        <div className="w-100 box-content px-10">
+          <InfoBoxFieldTitle titleText="BCGW Account/Username" />
+          <TextField className="w-md mb-2" />
+          <br />
+          <Button>Continue</Button>
+        </div>
+      </InfoBox>
     </BaseLayout>
   );
 };
