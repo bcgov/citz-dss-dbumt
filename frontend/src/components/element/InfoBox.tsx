@@ -48,9 +48,7 @@ export const InfoBox = (props: InfoBoxProps) => {
 export const InfoBoxHeader = ({ headerText }: { headerText: string }) => {
   return (
     <div className="bg-blue space-before flex h-[65px] items-center justify-start">
-      <p className="mx-5 text-[20px] font-bold text-white">
-        {headerText}
-      </p>
+      <p className="mx-5 text-[20px] font-bold text-white">{headerText}</p>
     </div>
   );
 };
@@ -62,9 +60,7 @@ export const InfoBoxHeader = ({ headerText }: { headerText: string }) => {
  * @returns JSX.Element - The rendered InfoBoxFieldTitle component
  */
 export const InfoBoxFieldTitle = ({ titleText }: { titleText: string }) => {
-  return (
-    <p className="m-2 font-bold">{titleText}</p>
-  );
+  return <p className="m-2 font-bold">{titleText}</p>;
 };
 
 /**
@@ -78,7 +74,7 @@ export const InfoBoxField = (props: InfoBoxFieldProps) => {
   return (
     <div className="justify-left m-2 flex flex-row items-center space-x-8">
       <InfoBoxFieldTitle titleText={props.titleText} />
-      <p >{props.contentText}</p>
+      <p>{props.contentText}</p>
     </div>
   );
 };

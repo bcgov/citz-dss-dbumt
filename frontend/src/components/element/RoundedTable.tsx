@@ -42,9 +42,7 @@ const RoundedRow = (props: RoundedRowProps) => {
 
   return (
     <div className="bg-white-blue border-1 border-white-orange ml-2 rounded-lg p-4">
-      <div
-        className={`flex justify-between text-${textColour} `}
-      >
+      <div className={`flex justify-between text-${textColour} `}>
         <div className="font-bold">{props.nameText}</div>
         <div>
           {showAlertIcon && (

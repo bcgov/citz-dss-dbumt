@@ -4,7 +4,11 @@ import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 import { RoundedTable } from '../components/element/RoundedTable';
 import { useEffect, useState, useMemo } from 'react';
-import { Heading, InlineAlert, Button } from '@bcgov/design-system-react-components';
+import {
+  Heading,
+  InlineAlert,
+  Button,
+} from '@bcgov/design-system-react-components';
 import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
 
@@ -148,17 +152,17 @@ export const Home = () => {
       {/* TODO: may want to create a component for this button nav */}
       <div className="py-4">
         <GoldBar />
-        <div className='my-4'>
+        <div className="my-4">
           <Heading level={1}>Select an Action</Heading>
         </div>
         <div className="flex max-w-md flex-col">
           <div className="mb-4">
-            <Button variant="primary" size="medium" onPress={() => { }}>
+            <Button variant="primary" size="medium" onPress={() => {}}>
               Change Password
             </Button>
           </div>
           <div className="mb-2">
-            <Button variant="primary" size="medium" onPress={() => { }}>
+            <Button variant="primary" size="medium" onPress={() => {}}>
               Query an Account
             </Button>
           </div>
