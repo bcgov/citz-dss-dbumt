@@ -14,7 +14,9 @@ export const BaseLayout = (props: PropsWithChildren) => {
       <Header title="Database User Management Tool" titleElement="h1" />
       <div className="flex-grow">
         <div className="grid-rows-auto grid grid-cols-8 gap-2">
-          {props.children}
+          <div className="col-start-2 col-end-7 grid">
+            {props.children}
+          </div>
         </div>
       </div>
       <AppFooter />
