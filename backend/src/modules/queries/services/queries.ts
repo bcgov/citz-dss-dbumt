@@ -4,23 +4,23 @@ import { logs, ErrorWithCode } from "@/utilities";
 const { ORACLE } = logs;
 
 interface AccountDetails {
-    USERNAME: string;
-    CREATED: Date;
-    ACCOUNT_STATUS: string;
-  }
+  USERNAME: string;
+  CREATED: Date;
+  ACCOUNT_STATUS: string;
+}
 
 /**
  * Creates an oracle database connection
- * 
+ *
  * @returns Oracle DB connection
  */
 const getOracleConnection = async () => {
-    return oracledb.getConnection({
-      user: process.env.AQT_USER!,
-      password: process.env.AQT_PASSWORD!,
-      connectString: process.env.AQT_CONNECT_STRING!,
-    });
-  };
+  return oracledb.getConnection({
+    user: process.env.AQT_USER!,
+    password: process.env.AQT_PASSWORD!,
+    connectString: process.env.AQT_CONNECT_STRING!,
+  });
+};
 
 /**
  * Gets the list of privileges assigned to a user
@@ -29,7 +29,7 @@ const getOracleConnection = async () => {
  * @throws ErrorWithCode if the database operation fails
  */
 export const getAccountPrivilegesService = async (username: string) => {
-    let connection: oracledb.Connection | undefined;
+  let connection: oracledb.Connection | undefined;
   try {
     connection = await getOracleConnection();
 
@@ -52,7 +52,7 @@ export const getAccountPrivilegesService = async (username: string) => {
   } finally {
     if (connection) await connection.close();
   }
-}
+};
 
 /**
  * Gets the account status of a single user
@@ -61,7 +61,7 @@ export const getAccountPrivilegesService = async (username: string) => {
  * @throws ErrorWithCode if the database operation fails
  */
 export const getAccountStatusService = async (username: string) => {
-    let connection: oracledb.Connection | undefined;
+  let connection: oracledb.Connection | undefined;
   try {
     connection = await getOracleConnection();
 
@@ -93,7 +93,7 @@ export const getAccountStatusService = async (username: string) => {
  * @throws ErrorWithCode if the database operation fails
  */
 export const getAccountDetailsService = async (username: string) => {
-    let connection: oracledb.Connection | undefined;
+  let connection: oracledb.Connection | undefined;
 
   try {
     connection = await getOracleConnection();
