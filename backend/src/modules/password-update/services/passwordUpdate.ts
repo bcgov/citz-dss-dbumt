@@ -2,7 +2,7 @@ import oracledb from "oracledb";
 import { getAllPasswordRequirements } from "./requirements";
 import { logs, ErrorWithCode } from "@/utilities";
 
-const { PASSWORD_UPDATE, ORACLE } = logs;
+const { UPDATE_LOGGING, ORACLE } = logs;
 
 export interface PasswordRule {
   name: string;
@@ -18,7 +18,7 @@ export interface PasswordRule {
 const loadActivePasswordRules = async (): Promise<PasswordRule[]> => {
   try {
     const allRules = await getAllPasswordRequirements();
-    console.log(PASSWORD_UPDATE.RULES_LOADED);
+    console.log(UPDATE_LOGGING.RULES_LOADED);
     return allRules
       .filter((rule) => rule.active)
       .map((rule) => ({
@@ -27,7 +27,7 @@ const loadActivePasswordRules = async (): Promise<PasswordRule[]> => {
       }));
   } catch (err) {
     throw new ErrorWithCode(
-      `${PASSWORD_UPDATE.VALIDATION_ERROR} ${
+      `${UPDATE_LOGGING.VALIDATION_ERROR} ${
         err instanceof Error ? err.message : err
       }`,
     );
@@ -68,7 +68,7 @@ export const validatePassword = async (
     for (const rule of rules) {
       const validator = validators[rule.name];
       if (!validator) {
-        console.warn(`${PASSWORD_UPDATE.MISSING_VALIDATOR} ${rule.name}`);
+        console.warn(`${UPDATE_LOGGING.MISSING_VALIDATOR} ${rule.name}`);
         continue;
       }
 
@@ -78,9 +78,9 @@ export const validatePassword = async (
     }
 
     if (failedRules.length === 0) {
-      console.log(PASSWORD_UPDATE.VALIDATION_PASSED);
+      console.log(UPDATE_LOGGING.VALIDATION_PASSED);
     } else {
-      console.warn(PASSWORD_UPDATE.VALIDATION_FAILED);
+      console.warn(UPDATE_LOGGING.VALIDATION_FAILED);
     }
 
     return {
@@ -89,7 +89,7 @@ export const validatePassword = async (
     };
   } catch (err) {
     throw new ErrorWithCode(
-      `${PASSWORD_UPDATE.VALIDATION_ERROR} ${
+      `${UPDATE_LOGGING.VALIDATION_ERROR} ${
         err instanceof Error ? err.message : err
       }`,
     );
