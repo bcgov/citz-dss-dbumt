@@ -65,7 +65,7 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
   return (
     <>
       <div className="py-4">
-        <Heading level={1}>{props.title}</Heading>
+        <Heading level={2}>{props.title}</Heading>
       </div>
       <Collapse />
       <br />

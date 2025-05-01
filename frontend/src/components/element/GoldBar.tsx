@@ -1,3 +1,3 @@
 export const GoldBar = () => {
-  return <div className="border-gold my-4 max-w-[36px] border-t-[4px]" />;
+  return <div className="bg-gold mt-10 max-w-[36px] p-0.5" />;
 };

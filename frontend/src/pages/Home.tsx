@@ -150,18 +150,18 @@ export const Home = () => {
         )}
       </InfoBox>
       {/* TODO: may want to create a component for this button nav */}
+      <GoldBar />
       <div className="py-4">
-        <GoldBar />
-        <div className="my-4">
-          <Heading level={1}>Select an Action</Heading>
+        <div className="pb-4">
+          <Heading level={2}>Select an Action</Heading>
         </div>
         <div className="flex max-w-md flex-col">
-          <div className="mb-4">
+          <div className="pb-4">
             <Button variant="primary" size="medium" onPress={() => {}}>
               Change Password
             </Button>
           </div>
-          <div className="mb-2">
+          <div className="pb-2">
             <Button variant="primary" size="medium" onPress={() => {}}>
               Query an Account
             </Button>
