@@ -1,19 +1,9 @@
-/* basic css reset */
+@import 'tailwindcss';
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
+@theme {
+  --color-gold: #f8bb47;
+  --color-blue: #1e5189;
+  --color-light-blue: #d8eafd;
+  --color-dark-blue: #013366;
+  --color-grey: #faf9f8;
 }
