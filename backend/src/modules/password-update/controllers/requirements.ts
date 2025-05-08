@@ -5,7 +5,7 @@ import {
   getAllPasswordRequirements,
 } from "@/modules/password-update/services";
 import { HTTP_STATUS_CODES } from "@/constants";
-import { logs } from "@/utilities";
+import { logs } from "@/middleware";
 
 /**
  * Handle request to add new password requirement to mongoDB

@@ -1,6 +1,5 @@
 import app from "./express";
-import { database } from "@/middleware";
-import { logs } from "@/utilities";
+import { database, logs } from "@/middleware";
 import { ENV } from "@/config";
 
 // Access environment variables from ./config

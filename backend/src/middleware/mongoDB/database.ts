@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { ENV } from "@/config";
-import { logs } from "@/utilities";
+import { logs } from "@/middleware";
 
 // set env variables from .env to process.env
 const {
