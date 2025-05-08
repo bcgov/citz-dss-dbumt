@@ -11,5 +11,6 @@ const expressJSErr = `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED
 export const API = {
   ERROR_SIMPLE: `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`,
   SERVER_STARTED: `${expressJS}${FG.BLUE}DBUMT Server Started Successfully. Listening on port: ${FM.RESET}`,
+  HEALTH_CHECK: `${expressJS}${FG.GREEN}Health Check Passed.${FM.RESET}`,
   UNEXPECTED_ERR: `${expressJSErr}An unexpected error occurred.${FM.RESET}`,
 };
