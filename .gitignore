@@ -33,6 +33,5 @@ docker-compose.override.yml
 gw-config*.yaml
 
 ### Logs ###
-logs
 *.log
 npm-debug.log*

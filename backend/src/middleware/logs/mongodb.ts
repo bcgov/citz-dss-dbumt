@@ -6,14 +6,6 @@ import { ANSI_CODES } from "@/constants";
 //       FM.<option> will apply to the terminal
 const { FOREGROUND: FG, BACKGROUND: BG, FORMATTING: FM } = ANSI_CODES;
 
-const expressJS = ` ${BG.BLUE}${FG.GREY}| ExpressJS |${FM.RESET} `;
-const expressJSErr = `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`;
-export const API = {
-  ERROR_SIMPLE: `${expressJS}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`,
-  SERVER_STARTED: `${expressJS}${FG.BLUE}DBUMT Server Started Successfully. Listening on port: ${FM.RESET}`,
-  UNEXPECTED_ERR: `${expressJSErr}An unexpected error occurred.${FM.RESET}`,
-};
-
 const mongoDb = ` ${BG.GREEN}${FG.GREY}| MongoDB |${FM.RESET} `;
 const mongoDbOK = `${mongoDb}${FG.GREEN}`;
 const mongoDbWarn = `${mongoDb}${FG.RED}`;
