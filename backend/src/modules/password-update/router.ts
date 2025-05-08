@@ -3,7 +3,7 @@ import {
   addRequirement,
   findReqByName,
   getAllReq,
-} from "./controllers/requirements";
+} from "./controllers";
 import { HTTP_STATUS_CODES } from "@/constants";
 
 const router = Router();
