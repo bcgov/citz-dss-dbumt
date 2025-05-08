@@ -4,7 +4,7 @@ This service was built using Node and the Express framework.
 
 ## Commands
 
-These commands can be found and edited in this folder `citz-dss-dbumt/backend`. To use the commands as shown below run with `npm run <command>`.
+These commands can be found and edited in this folder `citz-dss-dbumt/backend/package.json`. To use the commands as shown below run with `npm run <Command>`.
 
 | Command    | Description                                                              |
 | ---------- | ------------------------------------------------------------------------ |
@@ -17,9 +17,9 @@ These commands can be found and edited in this folder `citz-dss-dbumt/backend`. 
 
 ## Usage
 
-Run the application locally (use command above for development mode). The console will display a note similar to `Server started. API listening on port: <BACKEND_PORT>` if the server is running correctly. The server will also attempt to connect to MongoDB running in a Docker container. The console will print `Connected to MongoDB` and `Open connection to MongoDB` if the connection is established.
-- To test the health endpoint send a `GET` request to `http://localhost:<PORT>/health`.
-- The serrver should return a `200 OK` status.
+Run the application locally (use command above for development mode). The console will display a note similar to `DBUMT Server Started Successfully. Listening on port: <BACKEND_PORT>` if the server is running correctly. The server will also attempt to connect to MongoDB running in a Docker container. The console will print `Connection successful.` and `Connection open.` if the connection is established.
+- To test the health endpoint send a `GET` request to `http://localhost:<PORT>/health/server`.
+- The server should return a `200 OK` status.
 
 ## Directory
 
