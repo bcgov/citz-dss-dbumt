@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  *  label: string - The text to be displayed for the breadcrumb item
  *  path?: string - Optional path used for navigation; if not provided, item is displayed as plain text
  */
-interface BreadcrumbItem {
+export interface BreadcrumbItem {
   label: string;
   path?: string;
 }
@@ -26,38 +26,37 @@ interface BreadcrumbProps {
  * @param items - Array of BreadcrumbItem objects with label and optional path
  * @returns JSX.Element - The rendered Breadcrumb navigation component
  */
-
 export const Breadcrumb = ({ items }: BreadcrumbProps) => {
   return (
-    <div className="relative w-full">
-      <div className="relative z-10 mx-auto py-[14px]">
-        <nav className="text-[18px]" aria-label="Breadcrumb">
-          <ol className="flex flex-wrap items-center space-x-[8px]">
-            {' '}
-            {/* Figma design has space-x-16px */}
-            {items.map((item, index) => (
-              <li key={index} className="flex items-center space-x-[8px]">
-                {' '}
-                {/* Figma design has space-x-16px */}
-                {item.path ? (
-                  <Link
-                    to={item.path}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {' '}
-                    {/* Exact text color not viewable on figma design, used as close as possible option */}
-                    {item.label}
-                  </Link>
-                ) : (
-                  <span className="font-bold">{item.label}</span>
-                )}
-                {index < items.length - 1 && <span>/</span>}
-              </li>
-            ))}
-          </ol>
-        </nav>
+    <div className="w-full">
+      {/* Breadcrumb items below mirror the grid layout defined in BaseLayout component */}
+      <div className="grid grid-cols-8 gap-2">
+        <div className="grid sm:col-start-1 sm:col-end-9 md:col-start-2 md:col-end-8 lg:col-start-3 lg:col-end-7">
+          <div className="py-[14px]">
+            <nav className="text-[18px]" aria-label="Breadcrumb">
+              <ol className="flex flex-wrap items-center space-x-[8px]">
+                {items.map((item, index) => (
+                  <li key={index} className="flex items-center space-x-[8px]">
+                    {item.path ? (
+                      <Link
+                        to={item.path}
+                        className="text-blue-500 hover:underline"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span className="font-bold">{item.label}</span>
+                    )}
+                    {index < items.length - 1 && <span>/</span>}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
+        </div>
       </div>
-      <div className="absolute bottom-0 left-1/2 z-0 w-screen -translate-x-1/2 border-t border-gray-200" />
+      {/* Bottom border exists outside of grid layout, allowing it to span the full page width */}
+      <div className="w-full border-t border-gray-200" />
     </div>
   );
 };

@@ -1,17 +1,19 @@
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
-import { Breadcrumb } from '../components/element/Breadcrumb';
+import { BreadcrumbItem } from '../components/element/Breadcrumb'
 
 export const AccountQuery = () => {
   const title = 'AccountQuery Title';
-  const collapseText = `AccountQuery Collapse Text`;
-  const text = `AccountQuery Text`;
+  const collapseText = 'AccountQuery Collapse Text';
+  const text = 'AccountQuery Text';
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', path: '/' },
+    { label: 'Account Query' },
+  ];
 
   return (
-    <BaseLayout>
-      <Breadcrumb
-        items={[{ label: 'Home', path: '/' }, { label: 'Change password' }]}
-      />
+    <BaseLayout breadcrumbItems={breadcrumbItems}>
       <PageTitleInfo title={title} collapseText={collapseText} text={text} />
       <br />
     </BaseLayout>
