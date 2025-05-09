@@ -32,27 +32,25 @@ export const Breadcrumb = ({ items }: BreadcrumbProps) => {
       {/* Breadcrumb items below mirror the grid layout defined in BaseLayout component */}
       <div className="grid grid-cols-8 gap-2">
         <div className="grid sm:col-start-1 sm:col-end-9 md:col-start-2 md:col-end-8 lg:col-start-3 lg:col-end-7">
-          <div className="py-[14px]">
-            <nav className="text-[18px]" aria-label="Breadcrumb">
-              <ol className="flex flex-wrap items-center space-x-[8px]">
-                {items.map((item, index) => (
-                  <li key={index} className="flex items-center space-x-[8px]">
-                    {item.path ? (
-                      <Link
-                        to={item.path}
-                        className="text-blue-500 hover:underline"
-                      >
-                        {item.label}
-                      </Link>
-                    ) : (
-                      <span className="font-bold">{item.label}</span>
-                    )}
-                    {index < items.length - 1 && <span>/</span>}
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </div>
+          <nav className="text-[18px]" aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center space-x-[8px] py-[14px]">
+              {items.map((item, index) => (
+                <li key={index} className="flex items-center space-x-[8px]">
+                  {item.path ? (
+                    <Link
+                      to={item.path}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <span className="font-bold">{item.label}</span>
+                  )}
+                  {index < items.length - 1 && <span>/</span>}
+                </li>
+              ))}
+            </ol>
+          </nav>
         </div>
       </div>
       {/* Bottom border exists outside of grid layout, allowing it to span the full page width */}
