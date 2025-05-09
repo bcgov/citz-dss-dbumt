@@ -1,6 +1,6 @@
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
-import { BreadcrumbItem } from '../components/element/Breadcrumb'
+import { BreadcrumbItem } from '../components/element/Breadcrumb';
 
 export const AccountQuery = () => {
   const title = 'AccountQuery Title';

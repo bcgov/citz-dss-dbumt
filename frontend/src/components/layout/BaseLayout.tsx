@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Header } from '@bcgov/design-system-react-components';
 import { AppFooter } from './Footer';
-import { Breadcrumb, BreadcrumbItem } from '../element/Breadcrumb'
+import { Breadcrumb, BreadcrumbItem } from '../element/Breadcrumb';
 
 /**
  * BaseLayout component props
