@@ -3,6 +3,7 @@ import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxFieldTitle } from '../components/element/InfoBox';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const title = 'Manage your BCGW Oracle account';
@@ -14,6 +15,9 @@ export const Login = () => {
   const text = `To use this tool please enter your Oracle account username.
           In most cases, the username for your BCGW account matches your IDIR`;
 
+  // Project navigation
+  const navigate = useNavigate();
+
   return (
     <BaseLayout>
       <GoldBar />
@@ -23,7 +27,9 @@ export const Login = () => {
         <InfoBoxFieldTitle titleText="BCGW Account/Username" />
         <TextField className="w-md mb-2" />
         <br />
-        <Button>Continue</Button>
+        <Button variant="primary" size="medium" onPress={() => navigate('/')}>
+          Continue
+        </Button>
       </InfoBox>
     </BaseLayout>
   );

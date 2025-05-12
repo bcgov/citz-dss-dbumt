@@ -4,6 +4,7 @@ import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 import { RoundedTable } from '../components/element/RoundedTable';
 import { useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Heading,
   InlineAlert,
@@ -33,6 +34,9 @@ export const Home = () => {
   const [warningDbArray, setWarningDbArray] = useState<string[]>([]);
   const [showAlertInfo, setShowAlertInfo] = useState(false);
   const [alertDbArray, setAlertDbArray] = useState<string[]>([]);
+
+  // Project navigation
+  const navigate = useNavigate();
 
   /**
    * TESTING PURPOSES ONLY. Once we connect to the backend and BCGW this will be populated
@@ -157,12 +161,20 @@ export const Home = () => {
         </div>
         <div className="flex max-w-md flex-col">
           <div className="pb-4">
-            <Button variant="primary" size="medium" onPress={() => {}}>
+            <Button
+              variant="primary"
+              size="medium"
+              onPress={() => navigate('/changepassword')}
+            >
               Change Password
             </Button>
           </div>
           <div className="pb-2">
-            <Button variant="primary" size="medium" onPress={() => {}}>
+            <Button
+              variant="primary"
+              size="medium"
+              onPress={() => navigate('/accountquery')}
+            >
               Query an Account
             </Button>
           </div>
