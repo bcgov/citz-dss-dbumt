@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { serverHealth } from "./controller.ts";
+import { HTTP_STATUS_CODES } from "@/constants";
+import { logs } from "@/middleware";
 
 const router = Router();
 
-router.get("/server", serverHealth);
+router.route("/server").get((req, res) => {
+  console.log(logs.API.HEALTH_CHECK + " /health/server");
+  return res.status(HTTP_STATUS_CODES.OK).send("Server Healthy");
+});
 
 export default router;

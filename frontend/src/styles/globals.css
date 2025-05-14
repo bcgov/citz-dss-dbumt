@@ -1,19 +1,23 @@
-/* basic css reset */
+@import '@bcgov/bc-sans/css/BC_Sans.css';
+@import 'tailwindcss';
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@theme inline {
+  /* Setting font formatting to BC Sans specifics*/
+  --font-display: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
+  --font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
+  --font-sans: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
+  --font-mono: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
+  --header-font-family: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
+  --text-base: 16px;
+  --text-base-line-height: 1.25;
 
-body {
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
+  /* Colour Variables*/
+  --color-gold: #f8bb47;
+  --color-red: #ce3e39;
+  --color-blue: #1e5189;
+  --color-white-blue: #f1f8fe;
+  --color-light-blue: #d8eafd;
+  --color-dark-blue: #013366;
+  --color-grey: #faf9f8;
+  --color-white-orange: #e0dedc;
 }

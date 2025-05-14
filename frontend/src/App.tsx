@@ -1,17 +1,19 @@
-import { Home } from "./pages/Home";
-import AppFooter from "./components/layout/Footer";
-import "./styles/globals.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import { AccountQuery } from './pages/AccountQuery';
+import { ChangePassword } from './pages/ChangePassword';
 
 function App() {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-    >
-      <main style={{ flexGrow: 1 }}>
-        <Home />
-      </main>
-      <AppFooter />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/accountquery" element={<AccountQuery />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+      </Routes>
+    </Router>
   );
 }
 

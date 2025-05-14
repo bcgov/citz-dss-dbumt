@@ -1,5 +1,6 @@
 import { PasswordReqModel } from "@/modules/password-update/schemas/requirements";
-import { logs, ErrorWithCode } from "@/utilities";
+import { ErrorWithCode } from "@/utilities";
+import { logs } from "@/middleware";
 import { Error } from "mongoose";
 
 const { MONGODB } = logs;
