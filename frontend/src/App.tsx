@@ -1,6 +1,7 @@
 import { Home } from "./pages/Home";
 import AppFooter from "./components/layout/Footer";
 import "./styles/globals.css";
+// trying to test again
 // testing frontend build
 function App() {
   return (
