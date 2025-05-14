@@ -19,7 +19,7 @@ const collapseText = `The Database User Management Tool (DBUMT) is managed by Da
           Publication Services team in BC Data Service. This tool is designed
           to help users to securely update their BC Geographic Warehouse
           (BCGW) Oracle account database(s) password(s) and ask for account
-          details.`;
+          details. MAKING AN UPDATE HERE TO TEST IF IT WILL TRIGGER THE FRONTEND ACTION`;
 
 /**
  * The Home page is displayed after a user verifies their IDIR and BCGW Oracle username.
