@@ -11,6 +11,7 @@ const { connectDatabase } = database;
 
 // set up MONGODB
 connectDatabase();
+// test backend build
 
 // Start the Express app and listen on the predefined port
 app.listen(PORT, () => {
