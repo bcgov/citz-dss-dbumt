@@ -15,7 +15,7 @@ on:
 jobs:
   test-api:
     name: Test Backend Express API
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
         # Using v4.0.0 Specifying a specific commit SHA instead of getting the latest version
