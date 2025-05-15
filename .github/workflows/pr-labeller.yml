@@ -1,15 +1,17 @@
 name: 'Pull Request Labeler'
 on:
-  - pull_request_target
+  - pull_request_target # Triggered by pull request updates (opened, synchronize, or reopened)
 
 jobs:
   triage:
     permissions:
-      contents: read
-      pull-requests: write
-    runs-on: ubuntu-latest
+      contents: read # Needed to view the repository
+      pull-requests: write # Needed to add labels to the pull request
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/labeler@v4
+      - name: Label PR
+      # specify v4.3.0 of the action by using the SHA of the commit
+      - uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           configuration-path: .github/labeler.yaml

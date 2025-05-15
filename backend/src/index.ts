@@ -10,6 +10,8 @@ const { connectDatabase } = database;
 
 // set up MONGODB
 connectDatabase();
+// test backend build
+// with new token
 
 // Start the Express app and listen on the predefined port
 app.listen(PORT, () => {
