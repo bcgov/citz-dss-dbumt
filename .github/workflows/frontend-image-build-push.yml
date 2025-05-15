@@ -1,4 +1,4 @@
-name: Backend Image Build & Push
+name: Frontend Image Build & Push
 
 # Restrict GITHUB_TOKEN to read-only access
 permissions:
@@ -11,7 +11,7 @@ on:
     branches:
       - main # Only run on the main branch.
     paths:
-     - 'backend/**' # Triggers on changes to files in the backend/ directory.
+     - 'frontend/**' # Triggers on changes to files in the frontend/ directory.
 
 jobs:
   Build-Push:
@@ -21,7 +21,6 @@ jobs:
     steps:
       # check out the repo
       - name: Checkout Repository
-        # Using v4.0.0 Specifying a specific commit SHA instead of getting the latest version
         uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
         with:
           fetch-depth: 0
@@ -31,12 +30,12 @@ jobs:
         run : |
           docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
 
-      # Build the api Image tag to specify imagestream "dbumt-api" and tag "<pull-request-number>"
-      - name: Build & Tag backend Image
+      # Build the app Image and add tag "dbumt-app:<pull-request-number>"
+      - name: Build & Tag frontend Image
         run: |
-          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
+          cd frontend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}}
 
-      # Push the api Image to OpenShift tools namespace imagestream "dbumt-api" with tag "<pull-request-number>"
+      # Push the app Image to OpenShift tools namespace imagestream "dbumt-app" with tag "<pull-request-number>"
       - name: Push Image
         run: |
-          docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
+          docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}}
