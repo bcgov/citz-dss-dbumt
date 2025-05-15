@@ -1,0 +1,44 @@
+name: Backend Express Linting, Formatting, & Build Check
+
+# Restrict GITHUB_TOKEN to read-only access
+permissions:
+  contents: read # Needed to check out the repository
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review] # Triggered by opened or changed pull requests.
+    branches: [main]
+    paths:
+      - "backend/**"
+  workflow_dispatch:
+
+jobs:
+  test-api:
+    name: Test Backend Express API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        # Using v4.0.0 Specifying a specific commit SHA instead of getting the latest version
+        uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
+        with:
+          fetch-depth: 0
+
+      # Install dependencies
+      - name: Install Dependencies
+        working-directory: ./backend
+        run: npm i
+
+      # Run linting check with ESLint
+      - name: Run ESLint
+        working-directory: ./backend
+        run: npm run lint
+
+      # Run formatting check with Prettier
+      - name: Run Prettier
+        working-directory: ./backend
+        run: npm run check
+
+      # Build the backend API
+      - name: Build Backend API
+        working-directory: ./backend
+        run: npm run build
