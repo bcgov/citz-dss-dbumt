@@ -8,7 +8,6 @@ const { PORT } = ENV;
 // Access all functions from ./middleware
 const { connectDatabase } = database;
 
-
 // set up MONGODB
 connectDatabase();
 
