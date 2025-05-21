@@ -6,8 +6,8 @@ permissions:
 
 on:
   pull_request:
-    types:
-      - closed # Triggered by closed pull requests.
+    types: [opened, synchronize, ready_for_review]
+      #- closed # Triggered by closed pull requests.
     branches:
       - main # Only run on the main branch.
     paths:
@@ -15,7 +15,7 @@ on:
 
 jobs:
   Build-Push:
-    if: github.event.pull_request.merged == true # Only run if the pull request was merged
+    #if: github.event.pull_request.merged == true # Only run if the pull request was merged
     environment: dev
     runs-on: ubuntu-22.04
     steps:
@@ -31,10 +31,10 @@ jobs:
         run : |
           docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
 
-      # Build the api Image tag to specify imagestream "dbumt-api" and tag "<pull-request-number>"
+      # Build the api Image tag to specify imagestream "dbumt-api" and tags "<pull-request-number>" and "latest"
       - name: Build & Tag backend Image
         run: |
-          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
+          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:latest
 
       # Push the api Image to OpenShift tools namespace imagestream "dbumt-api" with tag "<pull-request-number>"
       - name: Push Image
