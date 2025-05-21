@@ -1,18 +1,15 @@
 name: 'Pull Request Labeler'
 on:
-  - pull_request_target: # using pull_request_target to allow GITHUB TOKEN write access to the PR
-    types: [ synchronize] # Triggered by pull request updates (opened, synchronize, or reopened)
+  - pull_request_target
 
 jobs:
   triage:
     permissions:
-      contents: read # Needed to view the repository
-      pull-requests: write # Needed to add labels to the pull request
-    runs-on: ubuntu-22.04
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
     steps:
-      - name: Label PR
-      # specify v4.3.0 of the action by using the SHA of the commit
-      - uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594
+      - uses: actions/labeler@v4
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           configuration-path: .github/labeler.yaml
