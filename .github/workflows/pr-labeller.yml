@@ -1,6 +1,7 @@
 name: 'Pull Request Labeler'
 on:
-  - pull_request_target # Triggered by pull request updates (opened, synchronize, or reopened)
+  - pull_request_target: # using pull_request_target to allow GITHUB TOKEN write access to the PR
+    types: [opened, synchronize, reopened] # Triggered by pull request updates (opened, synchronize, or reopened)
 
 jobs:
   triage:
