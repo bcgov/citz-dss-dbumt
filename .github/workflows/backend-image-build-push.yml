@@ -36,7 +36,7 @@ jobs:
         run: |
           cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:latest
 
-      # Push the api Image to OpenShift tools namespace imagestream "dbumt-api" with tag "<pull-request-number>"
+      # Push the api Image to OpenShift tools namespace imagestream "dbumt-api". -a is used to push all tags
       - name: Push Image
         run: |
-          docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}}
+          docker push -a ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api
