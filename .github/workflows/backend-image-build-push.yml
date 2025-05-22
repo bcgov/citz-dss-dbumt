@@ -7,7 +7,8 @@ permissions:
 on:
   pull_request:
     types:
-      - closed # Triggered by closed pull requests.
+      - synchronize # TESTING NEW TAG AND TRIGGERS
+      #- closed # Triggered by closed pull requests.
     branches:
       - main # Only run on the main branch.
     paths:
@@ -15,7 +16,7 @@ on:
 
 jobs:
   Build-Push:
-    if: github.event.pull_request.merged == true # Only run if the pull request was merged
+    #if: github.event.pull_request.merged == true # Only run if the pull request was merged
     environment: dev
     runs-on: ubuntu-22.04
     steps:
