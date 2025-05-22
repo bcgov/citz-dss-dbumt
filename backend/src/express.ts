@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 // ROUTING to controllers
 app.use("/health", modules.healthRouter);
 app.use("/passwordUpdate", modules.passwordUpdateRouter);
+app.use("/verifyAccount", modules.verifyAccountRouter);
 
 // Error handler middleware. Must come last
 app.use(errorHandler);
