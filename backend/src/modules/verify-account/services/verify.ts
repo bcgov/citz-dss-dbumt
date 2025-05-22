@@ -15,9 +15,7 @@ interface EnvironmentConfig {
   password: string;
 }
 
-// oracle service names to check
-// TODO:
-// for production, add prod environment to the list below
+// oracle environments to check
 const ENVIRONMENTS: EnvironmentConfig[] = [
   {
     name: "DEV",
