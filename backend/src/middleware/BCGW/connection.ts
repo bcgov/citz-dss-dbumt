@@ -5,7 +5,7 @@ import { ErrorWithCode } from "@/utilities";
 /**
  * @summary Connect to BCGW with provided credentials
  *
- * @param serviceName - Environment service name 
+ * @param serviceName - Environment service name
  * @param serviceUSer - Environment username
  * @param servicePassword - Environment password
  * @returns Oracle connection object
