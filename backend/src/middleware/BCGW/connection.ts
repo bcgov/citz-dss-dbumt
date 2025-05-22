@@ -9,29 +9,41 @@ import { ErrorWithCode } from "@/utilities";
  * @returns Oracle connection object
  */
 
-export const getOracleConnection = async (serviceName: string) => {
-  const baseConnectString = process.env.SERVICE_CONNECT_STRING;
+let clientInitialized = false;
 
-  if (
-    !baseConnectString ||
-    !process.env.SERVICE_USER ||
-    !process.env.SERVICE_PASSWORD
-  ) {
+export const getOracleConnection = async (
+  serviceName: string,
+  serviceUser: string,
+  servicePassword: string,
+) => {
+  if (!serviceName || !serviceUser || !servicePassword) {
     console.log(logs.ORACLE.MISSING_VARS);
     throw new ErrorWithCode(
       "Oracle environment variables are not fully defined.",
     );
   }
 
-  const fullConnectString = `${baseConnectString}/${serviceName}`;
+  if (!clientInitialized) {
+    try {
+      await oracledb.initOracleClient({
+        libDir: process.env.ORACLE_CLIENT_LIB_PATH,
+      });
+      clientInitialized = true;
+    } catch (err) {
+      console.warn(
+        "Could not initialize Oracle Thick mode. Falling back to Thin mode. Details:",
+        err,
+      );
+    }
+  }
 
   try {
     console.log(`${logs.ORACLE.ENV_CHECK_START} ${serviceName}`);
 
     const connection = await oracledb.getConnection({
-      user: process.env.SERVICE_USER,
-      password: process.env.SERVICE_PASSWORD,
-      connectString: fullConnectString,
+      user: serviceUser,
+      password: servicePassword,
+      connectString: serviceName,
     });
 
     console.log(`${logs.ORACLE.CONNECTION_SUCCESS} ${serviceName}`);
