@@ -31,12 +31,13 @@ jobs:
         run : |
           docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
 
-      # Build the api Image tag to specify imagestream "dbumt-api" and tags "<pull-request-number>" and "latest"
+      # Build the api Image tag to specify imagestream "dbumt-api" and tags "<pull-request-number>" and "dev"
       - name: Build & Tag backend Image
         run: |
-          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:latest
+          cd backend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:dev
 
       # Push the api Image to OpenShift tools namespace imagestream "dbumt-api". -a is used to push all tags
+      # This will overwrite any existing images in the imagestream with the same tag -> the previous image tagged "dev" will be replaced with this image
       - name: Push Image
         run: |
           docker push -a ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api

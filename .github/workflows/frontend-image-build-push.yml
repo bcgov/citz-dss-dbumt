@@ -30,12 +30,13 @@ jobs:
         run : |
           docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
 
-      # Build the app Image and add tag "dbumt-app:<pull-request-number>"
+      # Build the app Image and add tag "dbumt-app:<pull-request-number>" and "dev"
       - name: Build & Tag frontend Image
         run: |
-          cd frontend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}}
+          cd frontend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:dev
 
-      # Push the app Image to OpenShift tools namespace imagestream "dbumt-app" with tag "<pull-request-number>"
+      # Push the app Image to OpenShift tools namespace imagestream "dbumt-app". The flag `-a` ensures all tags are pushed
+      # This will overwrite any existing images in the imagestream with the same tag -> the previous image tagged "dev" will be replaced with this image
       - name: Push Image
         run: |
           docker push ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}}
