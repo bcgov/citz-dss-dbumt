@@ -1,0 +1,42 @@
+name: Frontend Image Build & Push
+
+# Restrict GITHUB_TOKEN to read-only access
+permissions:
+  contents: read # Needed to check out the repository
+
+on:
+  pull_request:
+    types:
+      - closed # Triggered by closed pull requests.
+    branches:
+      - main # Only run on the main branch.
+    paths:
+     - 'frontend/**' # Triggers on changes to files in the frontend/ directory.
+
+jobs:
+  Build-Push:
+    if: github.event.pull_request.merged == true # Only run if the pull request was merged
+    environment: dev
+    runs-on: ubuntu-22.04
+    steps:
+      # check out the repo
+      - name: Checkout Repository
+        uses: actions/checkout@1e31de5234b9f8995739874a8ce0492dc87873e2
+        with:
+          fetch-depth: 0
+
+      # Login to OpenShift Docker Image Repository
+      - name: Login to Openshift Docker
+        run : |
+          docker login ${{ secrets.PUBLIC_IMAGE_REPOSITORY }} -u ${{ secrets.OPENSHIFT_SA_NAME }} -p ${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }}
+
+      # Build the app Image and add tag "dbumt-app:<pull-request-number>" and "dev"
+      - name: Build & Tag frontend Image
+        run: |
+          cd frontend && docker build . -f Dockerfile -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{github.event.pull_request.number}} -t ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:dev
+
+      # Push the app Image to OpenShift tools namespace imagestream "dbumt-app". The flag `-a` ensures all tags are pushed
+      # This will overwrite any existing images in the imagestream with the same tag -> the previous image tagged "dev" will be replaced with this image
+      - name: Push Image
+        run: |
+          docker push -a ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app
