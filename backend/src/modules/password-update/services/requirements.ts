@@ -85,7 +85,9 @@ export const getAllPasswordRequirements = async () => {
  * @returns updatedReq: The updated password requirement object from MongoDB
  * @throws ErrorWithCode if the requirement name is missing, or if an error occurs during the update
  */
-export const updatePasswordRequirement = async (newReq: typeof PasswordReqModel) => {
+export const updatePasswordRequirement = async (
+  newReq: typeof PasswordReqModel,
+) => {
   // TODO: Add user validation
   try {
     if (!newReq.name) {
@@ -114,4 +116,4 @@ export const updatePasswordRequirement = async (newReq: typeof PasswordReqModel)
       `${logs.MONGODB.UPDATE_ERROR} ${err instanceof Error ? err.message : err}`,
     );
   }
-}
+};

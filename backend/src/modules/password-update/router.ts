@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { addRequirement, findReqByName, getAllReq, updateRequirement } from "./controllers";
+import {
+  addRequirement,
+  findReqByName,
+  getAllReq,
+  updateRequirement,
+} from "./controllers";
 import { HTTP_STATUS_CODES } from "@/constants";
 import { logs } from "@/middleware";
 
