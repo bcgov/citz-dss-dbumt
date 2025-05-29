@@ -28,7 +28,7 @@ export const getOracleConnection = async (
   if (!clientInitialized) {
     try {
       oracledb.initOracleClient({
-        libDir: process.env.ORACLE_CLIENT_LIB_PATH,
+        libDir: process.env.ORACLE_CLIENT_LOCAL_PATH,
       });
       clientInitialized = true;
     } catch (err) {
