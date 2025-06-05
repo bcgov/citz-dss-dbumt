@@ -6,7 +6,7 @@ import { ANSI_CODES } from "@/constants";
 //       FM.<option> will apply to the terminal
 const { FOREGROUND: FG, BACKGROUND: BG, FORMATTING: FM } = ANSI_CODES;
 
-const oracle = ` ${BG.BLUE}${FG.GREY}| Oracle |${FM.RESET} `;
+const oracle = ` ${BG.BARK}${FG.WHITE}| Oracle |${FM.RESET} `;
 const oracleOK = `${oracle}${FG.CYAN}`;
 const oracleWarn = `${oracle}${FG.GOLD}`;
 const oracleErr = `${oracle}${FG.RED}${FM.BOLD}[ERROR] ${FM.RESET}${FG.RED}`;
@@ -29,4 +29,8 @@ export const ORACLE = {
   PASSWORD_EXPIRY_MISSING: `${oracleWarn}No password expiration data found.${FM.RESET}`,
   // Input strings
   INVALID_SERVICE_NAME: `${oracleErr}Invalid service name provided to connector.${FM.RESET}`,
+  // Password expiry retrieval
+  EXPIRY_FOUND: `${oracleOK}Password expiry retrieved for user.${FM.RESET}`,
+  EXPIRY_NOT_FOUND: `${oracleWarn}No expiry data found for user.${FM.RESET}`,
+  QUERY_ERROR: `${oracleErr}Failed to retrieve expiry data from Oracle.${FM.RESET}`,
 };

@@ -2,32 +2,37 @@ import { Request, Response } from "express";
 import { checkOracleIdAcrossEnvs } from "../services//verify";
 import { HTTP_STATUS_CODES } from "@/constants";
 import { logs } from "@/middleware";
+import { ErrorWithCode } from "@/utilities";
 
 /**
  * Handle request to check if an user exists in multiple environments,
  * and return expiry dates.
+ *
+ * @param req: Request  Incoming request from client
+ * @param res: Response Outgoing information to client
+ * @returns res: With user ID verification
  */
 export const verifyOracleId = async (req: Request, res: Response) => {
   const { username } = req.body;
-
+  //TODO: add sanitization for requests that come directly from users
   if (!username) {
     return res
       .status(HTTP_STATUS_CODES.BAD_REQUEST)
       .send("Missing required parameter: username");
   }
 
-  let userEnvData;
   try {
-    userEnvData = await checkOracleIdAcrossEnvs(username);
+    const envs = await checkOracleIdAcrossEnvs(username);
+    console.log(logs.ORACLE.ENTITY_FOUND, username);
+    return res.status(HTTP_STATUS_CODES.OK).send(envs);
   } catch (err) {
-    let err_message = `${logs.API.UNEXPECTED_ERR}`;
-    if (err instanceof Error) err_message = err.message;
-    console.error(logs.API.ERROR_SIMPLE, err_message);
-    return res
-      .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
-      .send(err_message);
-  }
+    const isCustom = err instanceof ErrorWithCode;
+    const message = isCustom ? err.message : logs.API.UNEXPECTED_ERR;
+    const status = isCustom
+      ? (err.code ?? HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
+      : HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR;
 
-  console.log(logs.ORACLE.ENTITY_FOUND, username);
-  return res.status(HTTP_STATUS_CODES.OK).send(userEnvData);
+    console.error(logs.API.ERROR_SIMPLE, message);
+    return res.status(status).send(message);
+  }
 };

@@ -26,17 +26,23 @@ export const getOracleConnection = async (
   }
 
   if (!clientInitialized) {
-    try {
-      oracledb.initOracleClient({
-        libDir: process.env.ORACLE_CLIENT_LOCAL_PATH,
-      });
-      clientInitialized = true;
-    } catch (err) {
-      console.warn(
-        "Could not initialize Oracle Thick mode. Falling back to Thin mode. Details:",
-        err,
-      );
+    const clientPath = process.env.ORACLE_CLIENT_LOCAL_PATH;
+
+    if (clientPath) {
+      try {
+        oracledb.initOracleClient({ libDir: clientPath });
+        console.log("Thick mode initialized");
+      } catch (err) {
+        console.warn(
+          "Failed to initialize Oracle Thick mode, falling back to Thin mode.",
+          err,
+        );
+      }
+    } else {
+      console.log("ORACLE_CLIENT_LOCAL_PATH not set — using Thin mode.");
     }
+
+    clientInitialized = true;
   }
 
   try {

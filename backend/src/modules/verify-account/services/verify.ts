@@ -1,5 +1,5 @@
-import oracledb from "oracledb";
 import { getOracleConnection } from "@/middleware/BCGW/connection";
+import { getOracleUserExpiry } from "@/middleware/BCGW/getUserExpiry";
 import { ErrorWithCode } from "@/utilities";
 import { logs } from "@/middleware";
 
@@ -48,10 +48,6 @@ if (ENVIRONMENTS.length === 0) {
   );
 }
 
-interface OracleUserRow {
-  EXPIRY_DATE: Date | null;
-}
-
 interface OracleUserResult {
   environment: string;
   pswd_expires: Date | null;
@@ -67,30 +63,24 @@ export const checkOracleIdAcrossEnvs = async (
   username: string,
 ): Promise<OracleUserResult[]> => {
   const results: OracleUserResult[] = [];
+  const failedEnvs: string[] = [];
   const upperUsername = username.toUpperCase();
 
   for (const { name, connectString, user, password } of ENVIRONMENTS) {
     let connection;
     try {
-      console.log(`${ORACLE.ENV_CHECK_START} ${name}`);
       connection = await getOracleConnection(connectString, user, password);
 
-      const result = await connection.execute<OracleUserRow>(
-        `SELECT EXPIRY_DATE FROM DBA_USERS WHERE USERNAME = :username`,
-        [upperUsername],
-        {
-          outFormat: oracledb.OUT_FORMAT_OBJECT,
-        },
-      );
+      const expiryDate = await getOracleUserExpiry(connection, upperUsername);
 
-      if (result.rows && result.rows.length > 0) {
-        const { EXPIRY_DATE } = result.rows[0];
-        results.push({ environment: name, pswd_expires: EXPIRY_DATE });
+      if (expiryDate !== undefined) {
+        results.push({ environment: name, pswd_expires: expiryDate });
         console.log(`${ORACLE.ENTITY_FOUND} ${upperUsername} in ${name}`);
       } else {
         console.warn(`${ORACLE.ENTITY_NOT_FOUND} ${upperUsername} in ${name}`);
       }
     } catch (err) {
+      failedEnvs.push(name);
       console.warn(
         `${ORACLE.ENTITY_ERROR} Failed to query ${name}: ${
           err instanceof Error ? err.message : err
@@ -112,12 +102,21 @@ export const checkOracleIdAcrossEnvs = async (
   }
 
   if (results.length === 0) {
-    console.warn(
-      `${ORACLE.ENV_CHECK_FAIL} ${upperUsername} not found in any environment.`,
-    );
-    throw new ErrorWithCode(
-      `${upperUsername} not found in any BCGW environment.`,
-    );
+    const allFailed = failedEnvs.length === ENVIRONMENTS.length;
+
+    if (allFailed) {
+      console.error(
+        `${ORACLE.ENV_CHECK_FAIL} All environments failed to respond`,
+      );
+      throw new ErrorWithCode(
+        "Internal error: Could not connect to any environments",
+      );
+    } else {
+      console.warn(
+        `${ORACLE.ENV_CHECK_FAIL} ${upperUsername} not found in any environment`,
+      );
+      throw new ErrorWithCode(`${upperUsername} not found in any environment`);
+    }
   }
 
   return results;
