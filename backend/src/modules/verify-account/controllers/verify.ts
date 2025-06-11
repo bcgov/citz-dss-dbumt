@@ -73,7 +73,7 @@ export const verifyOracleId = async (req: Request, res: Response) => {
 
   for (const env of ENVIRONMENTS) {
     let connection;
-    try {      
+    try {
       connection = await getOracleConnection(env);
       const expiry = await getUserExpiryInEnv(connection, upperUsername);
       if (expiry === undefined) {
@@ -96,11 +96,13 @@ export const verifyOracleId = async (req: Request, res: Response) => {
         try {
           await connection.close();
         } catch (closeErr) {
-          console.warn(`Failed to close connection for ${env.name}: ${closeErr}`);
+          console.warn(
+            `Failed to close connection for ${env.name}: ${closeErr}`,
+          );
         }
       }
     }
-  } 
+  }
 
   if (results.length === 0) {
     const allFailed = failedEnvs.length === ENVIRONMENTS.length;
