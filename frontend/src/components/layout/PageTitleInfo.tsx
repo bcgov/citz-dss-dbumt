@@ -55,7 +55,11 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
     if (props.text) {
       return (
         <>
-          {typeof props.text === 'string' ? <Text>{props.text}</Text> : props.text}
+          {typeof props.text === 'string' ? (
+            <Text>{props.text}</Text>
+          ) : (
+            props.text
+          )}
           <br />
         </>
       );
