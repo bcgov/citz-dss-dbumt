@@ -95,7 +95,7 @@ export const verifyOracleId = async (req: Request, res: Response) => {
     const allFailed = failedEnvs.length === ENVIRONMENTS.length;
     const message = allFailed
       ? "Internal error: Could not connect to any environments"
-      : `${upperUsername} not found in any environment`;
+      : `User not found in any environment`;
 
     const log = allFailed
       ? logs.ORACLE.ENV_CHECK_FAIL
