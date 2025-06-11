@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getUserExpiryInEnv } from "../services/verify";
+import { getOracleConnection } from "@/middleware/BCGW/connection";
 import { HTTP_STATUS_CODES } from "@/constants";
 import { logs } from "@/middleware";
 import { ErrorWithCode } from "@/utilities";
@@ -71,16 +72,18 @@ export const verifyOracleId = async (req: Request, res: Response) => {
   const failedEnvs: string[] = [];
 
   for (const env of ENVIRONMENTS) {
-    try {
-      const expiry = await getUserExpiryInEnv(env, upperUsername);
-      if (expiry) {
+    let connection;
+    try {      
+      connection = await getOracleConnection(env);
+      const expiry = await getUserExpiryInEnv(connection, upperUsername);
+      if (expiry === undefined) {
+        console.warn(
+          `${logs.ORACLE.ENTITY_NOT_FOUND} ${upperUsername} in ${env.name}`,
+        );
+      } else {
         results.push({ environment: env.name, pswd_expires: expiry });
         console.log(
           `${logs.ORACLE.ENTITY_FOUND} ${upperUsername} in ${env.name}`,
-        );
-      } else {
-        console.warn(
-          `${logs.ORACLE.ENTITY_NOT_FOUND} ${upperUsername} in ${env.name}`,
         );
       }
     } catch (err) {
@@ -88,8 +91,16 @@ export const verifyOracleId = async (req: Request, res: Response) => {
       console.warn(
         `${logs.ORACLE.ENTITY_ERROR} failed to query ${env.name}: ${err instanceof Error ? err.message : err}`,
       );
+    } finally {
+      if (connection) {
+        try {
+          await connection.close();
+        } catch (closeErr) {
+          console.warn(`Failed to close connection for ${env.name}: ${closeErr}`);
+        }
+      }
     }
-  }
+  } 
 
   if (results.length === 0) {
     const allFailed = failedEnvs.length === ENVIRONMENTS.length;

@@ -7,7 +7,7 @@ import { ErrorWithCode } from "@/utilities";
  *
  * @param connection - Oracle DB connection
  * @param username - Oracle DB name to query
- * @returns Expiry date or null if user not found
+ * @returns Expiry valid/null expiry date, or undefined if user not found
  */
 export const getOracleUserExpiry = async (
   connection: oracledb.Connection,
