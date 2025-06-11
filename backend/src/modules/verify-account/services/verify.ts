@@ -1,13 +1,7 @@
 import { getOracleConnection } from "@/middleware/BCGW/connection";
 import { getOracleUserExpiry } from "@/middleware/BCGW/getUserExpiry";
-import { ErrorWithCode } from "@/utilities";
-import { logs } from "@/middleware";
 
-const { ORACLE } = logs;
-
-/**
- * Configuration for a specific oracle environment
- */
+// configuration for a specific oracle environment
 interface EnvironmentConfig {
   name: string;
   connectString: string;
@@ -15,109 +9,21 @@ interface EnvironmentConfig {
   password: string;
 }
 
-// oracle environments to check
-const ENVIRONMENTS: EnvironmentConfig[] = [
-  {
-    name: "DEV",
-    connectString: process.env.BCGW_DEV_STRING,
-    user: process.env.DEV_USER,
-    password: process.env.DEV_PASSWORD,
-  },
-  {
-    name: "TEST",
-    connectString: process.env.BCGW_TEST_STRING,
-    user: process.env.TEST_USER,
-    password: process.env.TEST_PASSWORD,
-  },
-  {
-    name: "PROD",
-    connectString: process.env.BCGW_PROD_STRING,
-    user: process.env.PROD_USER,
-    password: process.env.PROD_PASSWORD,
-  },
-].filter(
-  (env): env is EnvironmentConfig =>
-    typeof env.connectString === "string" &&
-    typeof env.user === "string" &&
-    typeof env.password === "string",
-);
-
-if (ENVIRONMENTS.length === 0) {
-  throw new ErrorWithCode(
-    "No Oracle BCGW environments are defined. Check .env file.",
-  );
-}
-
-interface OracleUserResult {
-  environment: string;
-  pswd_expires: Date | null;
-}
-
 /**
  * Check if user exists in dev/test/prod services
  *
  * @param username - Oracle DB username to verify
- * @returns List of environments and password expiry dates where the user exists
+ * @returns Whether user exists in provided environment
  */
-export const checkOracleIdAcrossEnvs = async (
+export const getUserExpiryInEnv = async (
+  env: EnvironmentConfig,
   username: string,
-): Promise<OracleUserResult[]> => {
-  const results: OracleUserResult[] = [];
-  const failedEnvs: string[] = [];
-  const upperUsername = username.toUpperCase();
-
-  for (const { name, connectString, user, password } of ENVIRONMENTS) {
-    let connection;
-    try {
-      connection = await getOracleConnection(connectString, user, password);
-
-      const expiryDate = await getOracleUserExpiry(connection, upperUsername);
-
-      if (expiryDate !== undefined) {
-        results.push({ environment: name, pswd_expires: expiryDate });
-        console.log(`${ORACLE.ENTITY_FOUND} ${upperUsername} in ${name}`);
-      } else {
-        console.warn(`${ORACLE.ENTITY_NOT_FOUND} ${upperUsername} in ${name}`);
-      }
-    } catch (err) {
-      failedEnvs.push(name);
-      console.warn(
-        `${ORACLE.ENTITY_ERROR} Failed to query ${name}: ${
-          err instanceof Error ? err.message : err
-        }`,
-      );
-    } finally {
-      if (connection) {
-        try {
-          await connection.close();
-        } catch (closeErr) {
-          console.warn(
-            `${ORACLE.DISCONNECTED} Error closing connection to ${name}: ${
-              closeErr instanceof Error ? closeErr.message : closeErr
-            }`,
-          );
-        }
-      }
-    }
+): Promise<Date | null> => {
+  const connection = await getOracleConnection(env);
+  try {
+    const expiry = await getOracleUserExpiry(connection, username);
+    return expiry ?? null;
+  } finally {
+    await connection.close();
   }
-
-  if (results.length === 0) {
-    const allFailed = failedEnvs.length === ENVIRONMENTS.length;
-
-    if (allFailed) {
-      console.error(
-        `${ORACLE.ENV_CHECK_FAIL} All environments failed to respond`,
-      );
-      throw new ErrorWithCode(
-        "Internal error: Could not connect to any environments",
-      );
-    } else {
-      console.warn(
-        `${ORACLE.ENV_CHECK_FAIL} ${upperUsername} not found in any environment`,
-      );
-      throw new ErrorWithCode(`${upperUsername} not found in any environment`);
-    }
-  }
-
-  return results;
 };

@@ -22,15 +22,8 @@ export const ORACLE = {
   ENTITY_ERROR: `${oracleErr}Error while querying user data.${FM.RESET}`,
   // User environment strings
   ENV_CHECK_START: `${oracle}Checking environments for user...${FM.RESET}`,
-  ENV_CHECK_SUCCESS: `${oracleOK}User found in one or more environments.${FM.RESET}`,
   ENV_CHECK_FAIL: `${oracleWarn}User not found in any environment.${FM.RESET}`,
-  // Password strings
-  PASSWORD_EXPIRY_FOUND: `${oracleOK}Password expiration data retrieved.${FM.RESET}`,
-  PASSWORD_EXPIRY_MISSING: `${oracleWarn}No password expiration data found.${FM.RESET}`,
-  // Input strings
-  INVALID_SERVICE_NAME: `${oracleErr}Invalid service name provided to connector.${FM.RESET}`,
   // Password expiry retrieval
   EXPIRY_FOUND: `${oracleOK}Password expiry retrieved for user.${FM.RESET}`,
   EXPIRY_NOT_FOUND: `${oracleWarn}No expiry data found for user.${FM.RESET}`,
-  QUERY_ERROR: `${oracleErr}Failed to retrieve expiry data from Oracle.${FM.RESET}`,
 };

@@ -27,7 +27,7 @@ export const getOracleUserExpiry = async (
       return undefined; // user not found
     }
 
-    const expiry = result.rows[0].EXPIRY_DATE ?? null;
+    const expiry = result.rows[0].EXPIRY_DATE;
 
     console.log(`${logs.ORACLE.EXPIRY_FOUND} ${username} → ${expiry}`);
     return expiry; // user found (expiry may still be null)

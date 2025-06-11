@@ -1,8 +1,54 @@
 import { Request, Response } from "express";
-import { checkOracleIdAcrossEnvs } from "../services//verify";
+import { getUserExpiryInEnv } from "../services/verify";
 import { HTTP_STATUS_CODES } from "@/constants";
 import { logs } from "@/middleware";
 import { ErrorWithCode } from "@/utilities";
+
+// oracle environments to check
+const ENVIRONMENTS: EnvironmentConfig[] = [
+  {
+    name: "DEV",
+    connectString: process.env.BCGW_DEV_STRING,
+    user: process.env.DEV_USER,
+    password: process.env.DEV_PASSWORD,
+  },
+  {
+    name: "TEST",
+    connectString: process.env.BCGW_TEST_STRING,
+    user: process.env.TEST_USER,
+    password: process.env.TEST_PASSWORD,
+  },
+  {
+    name: "PROD",
+    connectString: process.env.BCGW_PROD_STRING,
+    user: process.env.PROD_USER,
+    password: process.env.PROD_PASSWORD,
+  },
+].filter(
+  (env): env is EnvironmentConfig =>
+    typeof env.connectString === "string" &&
+    typeof env.user === "string" &&
+    typeof env.password === "string",
+);
+
+if (ENVIRONMENTS.length === 0) {
+  throw new ErrorWithCode(
+    "No Oracle BCGW environments are defined. Check .env file.",
+  );
+}
+
+// configuration for a specific oracle environment
+interface EnvironmentConfig {
+  name: string;
+  connectString: string;
+  user: string;
+  password: string;
+}
+
+interface OracleUserResult {
+  environment: string;
+  pswd_expires: Date | null;
+}
 
 /**
  * Handle request to check if an user exists in multiple environments,
@@ -14,25 +60,49 @@ import { ErrorWithCode } from "@/utilities";
  */
 export const verifyOracleId = async (req: Request, res: Response) => {
   const { username } = req.body;
-  //TODO: add sanitization for requests that come directly from users
   if (!username) {
     return res
       .status(HTTP_STATUS_CODES.BAD_REQUEST)
       .send("Missing required parameter: username");
   }
 
-  try {
-    const envs = await checkOracleIdAcrossEnvs(username);
-    console.log(logs.ORACLE.ENTITY_FOUND, username);
-    return res.status(HTTP_STATUS_CODES.OK).send(envs);
-  } catch (err) {
-    const isCustom = err instanceof ErrorWithCode;
-    const message = isCustom ? err.message : logs.API.UNEXPECTED_ERR;
-    const status = isCustom
-      ? (err.code ?? HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
-      : HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR;
+  const upperUsername = username.toUpperCase();
+  const results: OracleUserResult[] = [];
+  const failedEnvs: string[] = [];
 
-    console.error(logs.API.ERROR_SIMPLE, message);
-    return res.status(status).send(message);
+  for (const env of ENVIRONMENTS) {
+    try {
+      const expiry = await getUserExpiryInEnv(env, upperUsername);
+      if (expiry) {
+        results.push({ environment: env.name, pswd_expires: expiry });
+        console.log(
+          `${logs.ORACLE.ENTITY_FOUND} ${upperUsername} in ${env.name}`,
+        );
+      } else {
+        console.warn(
+          `${logs.ORACLE.ENTITY_NOT_FOUND} ${upperUsername} in ${env.name}`,
+        );
+      }
+    } catch (err) {
+      failedEnvs.push(env.name);
+      console.warn(
+        `${logs.ORACLE.ENTITY_ERROR} failed to query ${env.name}: ${err instanceof Error ? err.message : err}`,
+      );
+    }
   }
+
+  if (results.length === 0) {
+    const allFailed = failedEnvs.length === ENVIRONMENTS.length;
+    const message = allFailed
+      ? "Internal error: Could not connect to any environments"
+      : `${upperUsername} not found in any environment`;
+
+    const log = allFailed
+      ? logs.ORACLE.ENV_CHECK_FAIL
+      : logs.ORACLE.ENTITY_NOT_FOUND;
+    console.error(log, message);
+    return res.status(HTTP_STATUS_CODES.NOT_FOUND).send(message);
+  }
+
+  return res.status(HTTP_STATUS_CODES.OK).send(results);
 };
