@@ -11,7 +11,7 @@ import { useState } from 'react';
 interface PageTitleInfoProps {
   title: string;
   collapseText?: string;
-  text?: string;
+  text?: string | React.ReactNode;
 }
 
 /**
@@ -55,7 +55,7 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
     if (props.text) {
       return (
         <>
-          <Text>{props.text}</Text>
+          {typeof props.text === 'string' ? <Text>{props.text}</Text> : props.text}
           <br />
         </>
       );
