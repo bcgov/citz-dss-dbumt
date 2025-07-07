@@ -9,6 +9,7 @@ export const ANSI_CODES = {
     PURPLE: "\x1b[35m",
     CYAN: "\x1b[36m",
     WHITE: "\x1b[37m",
+    BARK: "\x1b[48;2;49;45;42m",
   },
   BACKGROUND: {
     // Changes colour behind text
@@ -20,6 +21,7 @@ export const ANSI_CODES = {
     PURPLE: "\x1b[45m",
     CYAN: "\x1b[46m",
     WHITE: "\x1b[47m",
+    BARK: "\x1b[48;2;49;45;42m",
   },
   FORMATTING: {
     RESET: "\x1b[0m", // sets the console colours to normal
