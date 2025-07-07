@@ -11,6 +11,6 @@ import { Connection } from "oracledb";
 export const getUserExpiryInEnv = async (
   connection: Connection,
   username: string,
-): Promise<Date | null> => {
-  return (await getOracleUserExpiry(connection, username)) ?? null;
+): Promise<Date | null | undefined> => {
+  return await getOracleUserExpiry(connection, username);
 };
