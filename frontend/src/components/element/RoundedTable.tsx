@@ -28,7 +28,7 @@ const getBackgroundColour = (status: string) => {
     default:
       return { backgroundColor: 'var(--color-white-blue' };
   }
-}
+};
 
 /**
  * RoundedRow component that displays a row with a name and date
@@ -57,7 +57,7 @@ const RoundedRow = (props: RoundedRowProps) => {
       style={getBackgroundColour(dateStatus)}
       className={`bg-${dateStatus} border-1 border-white-orange ml-2 rounded-lg p-4`}
     >
-      <div className={"flex justify-between"}>
+      <div className={'flex justify-between'}>
         <div className="font-bold">{props.nameText}</div>
         <div>
           {dateStatus == 'danger' && (
