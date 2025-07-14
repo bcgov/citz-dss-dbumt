@@ -31,7 +31,7 @@ interface InfoBoxFieldProps {
  */
 export const InfoBox = (props: InfoBoxProps) => {
   return (
-    <div className="bg-grey shadow-sm">
+    <div className="bg-grey border-2 border-solid border-light-grey shadow-sm">
       <InfoBoxHeader headerText={props.header} />
       <div className="p-5">{props.children}</div>
     </div>
