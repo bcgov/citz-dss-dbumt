@@ -19,6 +19,17 @@ interface RoundedTableProps {
   rowArray: RoundedRowProps[];
 }
 
+const getBackgroundColour = (status: string) => {
+  switch (status) {
+    case 'danger':
+      return { backgroundColor: 'var(--color-danger' };
+    case 'warning':
+      return { backgroundColor: 'var(--color-warning' };
+    default:
+      return { backgroundColor: 'var(--color-white-blue' };
+  }
+}
+
 /**
  * RoundedRow component that displays a row with a name and date
  * It also shows a warning icon and red text if the date is within 10 days of today
@@ -28,31 +39,34 @@ interface RoundedTableProps {
  */
 const RoundedRow = (props: RoundedRowProps) => {
   // State for showing warning icon and red text colour
-  const [showWarningIcon, setShowWarning] = useState(false);
-  const [showAlertIcon, setShowAlert] = useState(false);
-  let textColour = 'black';
+  const [dateStatus, setStatus] = useState('white-blue');
 
-  // When props.date changes, check if the red text and warning icon should be shown
   useEffect(() => {
     const { isWarning, isPast } = DateWarning(props.date);
-    setShowWarning(isWarning);
-    setShowAlert(isPast);
+    if (isPast) {
+      setStatus('danger');
+    } else if (isWarning) {
+      setStatus('warning');
+    } else {
+      setStatus('white-blue');
+    }
   }, [props.date]);
 
-  textColour = showWarningIcon || showAlertIcon ? 'red' : 'black';
-
   return (
-    <div className="bg-white-blue border-1 border-white-orange ml-2 rounded-lg p-4">
-      <div className={`flex justify-between text-${textColour} `}>
+    <div
+      style={getBackgroundColour(dateStatus)}
+      className={`bg-${dateStatus} border-1 border-white-orange ml-2 rounded-lg p-4`}
+    >
+      <div className={"flex justify-between"}>
         <div className="font-bold">{props.nameText}</div>
         <div>
-          {showAlertIcon && (
+          {dateStatus == 'danger' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faCircleExclamation}
             />
           )}
-          {showWarningIcon && (
+          {dateStatus == 'warning' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faTriangleExclamation}
