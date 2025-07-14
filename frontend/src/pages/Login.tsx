@@ -3,6 +3,7 @@ import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxFieldTitle } from '../components/element/InfoBox';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -15,9 +16,14 @@ export const Login = () => {
   const text = `To use this tool please enter your Oracle account username.
           In most cases, the username for your BCGW account matches your IDIR`;
 
+  // pass oracleid to next page
+  const [oracleId, setOracleId] = useState('');
   // Project navigation
   const navigate = useNavigate();
 
+  const handleContinue = () => {
+    navigate('/', { state: { oracleId } });
+  };
   return (
     <BaseLayout>
       <GoldBar />
@@ -25,9 +31,13 @@ export const Login = () => {
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
         <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-        <TextField className="w-md mb-2" />
+        <TextField
+          className="w-md mb-2"
+          value={oracleId}
+          onChange={(value) => setOracleId(value)}
+        />
         <br />
-        <Button variant="primary" size="medium" onPress={() => navigate('/')}>
+        <Button variant="primary" size="medium" onPress={handleContinue}>
           Continue
         </Button>
       </InfoBox>
