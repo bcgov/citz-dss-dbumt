@@ -1,8 +1,4 @@
-import {
-  Heading,
-  Text,
-  Link,
-} from '@bcgov/design-system-react-components';
+import { Heading, Text, Link } from '@bcgov/design-system-react-components';
 import { useState } from 'react';
 
 /**
