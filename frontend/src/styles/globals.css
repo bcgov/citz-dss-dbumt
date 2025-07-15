@@ -18,6 +18,10 @@
   --color-white-blue: #f1f8fe;
   --color-light-blue: #d8eafd;
   --color-dark-blue: #013366;
+  --color-secondary-invert: #edebe9;
+  --color-light-grey: #d8d8d8;
   --color-grey: #faf9f8;
   --color-white-orange: #e0dedc;
+  --color-danger: #f4e1e2;
+  --color-warning: #fef1d8;
 }
