@@ -7,14 +7,34 @@ import {
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { InfoBox, InfoBoxField } from './InfoBox';
+import SuccessMessage from './SuccessMessage';
+import ErrorMessage from './ErrorMessage';
 
 interface ChangePasswordFormProps {
   oracleId: string;
 }
 
-const dummyFetchDatabases = async () => {
-  // Simulate API call
-  return Promise.resolve(['Production', 'Test', 'Development']);
+interface ErrorMessageType {
+  basic: string;
+  details?: string;
+}
+
+const fetchUserEnvironments = async (oracleId: string) => {
+  try {
+    const res = await fetch('http://localhost:3200/verifyAccount/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: oracleId }),
+    });
+
+    if (!res.ok) throw new Error(await res.text());
+
+    const data = await res.json();
+    return data.map((item: { environment: string }) => item.environment);
+  } catch (err) {
+    console.error('Failed to fetch environments:', err);
+    return [];
+  }
 };
 
 const validatePassword = (pw: string) => {
@@ -38,9 +58,15 @@ export const ChangePasswordForm = ({
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<ErrorMessageType | null>(
+    null,
+  );
 
   useEffect(() => {
-    dummyFetchDatabases().then(setDatabases);
+    if (!_oracleId) return;
+
+    fetchUserEnvironments(_oracleId).then(setDatabases);
   }, [_oracleId]);
 
   const passwordValidation = validatePassword(newPassword);
@@ -49,16 +75,52 @@ export const ChangePasswordForm = ({
     currentPassword.length > 0 &&
     selectedDb.length > 0;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const envMap: Record<string, string> = {
+    Development: 'DEV',
+    Test: 'TEST',
+    Production: 'PROD',
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid) return;
-    // TODO: connect to real password change endpoint
-    console.log('Submitting:', {
-      oracleId: _oracleId,
-      selectedDb,
-      currentPassword,
-      newPassword,
-    });
+
+    const backendEnv = envMap[selectedDb] || selectedDb;
+
+    try {
+      const response = await fetch('http://localhost:3200/changePassword', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          oracleId: _oracleId.trim(),
+          currentPassword,
+          newPassword,
+          targetEnv: backendEnv,
+        }),
+      });
+
+      const errorText = await response.text();
+
+      if (!response.ok) {
+        setSuccessMessage(null);
+        setErrorMessage({
+          basic: 'Password change failed.',
+          details: errorText,
+        });
+        return;
+      }
+
+      setErrorMessage(null);
+      setSuccessMessage(
+        `Your BCGW ${selectedDb} database password was successfully changed.`,
+      );
+    } catch (err) {
+      setSuccessMessage(null);
+      setErrorMessage({
+        basic: 'An error occurred while changing the password.',
+        details: String(err),
+      });
+    }
   };
 
   useEffect(() => {
@@ -78,6 +140,21 @@ export const ChangePasswordForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <InfoBox header="BCGW Oracle Account Change Password">
+        {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
+
+        {/* {errorMessage && (
+          <SuccessMessage type="error">
+            {errorMessage }
+          </SuccessMessage>
+        )} */}
+
+        {errorMessage && (
+          <ErrorMessage
+            basic={errorMessage.basic}
+            details={errorMessage.details}
+          />
+        )}
+
         <div className="m-2">
           <InfoBoxField
             titleText="BCGW Account/Username:"
@@ -250,10 +327,10 @@ export const ChangePasswordForm = ({
               No number as the first character
             </li>
             {/* TODO
-<li style={{ color: '#898785' }}>
-  • No historical password (not implemented)
-</li>
-*/}
+              <li style={{ color: '#898785' }}>
+                • No historical password (not implemented)
+              </li>
+              */}
           </ul>
         </div>
 
