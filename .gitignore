@@ -19,7 +19,7 @@ docker-compose.override.yml
 -docker-compose.override.yml
 
 #### Editor ####
-.vscode/*
+**/.vscode/*
 !.vscode/extensions.json
 .vs
 .DS_Store
