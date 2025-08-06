@@ -30,5 +30,7 @@ export const MONGODB = {
   ENTITY_ADDED: `${mongoDbOK}Entity added.${FM.RESET}`,
   ENTITY_FOUND: `${mongoDbOK}Entity found: ${FM.RESET}`,
   ENTITY_ALL: `${mongoDbOK}Returning all Entities.${FM.RESET}`,
-  FIND_ERROR: `${mongoDbWarn}Failed to find entry.${FM.RESET}`,
+  FIND_ERROR: `${mongoDbErr}Failed to find entry.${FM.RESET}`,
+  ENTITY_UPDATED: `${mongoDbOK}Entity updated.${FM.RESET}`,
+  UPDATE_ERROR: `${mongoDbErr}Failed to update entry.${FM.RESET}`,
 };

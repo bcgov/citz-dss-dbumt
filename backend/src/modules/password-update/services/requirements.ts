@@ -60,6 +60,12 @@ export const findPasswordRequirementByName = async (reqName: string) => {
   }
 };
 
+/**
+ * Attempt to get and return all password requirements from MongoDB.
+ *
+ * @returns Array of all password requirements in the PasswordReqModel collection
+ * @throws ErrorWithCode if an error occurs during the search
+ */
 export const getAllPasswordRequirements = async () => {
   try {
     const requirements = await PasswordReqModel.find({});
@@ -67,6 +73,47 @@ export const getAllPasswordRequirements = async () => {
   } catch (err) {
     throw new ErrorWithCode(
       `${logs.MONGODB.FIND_ERROR} ${err instanceof Error ? err.message : err}`,
+    );
+  }
+};
+
+/**
+ * Given a password requirement name from URL parameters and a new password requirement object,
+ * update the existing password requirement in MongoDB.
+ *
+ * @param newReq: Full password requirement object to update the existing one with.
+ * @returns updatedReq: The updated password requirement object from MongoDB
+ * @throws ErrorWithCode if the requirement name is missing, or if an error occurs during the update
+ */
+export const updatePasswordRequirement = async (
+  newReq: typeof PasswordReqModel,
+) => {
+  // TODO: Add user validation
+  try {
+    if (!newReq.name) {
+      throw new ErrorWithCode("Requirement name is required for update.");
+    }
+    // check if a requirement with the given name exists
+    const existingReq = await findPasswordRequirementByName(newReq.name);
+    if (!existingReq) {
+      console.warn(logs.MONGODB.FIND_ERROR);
+      return null;
+    }
+
+    // update the existing requirement with the new data
+    const updatedReq = await PasswordReqModel.findByIdAndUpdate(
+      existingReq._id,
+      newReq,
+      {
+        new: true, //retun the new requirement after update
+        runValidators: true, // ensure all required fields are met
+        lean: true, // return a plain JavaScript object instead of a Mongoose document
+      },
+    );
+    return updatedReq;
+  } catch (err) {
+    throw new ErrorWithCode(
+      `${logs.MONGODB.UPDATE_ERROR} ${err instanceof Error ? err.message : err}`,
     );
   }
 };

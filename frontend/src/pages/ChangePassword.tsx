@@ -23,7 +23,6 @@ export const ChangePassword = () => {
   if (!oracleId) return null;
 
   const title = 'Change your BCGW Oracle password';
-  const collapseText = ``;
   const text = (
     <BCGovText>
       The BC Geographic Warehouse (BCGW) change password tool helps users of
@@ -48,7 +47,7 @@ export const ChangePassword = () => {
 
   return (
     <BaseLayout breadcrumbItems={breadcrumbItems}>
-      <PageTitleInfo title={title} collapseText={collapseText} text={text} />
+      <PageTitleInfo title={title} text={text} />
       <br />
       <ChangePasswordForm oracleId={oracleId} />
     </BaseLayout>
