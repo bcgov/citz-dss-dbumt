@@ -2,7 +2,7 @@ import { Connection } from "oracledb";
 import { getOracleConnection } from "@/middleware/BCGW/connection";
 import { ErrorWithCode } from "@/utilities";
 import { logs } from "@/middleware";
-import {EnvironmentConfig} from "@/config/oracleEnvironments";
+import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import oracledb from "oracledb";
 
 interface OracleUserResult {
@@ -20,14 +20,13 @@ interface OracleUserResult {
  */
 export const getUserExpiry = async (
   username: string,
-  environments: EnvironmentConfig[]
-): Promise<{results: OracleUserResult[], message: string}> => {
-
+  environments: EnvironmentConfig[],
+): Promise<{ results: OracleUserResult[]; message: string }> => {
   if (!username) {
     throw new ErrorWithCode("Missing required parameter: username");
   }
   if (environments.length === 0) {
-      throw new ErrorWithCode("No environments provided.");
+    throw new ErrorWithCode("No environments provided.");
   }
 
   const results: OracleUserResult[] = [];
@@ -43,9 +42,7 @@ export const getUserExpiry = async (
         );
       } else {
         results.push({ environment: env.name, pswd_expires: expiry });
-        console.log(
-          `${logs.ORACLE.ENTITY_FOUND} ${username} in ${env.name}`,
-        );
+        console.log(`${logs.ORACLE.ENTITY_FOUND} ${username} in ${env.name}`);
       }
     } catch (err) {
       failedEnvs.push(env.name);
@@ -77,8 +74,8 @@ export const getUserExpiry = async (
     console.error(log, message);
     return { results, message };
   }
-  return {results, message: "User found in one or more environments"};
-}
+  return { results, message: "User found in one or more environments" };
+};
 
 /**
  * @summary Check if user exists in specified environment (dev/test/prod) and get their expiry date
@@ -93,7 +90,6 @@ export const getUserExpiryInEnv = async (
 ): Promise<Date | null | undefined> => {
   return await getOracleUserExpiryFromDB(connection, username);
 };
-
 
 /**
  * @summary Retrieve password expiry date for an oracle user from a specific Oracle database

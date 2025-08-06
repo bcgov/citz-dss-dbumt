@@ -32,16 +32,13 @@ export const ENVIRONMENTS: EnvironmentConfig[] = [
     typeof env.password === "string",
 );
 
-
 /**
  * @summary Retrieve a filtered list of Oracle environments by name
  *
  * @param names - Array of environment names to include (e.g., ["DEV", "TEST"])
  * @returns A filtered list of environment configurations matching the provided names
  */
-export const getEnvironmentsByName = (
-  names: string[]
-): EnvironmentConfig[] => {
-  const nameSet = new Set(names.map(name => name.toUpperCase()));
-  return ENVIRONMENTS.filter(env => nameSet.has(env.name.toUpperCase()));
+export const getEnvironmentsByName = (names: string[]): EnvironmentConfig[] => {
+  const nameSet = new Set(names.map((name) => name.toUpperCase()));
+  return ENVIRONMENTS.filter((env) => nameSet.has(env.name.toUpperCase()));
 };

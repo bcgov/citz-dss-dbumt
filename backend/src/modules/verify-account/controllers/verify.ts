@@ -24,9 +24,8 @@ export const verifyOracleId = async (req: Request, res: Response) => {
   const selectedEnvs = getEnvironmentsByName(["DEV", "TEST", "PROD"]);
   const { results, message } = await getUserExpiry(upperUsername, selectedEnvs);
   if (results.length === 0) {
-      res.status(HTTP_STATUS_CODES.NOT_FOUND).send(message);
-  }
-  else {
-      return res.status(HTTP_STATUS_CODES.OK).send(results);
+    res.status(HTTP_STATUS_CODES.NOT_FOUND).send(message);
+  } else {
+    return res.status(HTTP_STATUS_CODES.OK).send(results);
   }
 };
