@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/health", modules.healthRouter);
 app.use("/passwordUpdate", modules.passwordUpdateRouter);
 app.use("/verifyAccount", modules.verifyAccountRouter);
+app.use("/queryAccount", modules.queryAccountRouter);
 
 // Error handler middleware. Must come last
 app.use(errorHandler);
