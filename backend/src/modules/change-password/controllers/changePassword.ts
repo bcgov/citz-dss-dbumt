@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { changeOraclePassword } from "../services";
 import { HTTP_STATUS_CODES } from "@/constants";
+import { getEnvironmentByName } from "@/config/oracleEnvironments";
 
 /**
  * Handle request to change a user's Oracle password
@@ -20,11 +21,17 @@ export const changePasswordController = async (req: Request, res: Response) => {
         .send("Missing required parameters");
     }
 
+    const dbEnv = getEnvironmentByName(targetEnv);
+    if (!dbEnv) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .send("Invalid environment");
+    }
+
     const result = await changeOraclePassword(
       oracleId,
       currentPassword,
       newPassword,
-      targetEnv,
+      dbEnv,
     );
 
     if (result.success) {
