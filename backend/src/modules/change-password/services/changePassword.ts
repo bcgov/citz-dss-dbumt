@@ -1,15 +1,7 @@
 import oracledb from "oracledb";
 import { validatePassword } from "./validatePassword";
 import { getOracleConnection } from "../../../middleware/BCGW/connection"; // Centralized connection util
-
-/**
- * Environment connect strings
- */
-const CONNECT_STRINGS: Record<string, string | undefined> = {
-  DEV: process.env.BCGW_DEV_STRING,
-  TEST: process.env.BCGW_TEST_STRING,
-  PROD: process.env.BCGW_PROD_STRING,
-};
+import { EnvironmentConfig } from "@/config/oracleEnvironments";
 
 /**
  * Attempt to change an Oracle user password in a given environment.
@@ -23,15 +15,14 @@ export const changeOraclePassword = async (
   oracleId: string,
   currentPassword: string,
   newPassword: string,
-  targetEnv: string,
+  targetEnv: EnvironmentConfig,
 ): Promise<{ success: boolean; reason?: string }> => {
   const upperOracleId = oracleId.toUpperCase();
-  const upperEnv = targetEnv.toUpperCase();
 
   // Validate environment
-  const connectString = CONNECT_STRINGS[upperEnv];
+  const connectString = targetEnv.connectString;
   if (!connectString) {
-    return { success: false, reason: `Invalid environment: ${upperEnv}` };
+    return { success: false, reason: `Invalid environment: ${targetEnv.name}` };
   }
 
   // Validate password complexity
@@ -48,7 +39,7 @@ export const changeOraclePassword = async (
 
   try {
     console.log(
-      `Attempting Oracle connection as ${upperOracleId} to ${upperEnv}`,
+      `Attempting Oracle connection as ${upperOracleId} to ${targetEnv.name}...`,
     );
 
     // Establish connection as the user
@@ -60,6 +51,13 @@ export const changeOraclePassword = async (
     });
 
     console.log(`Connected to Oracle as ${upperOracleId}`);
+
+    // Validate Oracle ID format to only contain uppercase letters, numbers, and underscores.
+    // Since we cannot use variable binding in the ALTER USER statement, this is an extra safety check to prevent SQL injection
+    const isValidOracleId = /^[A-Z0-9_]+$/.test(upperOracleId);
+    if (!isValidOracleId) {
+      return { success: false, reason: "Invalid Oracle ID format" };
+    }
 
     // Change password
     await connection.execute(
