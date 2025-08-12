@@ -19,9 +19,16 @@ interface ErrorMessageType {
   details?: string;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+if (!API_BASE_URL) {
+  throw new Error(
+    'VITE_API_BASE_URL is not defined in the environment variables.',
+  );
+}
+
 const fetchUserEnvironments = async (oracleId: string) => {
   try {
-    const res = await fetch('http://localhost:3200/verifyAccount/verify', {
+    const res = await fetch(`${API_BASE_URL}/verifyAccount/verify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: oracleId }),
@@ -88,7 +95,7 @@ export const ChangePasswordForm = ({
     const backendEnv = envMap[selectedDb] || selectedDb;
 
     try {
-      const response = await fetch('http://localhost:3200/changePassword', {
+      const response = await fetch(`${API_BASE_URL}/changePassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
