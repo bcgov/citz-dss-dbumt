@@ -106,13 +106,12 @@ export const ChangePasswordForm = ({
         }),
       });
 
-      const errorText = await response.text();
-
       if (!response.ok) {
+        const errorText = await response.json();
         setSuccessMessage(null);
         setErrorMessage({
           basic: 'Password change failed.',
-          details: errorText,
+          details: errorText.reason ? errorText.reason : errorText,
         });
         return;
       }

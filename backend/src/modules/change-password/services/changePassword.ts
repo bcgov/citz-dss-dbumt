@@ -2,6 +2,7 @@ import oracledb from "oracledb";
 import { validatePassword } from "./validatePassword";
 import { getOracleConnection } from "../../../middleware/BCGW/connection"; // Centralized connection util
 import { EnvironmentConfig } from "@/config/oracleEnvironments";
+import stripAnsi from "strip-ansi";
 
 /**
  * Attempt to change an Oracle user password in a given environment.
@@ -67,7 +68,7 @@ export const changeOraclePassword = async (
     console.log(`Password change successful for ${upperOracleId}`);
     return { success: true };
   } catch (err: unknown) {
-    const reason = err instanceof Error ? err.message : String(err);
+    const reason = err instanceof Error ? stripAnsi(err.message) : String(err);
     console.error(`password change error ${oracleId}: ${reason}`);
     return { success: false, reason };
   } finally {
