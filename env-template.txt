@@ -24,6 +24,8 @@ ORACLE_CLIENT_LOCAL_PATH=
 # BACKEND ENVIRONMENT
 # Expressjs server port
 BACKEND_PORT=
+#CORS allowed address
+CORS_ORIGIN=
 
 # MongoDB Variables
 MONGO_IMAGE_TAG=
