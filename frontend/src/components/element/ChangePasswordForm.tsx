@@ -9,6 +9,7 @@ import {
 import { InfoBox, InfoBoxField } from './InfoBox';
 import SuccessMessage from './SuccessMessage';
 import ErrorMessage from './ErrorMessage';
+import { apiFetch } from '../../api/client';
 
 interface ChangePasswordFormProps {
   oracleId: string;
@@ -19,24 +20,13 @@ interface ErrorMessageType {
   details?: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-if (!API_BASE_URL) {
-  throw new Error(
-    'VITE_API_BASE_URL is not defined in the environment variables.',
-  );
-}
-
 const fetchUserEnvironments = async (oracleId: string) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/verifyAccount/verify`, {
+    const data = await apiFetch('/verifyAccount/verify', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: oracleId }),
     });
 
-    if (!res.ok) throw new Error(await res.text());
-
-    const data = await res.json();
     return data.map((item: { environment: string }) => item.environment);
   } catch (err) {
     console.error('Failed to fetch environments:', err);
@@ -95,9 +85,8 @@ export const ChangePasswordForm = ({
     const backendEnv = envMap[selectedDb] || selectedDb;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/changePassword`, {
+      const data = await apiFetch('/changePassword', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           oracleId: _oracleId.trim(),
           currentPassword,
@@ -106,25 +95,16 @@ export const ChangePasswordForm = ({
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.json();
-        setSuccessMessage(null);
-        setErrorMessage({
-          basic: 'Password change failed.',
-          details: errorText.reason ? errorText.reason : errorText,
-        });
-        return;
-      }
-
       setErrorMessage(null);
       setSuccessMessage(
         `Your BCGW ${selectedDb} database password was successfully changed.`,
       );
-    } catch (err) {
+    } catch (err: any) {
       setSuccessMessage(null);
+      console.log(err);
       setErrorMessage({
-        basic: 'An error occurred while changing the password.',
-        details: String(err),
+        basic: 'Password change failed.',
+        details: err.message || String(err),
       });
     }
   };

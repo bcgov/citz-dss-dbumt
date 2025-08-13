@@ -12,6 +12,7 @@ import {
 } from '@bcgov/design-system-react-components';
 import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
+import { apiFetch } from '../api/client';
 
 // Text for the page including title, hideable text, and additional information
 const title = 'Manage your BCGW Oracle account';
@@ -66,23 +67,11 @@ export const Home = () => {
     const fetchExpiryData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          'http://localhost:3200/verifyAccount/verify',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: oracleId }),
-          },
-        );
-
-        if (!response.ok) {
-          console.error('Failed to fetch expiry data');
-          setRowArray([]);
-          return;
-        }
-
         const data: { environment: string; pswd_expires: string | null }[] =
-          await response.json();
+          await apiFetch('/verifyAccount/verify', {
+            method: 'POST',
+            body: JSON.stringify({ username: oracleId }),
+          });
 
         const mappedRows = data.map((item, index) => ({
           key: index + 1,
