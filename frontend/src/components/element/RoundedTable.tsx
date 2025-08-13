@@ -9,7 +9,7 @@ import { DateWarning } from '../../utilities/DateWarning';
 interface RoundedRowProps {
   key?: number;
   nameText: string;
-  date: Date;
+  date: Date | null;
   colour?: string;
 }
 
@@ -34,6 +34,11 @@ const RoundedRow = (props: RoundedRowProps) => {
 
   // When props.date changes, check if the red text and warning icon should be shown
   useEffect(() => {
+    if (!props.date) {
+      setShowWarning(false);
+      setShowAlert(false);
+      return;
+    }
     const { isWarning, isPast } = DateWarning(props.date);
     setShowWarning(isWarning);
     setShowAlert(isPast);
@@ -58,12 +63,14 @@ const RoundedRow = (props: RoundedRowProps) => {
               icon={faTriangleExclamation}
             />
           )}
-          {props.date.toLocaleDateString('en-CA', {
-            timeZone: '-07:00',
-            month: 'long',
-            year: 'numeric',
-            day: '2-digit',
-          })}
+          {props.date
+            ? props.date.toLocaleDateString('en-CA', {
+                timeZone: '-07:00',
+                month: 'long',
+                year: 'numeric',
+                day: '2-digit',
+              })
+            : 'No expiry'}
         </div>
       </div>
     </div>

@@ -42,3 +42,18 @@ export const getEnvironmentsByName = (names: string[]): EnvironmentConfig[] => {
   const nameSet = new Set(names.map((name) => name.toUpperCase()));
   return ENVIRONMENTS.filter((env) => nameSet.has(env.name.toUpperCase()));
 };
+
+/**
+ * @summary Retrieve an Oracle environment by name
+ *
+ * @param name - Environment name to retrieve (e.g., "DEV")
+ * @returns Environment configuration matching the provided name
+ */
+export const getEnvironmentByName = (
+  name: string,
+): EnvironmentConfig | null => {
+  return (
+    ENVIRONMENTS.find((env) => name.toUpperCase() === env.name.toUpperCase()) ||
+    null
+  );
+};
