@@ -85,7 +85,7 @@ export const ChangePasswordForm = ({
     const backendEnv = envMap[selectedDb] || selectedDb;
 
     try {
-      const data = await apiFetch('/changePassword', {
+      await apiFetch('/changePassword', {
         method: 'POST',
         body: JSON.stringify({
           oracleId: _oracleId.trim(),
@@ -99,11 +99,13 @@ export const ChangePasswordForm = ({
       setSuccessMessage(
         `Your BCGW ${selectedDb} database password was successfully changed.`,
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+
       setSuccessMessage(null);
       setErrorMessage({
         basic: 'Password change failed.',
-        details: err.reason || String(err),
+        details: message,
       });
     }
   };
