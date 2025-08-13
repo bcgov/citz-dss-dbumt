@@ -101,10 +101,9 @@ export const ChangePasswordForm = ({
       );
     } catch (err: any) {
       setSuccessMessage(null);
-      console.log(err);
       setErrorMessage({
         basic: 'Password change failed.',
-        details: err.message || String(err),
+        details: err.reason || String(err),
       });
     }
   };

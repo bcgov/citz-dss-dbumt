@@ -1,6 +1,10 @@
+
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
+export const apiFetch = async (
+  endpoint: string,
+  options: RequestInit = {}
+) => {
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers: {
@@ -9,9 +13,10 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     },
   });
 
+  
   if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(errorText || 'API request failed');
+    const error = await res.json();
+    throw new Error(error.reason || 'API request failed');
   }
 
   return res.json();
