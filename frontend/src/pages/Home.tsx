@@ -57,7 +57,7 @@ export const Home = () => {
       {
         key: 3,
         nameText: 'Development',
-        date: new Date('2025-05-07T00:00:00-07:00'),
+        date: new Date('2025-07-16T00:00:00-07:00'),
       },
     ],
     [],
