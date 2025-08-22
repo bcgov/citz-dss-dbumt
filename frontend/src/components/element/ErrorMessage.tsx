@@ -12,7 +12,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ basic, details }) => {
     <div className="border-b-10 mb-3 rounded-md border-red-700 bg-red-50 p-6 text-sm text-red-700">
       <p>{basic}</p>
       {details && (
-        <button
+        <button type="button"
           onClick={() => setExpanded(!expanded)}
           className="mt-1 block text-xs underline"
         >
