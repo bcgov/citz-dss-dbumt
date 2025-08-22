@@ -4,7 +4,7 @@ import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 import { RoundedTable } from '../components/element/RoundedTable';
 import { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Heading,
   InlineAlert,
@@ -35,6 +35,9 @@ export const Home = () => {
   const [showAlertInfo, setShowAlertInfo] = useState(false);
   const [alertDbArray, setAlertDbArray] = useState<string[]>([]);
 
+  // Pass oracleid to next page
+  const location = useLocation();
+  const oracleId = location.state?.oracleId;
   // Project navigation
   const navigate = useNavigate();
 
@@ -113,6 +116,15 @@ export const Home = () => {
       To reset your password${plural} please contact NRM Service Desk at NRMenquiries@gov.bc.ca.`;
   };
 
+  // If no oracleid, go to login page
+  useEffect(() => {
+    if (!oracleId) {
+      navigate('/login', { replace: true });
+    }
+  }, [oracleId, navigate]);
+
+  if (!oracleId) return null;
+
   return (
     <BaseLayout>
       <div className="grid">
@@ -124,7 +136,7 @@ export const Home = () => {
         <div className="m-2">
           <InfoBoxField
             titleText="BCGW Account/Username:"
-            contentText="TEST HOLDER" // TODO: This will be replaced with the username from the backend
+            contentText={oracleId}
           />
         </div>
         <div className="m-2">
@@ -164,7 +176,9 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
-              onPress={() => navigate('/changepassword')}
+              onPress={() =>
+                navigate('/changepassword', { state: { oracleId } })
+              }
             >
               Change Password
             </Button>
