@@ -21,6 +21,13 @@ export const changePasswordController = async (req: Request, res: Response) => {
         .send("Missing required parameters");
     }
 
+    if (currentPassword === newPassword) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        error: "Failed to change password",
+        reason: "New password must be different from current password",
+      });
+    }
+
     const dbEnv = getEnvironmentByName(targetEnv);
     if (!dbEnv) {
       return res
@@ -38,7 +45,7 @@ export const changePasswordController = async (req: Request, res: Response) => {
     if (result.success) {
       return res
         .status(HTTP_STATUS_CODES.OK)
-        .json({message: "Password changed successfully"});
+        .json({ message: "Password changed successfully" });
     } else {
       return res
         .status(HTTP_STATUS_CODES.BAD_REQUEST)

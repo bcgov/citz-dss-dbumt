@@ -13,6 +13,12 @@ import {
 import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
 import { apiFetch } from '../api/client';
+import { toEnvLabel } from '../utilities/EnvMap';
+
+type VerifyResponse = {
+  environment: string;
+  pswd_expires: string | null;
+};
 
 // Text for the page including title, hideable text, and additional information
 const title = 'Manage your BCGW Oracle account';
@@ -30,6 +36,7 @@ const collapseText = `The Database User Management Tool (DBUMT) is managed by Da
  * @returns JSX.Element - The rendered Home component
  */
 export const Home = () => {
+  const [verifyData, setVerifyData] = useState<VerifyResponse[] | null>(null);
   // State for showing warning inline alert
   const [showWarningInfo, setShowWarningInfo] = useState(false);
   const [warningDbArray, setWarningDbArray] = useState<string[]>([]);
@@ -47,20 +54,6 @@ export const Home = () => {
     { key: number; nameText: string; date: Date | null }[]
   >([]);
 
-  // Helper to map backend env names
-  const mapEnvironmentName = (env: string) => {
-    switch (env.toUpperCase()) {
-      case 'PROD':
-        return 'Production';
-      case 'TEST':
-        return 'Test';
-      case 'DEV':
-        return 'Development';
-      default:
-        return env;
-    }
-  };
-
   useEffect(() => {
     if (!oracleId) return;
 
@@ -73,9 +66,11 @@ export const Home = () => {
             body: JSON.stringify({ username: oracleId }),
           });
 
+        setVerifyData(data);
+
         const mappedRows = data.map((item, index) => ({
           key: index + 1,
-          nameText: mapEnvironmentName(item.environment),
+          nameText: toEnvLabel(item.environment),
           date: item.pswd_expires ? new Date(item.pswd_expires) : null,
         }));
 
@@ -83,6 +78,7 @@ export const Home = () => {
       } catch (error) {
         console.error('Error fetching expiry data:', error);
         setRowArray([]);
+        setVerifyData(null);
       } finally {
         setIsLoading(false);
       }
@@ -217,7 +213,7 @@ export const Home = () => {
               variant="primary"
               size="medium"
               onPress={() =>
-                navigate('/changepassword', { state: { oracleId } })
+                navigate('/changepassword', { state: { oracleId, verifyData } })
               }
             >
               Change Password

@@ -38,7 +38,12 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
       return (
         <>
           <div className="max-w-3xs">
-            <Button type="button" variant="secondary" size="medium" onPress={toggleOpen}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="medium"
+              onPress={toggleOpen}
+            >
               {!open ? 'Show More' : 'Show Less'}
             </Button>
           </div>

@@ -6,12 +6,21 @@ import { ChangePasswordForm } from '../components/element/ChangePasswordForm';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+type VerifyResponse = {
+  environment: string;
+  pswd_expires: string | null;
+};
+
 export const ChangePassword = () => {
   // Pass oracleid to next page
   const location = useLocation();
-  const oracleId = location.state?.oracleId;
   // Project navigation
   const navigate = useNavigate();
+
+  const { oracleId, verifyData } = (location.state ?? {}) as {
+    oracleId?: string;
+    verifyData?: VerifyResponse[];
+  };
 
   // If no oracleid, go to login page
   useEffect(() => {
@@ -49,7 +58,7 @@ export const ChangePassword = () => {
     <BaseLayout breadcrumbItems={breadcrumbItems}>
       <PageTitleInfo title={title} text={text} />
       <br />
-      <ChangePasswordForm oracleId={oracleId} />
+      <ChangePasswordForm oracleId={oracleId} verifyData={verifyData} />
     </BaseLayout>
   );
 };

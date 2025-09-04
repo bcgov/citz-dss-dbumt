@@ -3,7 +3,7 @@ import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxFieldTitle } from '../components/element/InfoBox';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
@@ -21,25 +21,33 @@ export const Login = () => {
   // Project navigation
   const navigate = useNavigate();
 
-  const handleContinue = () => {
+  const handleSubmit = (e?: FormEvent) => {
+    e?.preventDefault();
+    const id = oracleId.trim();
+    if (!id) return;
     navigate('/', { state: { oracleId } });
   };
+
   return (
     <BaseLayout>
       <GoldBar />
       <PageTitleInfo title={title} collapseText={collapseText} text={text} />
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-        <InfoBoxFieldTitle titleText="BCGW Account/Username" />
-        <TextField
-          className="w-md mb-2"
-          value={oracleId}
-          onChange={(value) => setOracleId(value)}
-        />
-        <br />
-        <Button variant="primary" size="medium" onPress={handleContinue}>
-          Continue
-        </Button>
+        <form onSubmit={handleSubmit} noValidate>
+          <InfoBoxFieldTitle titleText="BCGW Account/Username" />
+          <TextField
+            id="oracleId"
+            aria-labelledby="oracleLabel"
+            className="w-md mb-2"
+            value={oracleId}
+            onChange={(value) => setOracleId(value)}
+          />
+          <br />
+          <Button variant="primary" size="medium" type="submit">
+            Continue
+          </Button>
+        </form>
       </InfoBox>
     </BaseLayout>
   );
