@@ -173,7 +173,9 @@ export const ChangePasswordForm = ({
             onChange={(e) => setSelectedDb(e.target.value)}
             className="form-select w-full appearance-none rounded border border-gray-300 bg-white px-3 py-2 pr-10"
           >
-            <option value="">-- Select --</option>
+            <option value="" disabled>
+              -- Select --
+            </option>
             {databases.map((code) => (
               <option key={code} value={code}>
                 {toEnvLabel(code)}
