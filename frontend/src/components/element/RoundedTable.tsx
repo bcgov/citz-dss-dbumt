@@ -3,13 +3,13 @@ import {
   faTriangleExclamation,
   faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DateWarning } from '../../utilities/DateWarning';
 
 interface RoundedRowProps {
   key?: number;
   nameText: string;
-  date: Date;
+  date: Date | null;
   colour?: string;
 }
 
@@ -19,14 +19,16 @@ interface RoundedTableProps {
   rowArray: RoundedRowProps[];
 }
 
-const getBackgroundColour = (status: string) => {
+type DateStatus = 'danger' | 'warning' | 'white-blue';
+
+const getBackgroundColour = (status: DateStatus) => {
   switch (status) {
     case 'danger':
-      return { backgroundColor: 'var(--color-danger' };
+      return { backgroundColor: 'var(--color-danger)' };
     case 'warning':
-      return { backgroundColor: 'var(--color-warning' };
+      return { backgroundColor: 'var(--color-warning)' };
     default:
-      return { backgroundColor: 'var(--color-white-blue' };
+      return { backgroundColor: 'var(--color-white-blue)' };
   }
 };
 
@@ -37,47 +39,51 @@ const getBackgroundColour = (status: string) => {
  * @param props - RoundedRowProps object containing key, nameText, date, and optional colour
  * @returns JSX.Element - The rendered RoundedRow component
  */
-const RoundedRow = (props: RoundedRowProps) => {
+const RoundedRow = ({ nameText, date }: RoundedRowProps) => {
   // State for showing warning icon and red text colour
-  const [dateStatus, setStatus] = useState('white-blue');
+  const [dateStatus, setStatus] = useState<DateStatus>('white-blue');
 
   useEffect(() => {
-    const { isWarning, isPast } = DateWarning(props.date);
-    if (isPast) {
-      setStatus('danger');
-    } else if (isWarning) {
-      setStatus('warning');
-    } else {
+    if (!date) {
       setStatus('white-blue');
+      return;
     }
-  }, [props.date]);
+    const { isWarning, isPast } = DateWarning(date);
+    if (isPast) setStatus('danger');
+    else if (isWarning) setStatus('warning');
+    else setStatus('white-blue');
+  }, [date]);
+
+  const isAttn = dateStatus === 'danger' || dateStatus === 'warning';
 
   return (
     <div
       style={getBackgroundColour(dateStatus)}
-      className={`bg-${dateStatus} border-1 border-white-orange ml-2 rounded-lg p-4`}
+      className="border-1 border-white-orange ml-2 rounded-lg p-4"
     >
-      <div className={'flex justify-between'}>
-        <div className="font-bold">{props.nameText}</div>
+      <div className={`flex justify-between ${isAttn ? 'text-red-700' : ''}`}>
+        <div className="font-bold">{nameText}</div>
         <div>
-          {dateStatus == 'danger' && (
+          {dateStatus === 'danger' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faCircleExclamation}
             />
           )}
-          {dateStatus == 'warning' && (
+          {dateStatus === 'warning' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faTriangleExclamation}
             />
           )}
-          {props.date.toLocaleDateString('en-CA', {
-            timeZone: '-07:00',
-            month: 'long',
-            year: 'numeric',
-            day: '2-digit',
-          })}
+          {date
+            ? date.toLocaleDateString('en-CA', {
+                timeZone: '-07:00',
+                month: 'long',
+                year: 'numeric',
+                day: '2-digit',
+              })
+            : 'No expiry'}
         </div>
       </div>
     </div>
@@ -90,9 +96,11 @@ const RoundedRow = (props: RoundedRowProps) => {
  * @param props - RoundedTableProps object containing header information and rowArray elements as RoundedRows
  * @returns JSX.Element - The rendered RoundedTable component
  */
-export const RoundedTable = (props: RoundedTableProps) => {
-  const { nameHeader, detailHeader, rowArray } = props as RoundedTableProps;
-
+export const RoundedTable = ({
+  nameHeader,
+  detailHeader,
+  rowArray,
+}: RoundedTableProps) => {
   return (
     <>
       <div className="ml-2 px-2 py-4">

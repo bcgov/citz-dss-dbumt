@@ -3,8 +3,8 @@ import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
 import { RoundedTable } from '../components/element/RoundedTable';
-import { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Heading,
   InlineAlert,
@@ -12,6 +12,13 @@ import {
 } from '@bcgov/design-system-react-components';
 import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
+import { apiFetch } from '../api/client';
+import { toEnvLabel } from '../utilities/EnvMap';
+
+type VerifyResponse = {
+  environment: string;
+  pswd_expires: string | null;
+};
 
 // Text for the page including title, hideable text, and additional information
 const title = 'Manage your BCGW Oracle account';
@@ -29,39 +36,56 @@ const collapseText = `The Database User Management Tool (DBUMT) is managed by Da
  * @returns JSX.Element - The rendered Home component
  */
 export const Home = () => {
+  const [verifyData, setVerifyData] = useState<VerifyResponse[] | null>(null);
   // State for showing warning inline alert
   const [showWarningInfo, setShowWarningInfo] = useState(false);
   const [warningDbArray, setWarningDbArray] = useState<string[]>([]);
   const [showAlertInfo, setShowAlertInfo] = useState(false);
   const [alertDbArray, setAlertDbArray] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Pass oracleid to next page
+  const location = useLocation();
+  const oracleId = location.state?.oracleId;
   // Project navigation
   const navigate = useNavigate();
 
-  /**
-   * TESTING PURPOSES ONLY. Once we connect to the backend and BCGW this will be populated
-   * with data from the BCGW and passed in through props.
-   */
-  const rowArray = useMemo(
-    () => [
-      {
-        key: 1,
-        nameText: 'Production',
-        date: new Date('2024-11-25T00:00:00-07:00'),
-      },
-      {
-        key: 2,
-        nameText: 'Test',
-        date: new Date('2026-04-30T00:00:00-07:00'),
-      },
-      {
-        key: 3,
-        nameText: 'Development',
-        date: new Date('2025-07-16T00:00:00-07:00'),
-      },
-    ],
-    [],
-  );
+  const [rowArray, setRowArray] = useState<
+    { key: number; nameText: string; date: Date | null }[]
+  >([]);
+
+  useEffect(() => {
+    if (!oracleId) return;
+
+    const fetchExpiryData = async () => {
+      setIsLoading(true);
+      try {
+        const data: { environment: string; pswd_expires: string | null }[] =
+          await apiFetch('/verifyAccount/verify', {
+            method: 'POST',
+            body: JSON.stringify({ username: oracleId }),
+          });
+
+        setVerifyData(data);
+
+        const mappedRows = data.map((item, index) => ({
+          key: index + 1,
+          nameText: toEnvLabel(item.environment),
+          date: item.pswd_expires ? new Date(item.pswd_expires) : null,
+        }));
+
+        setRowArray(mappedRows);
+      } catch (error) {
+        console.error('Error fetching expiry data:', error);
+        setRowArray([]);
+        setVerifyData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchExpiryData();
+  }, [oracleId]);
 
   // If the rowArray updates check if we need to show the warning info and add the database name to the warning array
   useEffect(() => {
@@ -69,6 +93,9 @@ export const Home = () => {
     const alertNames: string[] = [];
 
     rowArray.forEach((row) => {
+      // Skip environments that returned null expiry (no expiry)
+      if (!row.date) return;
+
       const { isWarning, isPast } = DateWarning(row.date);
 
       if (isWarning) {
@@ -79,9 +106,9 @@ export const Home = () => {
       }
     });
 
-    setWarningDbArray((prev) => Array.from(new Set([...prev, ...warnNames])));
+    setWarningDbArray(Array.from(new Set(warnNames)));
     setShowWarningInfo(warnNames.length > 0);
-    setAlertDbArray((prev) => Array.from(new Set([...prev, ...alertNames])));
+    setAlertDbArray(Array.from(new Set(alertNames)));
     setShowAlertInfo(alertNames.length > 0);
   }, [rowArray]);
 
@@ -113,6 +140,15 @@ export const Home = () => {
       To reset your password${plural} please contact NRM Service Desk at NRMenquiries@gov.bc.ca.`;
   };
 
+  // If no oracleid, go to login page
+  useEffect(() => {
+    if (!oracleId) {
+      navigate('/login', { replace: true });
+    }
+  }, [oracleId, navigate]);
+
+  if (!oracleId) return null;
+
   return (
     <BaseLayout>
       <div className="grid">
@@ -124,17 +160,29 @@ export const Home = () => {
         <div className="m-2">
           <InfoBoxField
             titleText="BCGW Account/Username:"
-            contentText="TEST HOLDER" // TODO: This will be replaced with the username from the backend
+            contentText={oracleId}
           />
         </div>
         <div className="m-2">
-          <RoundedTable
-            nameHeader="BCGW databases for this account"
-            detailHeader="Password Expiry date"
-            rowArray={rowArray}
-          />
+          {isLoading ? (
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex items-center justify-center p-8"
+            >
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+              <span className="sr-only">Loading environments…</span>
+            </div>
+          ) : (
+            <RoundedTable
+              nameHeader="BCGW databases for this account"
+              detailHeader="Password Expiry date"
+              rowArray={rowArray}
+            />
+          )}
         </div>
-        {showAlertInfo && (
+
+        {!isLoading && showAlertInfo && (
           <div className="m-4">
             <InlineAlert
               description={alertDescription()}
@@ -143,7 +191,7 @@ export const Home = () => {
             />
           </div>
         )}
-        {showWarningInfo && (
+        {!isLoading && showWarningInfo && (
           <div className="m-4">
             <InlineAlert
               description={warningDescription()}
@@ -164,7 +212,9 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
-              onPress={() => navigate('/changepassword')}
+              onPress={() =>
+                navigate('/changepassword', { state: { oracleId, verifyData } })
+              }
             >
               Change Password
             </Button>

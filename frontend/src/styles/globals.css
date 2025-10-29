@@ -25,3 +25,9 @@
   --color-danger: #f4e1e2;
   --color-warning: #fef1d8;
 }
+
+/* Hide Edge browser default eye icons for password boxes */
+input[type='password'].hide-edge-reveal::-ms-reveal,
+input[type='password'].hide-edge-reveal::-ms-clear {
+  display: none;
+}
