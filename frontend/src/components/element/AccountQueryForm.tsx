@@ -4,6 +4,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { InfoBox, InfoBoxField } from './InfoBox';
 import { apiFetch } from '../../api/client';
 import { toEnvLabel } from '../../utilities/EnvMap';
+import { Button } from '@bcgov/design-system-react-components';
 
 type VerifyResponse = { environment: string; pswd_expires: string | null };
 
@@ -149,17 +150,14 @@ export const AccountQueryForm = ({
         </div>
 
         <div className="m-2 px-4 py-2">
-          <button
+          <Button
+            variant="primary"
+            size="medium"
             type="submit"
-            disabled={!isValid || isSubmitting}
-            className={`rounded px-4 py-2 text-white ${
-              !isValid || isSubmitting
-                ? 'cursor-not-allowed bg-gray-400'
-                : 'bg-blue-800 hover:bg-blue-900'
-            }`}
+            isDisabled={!isValid || isSubmitting}
           >
             {isSubmitting ? 'Submitting…' : 'Submit'}
-          </button>
+          </Button>
         </div>
       </InfoBox>
     </form>

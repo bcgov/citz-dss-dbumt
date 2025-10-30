@@ -1,4 +1,5 @@
 import { InfoBox } from './InfoBox';
+//import { Button } from '@bcgov/design-system-react-components';
 
 export type QueryResults = {
   envTitle: string;
@@ -14,15 +15,15 @@ export type QueryResults = {
 
 export const QueryResultsPanel = ({
   results,
-  onCopySection,
-  onDownloadAll,
+  //  onCopySection,
+  //  onDownloadAll,
 }: {
   results: QueryResults[];
-  onCopySection?: (text: string) => void;
-  onDownloadAll?: () => void;
+  //  onCopySection?: (text: string) => void;
+  //  onDownloadAll?: () => void;
 }) => {
   return (
-    <div>
+    <div className="mb-5">
       {results.map((r, i) => (
         <InfoBox key={i} header={r.envTitle}>
           {r.systemPrivileges && (
@@ -130,18 +131,14 @@ export const QueryResultsPanel = ({
           )}
         </InfoBox>
       ))}
-
+      {/*
       <div className="mt-4 flex gap-3">
         {onDownloadAll && (
-          <button
-            type="button"
-            className="rounded border px-4 py-2 hover:bg-gray-100"
-            onClick={onDownloadAll}
-          >
+          <Button variant="primary" size="medium" type="button" onClick={onDownloadAll}>
             Download Results
-          </button>
+          </Button>
         )}
-      </div>
+      </div>*/}
     </div>
   );
 };
