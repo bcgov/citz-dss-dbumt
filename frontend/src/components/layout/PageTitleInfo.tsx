@@ -1,4 +1,4 @@
-import { Button, Heading, Text } from '@bcgov/design-system-react-components';
+import { Heading, Text, Link } from '@bcgov/design-system-react-components';
 import { useState } from 'react';
 
 /**
@@ -38,14 +38,9 @@ export const PageTitleInfo = (props: PageTitleInfoProps) => {
       return (
         <>
           <div className="max-w-3xs">
-            <Button
-              type="button"
-              variant="secondary"
-              size="medium"
-              onPress={toggleOpen}
-            >
+            <Link size="medium" onPress={toggleOpen}>
               {!open ? 'Show More' : 'Show Less'}
-            </Button>
+            </Link>
           </div>
           {open && <Text>{props.collapseText}</Text>}
         </>

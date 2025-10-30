@@ -55,6 +55,6 @@ export const changePasswordController = async (req: Request, res: Response) => {
     const message = err instanceof Error ? err.message : String(err);
     return res
       .status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR)
-      .send(`Server error: ${message}`);
+      .json({ error: "Failed to change password", reason: message });
   }
 };
