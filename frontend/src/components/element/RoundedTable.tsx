@@ -3,13 +3,13 @@ import {
   faTriangleExclamation,
   faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DateWarning } from '../../utilities/DateWarning';
 
 interface RoundedRowProps {
   key?: number;
   nameText: string;
-  date: Date;
+  date: Date | null;
   colour?: string;
 }
 
@@ -19,6 +19,19 @@ interface RoundedTableProps {
   rowArray: RoundedRowProps[];
 }
 
+type DateStatus = 'danger' | 'warning' | 'white-blue';
+
+const getBackgroundColour = (status: DateStatus) => {
+  switch (status) {
+    case 'danger':
+      return { backgroundColor: 'var(--color-danger)' };
+    case 'warning':
+      return { backgroundColor: 'var(--color-warning)' };
+    default:
+      return { backgroundColor: 'var(--color-white-blue)' };
+  }
+};
+
 /**
  * RoundedRow component that displays a row with a name and date
  * It also shows a warning icon and red text if the date is within 10 days of today
@@ -26,44 +39,51 @@ interface RoundedTableProps {
  * @param props - RoundedRowProps object containing key, nameText, date, and optional colour
  * @returns JSX.Element - The rendered RoundedRow component
  */
-const RoundedRow = (props: RoundedRowProps) => {
+const RoundedRow = ({ nameText, date }: RoundedRowProps) => {
   // State for showing warning icon and red text colour
-  const [showWarningIcon, setShowWarning] = useState(false);
-  const [showAlertIcon, setShowAlert] = useState(false);
-  let textColour = 'black';
+  const [dateStatus, setStatus] = useState<DateStatus>('white-blue');
 
-  // When props.date changes, check if the red text and warning icon should be shown
   useEffect(() => {
-    const { isWarning, isPast } = DateWarning(props.date);
-    setShowWarning(isWarning);
-    setShowAlert(isPast);
-  }, [props.date]);
+    if (!date) {
+      setStatus('white-blue');
+      return;
+    }
+    const { isWarning, isPast } = DateWarning(date);
+    if (isPast) setStatus('danger');
+    else if (isWarning) setStatus('warning');
+    else setStatus('white-blue');
+  }, [date]);
 
-  textColour = showWarningIcon || showAlertIcon ? 'red' : 'black';
+  const isAttn = dateStatus === 'danger' || dateStatus === 'warning';
 
   return (
-    <div className="bg-white-blue border-1 border-white-orange ml-2 rounded-lg p-4">
-      <div className={`flex justify-between text-${textColour} `}>
-        <div className="font-bold">{props.nameText}</div>
+    <div
+      style={getBackgroundColour(dateStatus)}
+      className="border-1 border-white-orange ml-2 rounded-lg p-4"
+    >
+      <div className={`flex justify-between ${isAttn ? 'text-red-700' : ''}`}>
+        <div className="font-bold">{nameText}</div>
         <div>
-          {showAlertIcon && (
+          {dateStatus === 'danger' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faCircleExclamation}
             />
           )}
-          {showWarningIcon && (
+          {dateStatus === 'warning' && (
             <FontAwesomeIcon
               className="pr-2 text-[20px]"
               icon={faTriangleExclamation}
             />
           )}
-          {props.date.toLocaleDateString('en-CA', {
-            timeZone: '-07:00',
-            month: 'long',
-            year: 'numeric',
-            day: '2-digit',
-          })}
+          {date
+            ? date.toLocaleDateString('en-CA', {
+                timeZone: '-07:00',
+                month: 'long',
+                year: 'numeric',
+                day: '2-digit',
+              })
+            : 'No expiry'}
         </div>
       </div>
     </div>
@@ -76,9 +96,11 @@ const RoundedRow = (props: RoundedRowProps) => {
  * @param props - RoundedTableProps object containing header information and rowArray elements as RoundedRows
  * @returns JSX.Element - The rendered RoundedTable component
  */
-export const RoundedTable = (props: RoundedTableProps) => {
-  const { nameHeader, detailHeader, rowArray } = props as RoundedTableProps;
-
+export const RoundedTable = ({
+  nameHeader,
+  detailHeader,
+  rowArray,
+}: RoundedTableProps) => {
   return (
     <>
       <div className="ml-2 px-2 py-4">
