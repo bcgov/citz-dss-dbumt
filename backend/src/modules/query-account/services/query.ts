@@ -1,21 +1,25 @@
 import { getOracleConnection } from "@/middleware/BCGW/connection";
 import { ErrorWithCode } from "@/utilities";
 import { logs } from "@/middleware";
-import {EnvironmentConfig} from "@/config/oracleEnvironments";
+import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import oracledb from "oracledb";
 
-interface QueriesResult {
+type DataRow = Record<string, string>;
+
+type QueryType = "accountStatus" | "roles" | "systemPrivileges";
+type QueriesResult = {
   environment: string;
   queryResult: QueryResult[];
-}
-interface QueryResult {
-  query: string;
-  data: any[];
-}
+};
+
+type QueryResult = {
+  query: QueryType;
+  data: DataRow[];
+};
 
 /**
  * @summary Builds the SQL query string that retrieves the account status, expiry date, and default tablespace for a given Oracle DB username
- * 
+ *
  * @returns the SQL query string for account status
  */
 export const buildAccountStatusQuery = (): string =>
@@ -23,7 +27,7 @@ export const buildAccountStatusQuery = (): string =>
 
 /**
  * @summary Builds the SQL query string that retrieves the roles granted to a given Oracle DB username
- * 
+ *
  * @returns the SQL query string for roles
  */
 export const buildRolesQuery = (): string =>
@@ -31,7 +35,7 @@ export const buildRolesQuery = (): string =>
 
 /**
  * @summary Builds the SQL query string that retrieves system privileges granted to a given Oracle DB username
- * 
+ *
  * @returns the SQL query string for system privileges
  */
 export const buildSystemPrivilegesQuery = (): string =>
@@ -43,7 +47,7 @@ export const buildSystemPrivilegesQuery = (): string =>
  * @param queryName - Query name to build (e.g., "accountStatus", "roles", "systemPrivileges")
  * @returns the SQL query string for the specified query name, or null if not found
  */
-export const buildQuery = (queryName: string): string | null => {
+export const buildQuery = (queryName: QueryType): string | null => {
   switch (queryName) {
     case "accountStatus":
       return buildAccountStatusQuery();
@@ -55,7 +59,6 @@ export const buildQuery = (queryName: string): string | null => {
       return null;
   }
 };
-
 
 /**
  * @summary Gets information about an Oracle user across multiple environments
@@ -69,9 +72,8 @@ export const buildQuery = (queryName: string): string | null => {
 export const getQueryResults = async (
   username: string,
   environments: EnvironmentConfig[],
-  queries: string[]
-): Promise<{ results: QueriesResult[], message: string }> => {
-
+  queries: QueryType[],
+): Promise<{ results: QueriesResult[]; message: string }> => {
   if (!username) {
     throw new ErrorWithCode("Missing username");
   }
@@ -95,18 +97,24 @@ export const getQueryResults = async (
       for (const query of queries) {
         const sql = buildQuery(query);
         if (!sql) {
-          console.warn(`${logs.API.ERROR_SIMPLE} failed to build query ${query} on ${env.name}: not defined`);
+          console.warn(
+            `${logs.API.ERROR_SIMPLE} failed to build query ${query} on ${env.name}: not defined`,
+          );
           continue;
         }
 
-        const result = await connection.execute(sql, [username], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+        const result = await connection.execute(sql, [username], {
+          outFormat: oracledb.OUT_FORMAT_OBJECT,
+        });
 
         if (result === undefined) {
-          console.warn(`${logs.ORACLE.ENTITY_NOT_FOUND} ${username} in ${env.name}`);
+          console.warn(
+            `${logs.ORACLE.ENTITY_NOT_FOUND} ${username} in ${env.name}`,
+          );
         } else {
           queryResult.push({
-            query,
-            data: result.rows || [],
+            query: query as QueryType,
+            data: (result.rows || []) as DataRow[],
           });
         }
       }
@@ -117,16 +125,19 @@ export const getQueryResults = async (
           queryResult,
         });
       }
-
     } catch (err) {
       failedEnvs.push(env.name);
-      console.warn(`${logs.ORACLE.ENTITY_ERROR} failed to query ${env.name}: ${err instanceof Error ? err.message : err}`);
+      console.warn(
+        `${logs.ORACLE.ENTITY_ERROR} failed to query ${env.name}: ${err instanceof Error ? err.message : err}`,
+      );
     } finally {
       if (connection) {
         try {
           await connection.close();
         } catch (closeErr) {
-          console.warn(`Failed to close connection for ${env.name}: ${closeErr}`);
+          console.warn(
+            `Failed to close connection for ${env.name}: ${closeErr}`,
+          );
         }
       }
     }
@@ -145,10 +156,8 @@ export const getQueryResults = async (
     return { results, message };
   }
 
-  return { results, message: "Data extracted successfully from one or more environments" };
+  return {
+    results,
+    message: "Data extracted successfully from one or more environments",
+  };
 };
-
-
-
-
-

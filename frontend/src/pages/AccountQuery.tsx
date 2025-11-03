@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
@@ -10,6 +10,7 @@ import {
   QueryResults,
 } from '../components/element/QueryResultsPanel';
 import { toEnvLabel } from '../utilities/EnvMap';
+import { apiFetch } from '../api/client';
 
 type VerifyResponse = { environment: string; pswd_expires: string | null };
 type NavState = { oracleId?: string; verifyData?: VerifyResponse[] };
@@ -24,6 +25,68 @@ type QueryRequest = {
   };
 };
 
+type DataRow = Record<string, string>;
+type QueryResult = {
+  query: 'accountStatus' | 'roles' | 'systemPrivileges';
+  data: DataRow[];
+};
+type EnvResult = {
+  environment: string;
+  queryResult: QueryResult[];
+};
+
+// Normalize uppercase Oracle columns to lowercase keys
+const lowerKeys = (row: Record<string, string>) =>
+  Object.fromEntries(Object.entries(row).map(([k, v]) => [k.toLowerCase(), v]));
+
+// Map the result array into <QueryResultsPanel /> props
+const mapDataToPanel = (envResults: EnvResult[]): QueryResults[] => {
+  if (!Array.isArray(envResults) || envResults.length === 0) return [];
+
+  return envResults.map((envRes) => {
+    const envLabel = toEnvLabel(envRes.environment);
+    const entry: QueryResults = {
+      envTitle: `BCGW ${envLabel} Database`,
+    };
+
+    for (const qr of envRes.queryResult ?? []) {
+      const rows = (qr.data ?? []).map(lowerKeys);
+
+      switch (qr.query) {
+        case 'systemPrivileges':
+          entry.systemPrivileges = rows.map((r) => ({
+            grantee: r.grantee,
+            privilege: r.privilege,
+          }));
+          break;
+
+        case 'roles':
+          entry.roles = rows.map((r) => ({
+            grantee: r.grantee,
+            granted_role: r.granted_role,
+          }));
+          break;
+
+        case 'accountStatus':
+          entry.accountStatus = rows.map((r) => ({
+            username: r.username,
+            account_status: r.account_status,
+            // EXPIRY_DATE is already aliased in SQL; after lowerKeys it's 'expiry_date'
+            expiry_date: r.expiry_date ?? null,
+            default_tablespace: r.default_tablespace,
+          }));
+          break;
+
+        default:
+          // Ignore unknown query names
+          break;
+      }
+    }
+
+    return entry;
+  });
+};
+
 export const AccountQuery = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,41 +98,57 @@ export const AccountQuery = () => {
   }, [oracleId, navigate]);
 
   const [results, setResults] = useState<QueryResults[] | null>(null);
-
-  // ---- dummy data connect to API later ----
-  const buildDummyResults = (req: QueryRequest): QueryResults[] => {
-    const label = toEnvLabel(req.targetEnv);
-    const upper = req.oracleId.toUpperCase();
-
-    return [
-      {
-        envTitle: `BCGW ${label} Database`,
-        systemPrivileges: req.queries.systemPrivileges
-          ? [{ grantee: upper, privilege: 'CREATE SESSION' }]
-          : undefined,
-        accountStatus: req.queries.accountStatus
-          ? [
-              {
-                username: upper,
-                account_status: 'OPEN',
-                expiry_date: 'ADMIN or SERVICE_ID',
-                default_tablespace: 'USERS',
-              },
-            ]
-          : undefined,
-        roles: req.queries.roles
-          ? [{ grantee: upper, granted_role: 'SRM_WHSE_ALL_GOV' }]
-          : undefined,
-      },
-    ];
-  };
-
-  const handleRunQuery = (req: QueryRequest) => {
-    const data = buildDummyResults(req);
-    setResults(data);
-  };
+  //const [loading, setLoading] = useState(false);
+  //const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   if (!oracleId) return null;
+
+  const handleRunQuery = async (req: QueryRequest) => {
+    // Cancel any dangling request
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    //setLoading(true);
+    //setError(null);
+
+    const queries = (
+      Object.entries(req.queries) as [keyof QueryRequest['queries'], boolean][]
+    )
+      .filter(([, on]) => on)
+      .map(([k]) => k) as ('accountStatus' | 'roles' | 'systemPrivileges')[];
+
+    if (queries.length === 0) {
+      setResults([]);
+      // setLoading(false);
+      return;
+    }
+
+    const body = {
+      username: req.oracleId.toUpperCase(),
+      envs: [req.targetEnv],
+      queries,
+    };
+
+    try {
+      const res = await apiFetch('/queryAccount/query', {
+        method: 'POST',
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+
+      const mappedData = mapDataToPanel(res);
+      setResults(mappedData);
+    } catch (err) {
+      setResults(null);
+      console.error('Account query failed:', err);
+      //setError(err);
+      return;
+    } finally {
+      //setLoading(false);
+    }
+  };
 
   const title = 'BCGW Oracle account query';
   const text = (
@@ -100,7 +179,7 @@ export const AccountQuery = () => {
           <div id="query-results">
             <QueryResultsPanel
               results={results}
-              onCopySection={(text) => navigator.clipboard.writeText(text)}
+              /*onCopySection={(text) => navigator.clipboard.writeText(text)}
               onDownloadAll={() => {
                 const blob = new Blob([JSON.stringify(results, null, 2)], {
                   type: 'application/json',
@@ -111,7 +190,7 @@ export const AccountQuery = () => {
                 a.download = 'bcgw-query-results.json';
                 a.click();
                 URL.revokeObjectURL(url);
-              }}
+              }}*/
             />
           </div>
         </>
