@@ -16,6 +16,8 @@ export const ORACLE = {
   CONNECTION_ERROR: `${oracleErr}Failed to connect to database.${FM.RESET}`,
   MISSING_VARS: `${oracleErr}One or more Oracle env vars are undefined.${FM.RESET}`,
   DISCONNECTED: `${oracleWarn}Disconnected from Oracle.${FM.RESET}`,
+  INVALID_ENV: `${oracleErr}One or more Oracle environemnts are not defined:${FM.RESET}`,
+
   // Entity strings
   ENTITY_FOUND: `${oracleOK}User exists in this environment.${FM.RESET}`,
   ENTITY_NOT_FOUND: `${oracleWarn}User not found in this environment.${FM.RESET}`,

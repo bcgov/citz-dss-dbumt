@@ -223,7 +223,9 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
-              onPress={() => navigate('/accountquery')}
+              onPress={() =>
+                navigate('/accountquery', { state: { oracleId, verifyData } })
+              }
             >
               Query an Account
             </Button>

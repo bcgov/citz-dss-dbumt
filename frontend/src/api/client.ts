@@ -10,8 +10,20 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
   });
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.reason || 'API request failed');
+    // Some of our older APIs return non-JSON errors, just as text
+    let errorMessage = 'API request failed';
+    try {
+      const errorData = await res.json();
+      errorMessage = errorData.reason || errorData.message || errorMessage;
+    } catch {
+      // Not JSON so try text
+      try {
+        errorMessage = await res.text();
+      } catch {
+        /* ignore */
+      }
+    }
+    throw new Error(errorMessage);
   }
 
   return await res.json();

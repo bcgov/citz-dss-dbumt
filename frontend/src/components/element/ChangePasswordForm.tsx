@@ -11,6 +11,7 @@ import SuccessMessage from './SuccessMessage';
 import ErrorMessage from './ErrorMessage';
 import { apiFetch } from '../../api/client';
 import { toEnvLabel } from '../../utilities/EnvMap';
+import { Button } from '@bcgov/design-system-react-components';
 
 type VerifyResponse = {
   environment: string;
@@ -173,7 +174,9 @@ export const ChangePasswordForm = ({
             onChange={(e) => setSelectedDb(e.target.value)}
             className="form-select w-full appearance-none rounded border border-gray-300 bg-white px-3 py-2 pr-10"
           >
-            <option value="">-- Select --</option>
+            <option value="" disabled>
+              -- Select --
+            </option>
             {databases.map((code) => (
               <option key={code} value={code}>
                 {toEnvLabel(code)}
@@ -352,16 +355,18 @@ export const ChangePasswordForm = ({
 
         {/* buttons */}
         <div className="m-2 flex items-center justify-between px-4 pt-4">
-          <button
+          <Button
+            variant="primary"
+            size="medium"
             type="submit"
-            disabled={!isValid}
-            className={`rounded px-4 py-2 text-white ${isValid ? 'bg-blue-800 hover:bg-blue-900' : 'cursor-not-allowed bg-gray-400'}`}
+            isDisabled={!isValid}
           >
             Change Password
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="medium"
             type="button"
-            className="rounded border border-gray-400 px-4 py-2 hover:bg-gray-100"
             onClick={() => {
               setCurrentPassword('');
               setNewPassword('');
@@ -369,7 +374,7 @@ export const ChangePasswordForm = ({
             }}
           >
             Clear Form
-          </button>
+          </Button>
         </div>
       </InfoBox>
     </form>

@@ -31,6 +31,7 @@ app.use("/health", modules.healthRouter);
 app.use("/passwordUpdate", modules.passwordUpdateRouter);
 app.use("/verifyAccount", modules.verifyAccountRouter);
 app.use("/changePassword", modules.changePasswordRouter);
+app.use("/queryAccount", modules.queryAccountRouter);
 
 // Error handler middleware. Must come last
 app.use(errorHandler);
