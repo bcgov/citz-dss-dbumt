@@ -11,6 +11,7 @@ type VerifyResponse = { environment: string; pswd_expires: string | null };
 interface AccountQueryFormProps {
   oracleId: string;
   verifyData?: VerifyResponse[];
+  isLoading?: boolean;
   onSubmit: (payload: {
     oracleId: string;
     targetEnv: string;
@@ -33,6 +34,7 @@ const fetchUserEnvironments = async (oracleId: string): Promise<string[]> => {
 export const AccountQueryForm = ({
   oracleId,
   verifyData,
+  isLoading,
   onSubmit,
 }: AccountQueryFormProps) => {
   const [databases, setDatabases] = useState<string[]>([]);
@@ -154,7 +156,7 @@ export const AccountQueryForm = ({
             variant="primary"
             size="medium"
             type="submit"
-            isDisabled={!isValid || isSubmitting}
+            isDisabled={!isValid || isSubmitting || isLoading}
           >
             {isSubmitting ? 'Submitting…' : 'Submit'}
           </Button>

@@ -11,6 +11,7 @@ import {
 } from '../components/element/QueryResultsPanel';
 import { toEnvLabel } from '../utilities/EnvMap';
 import { apiFetch } from '../api/client';
+import ErrorMessage from '../components/element/ErrorMessage';
 
 type VerifyResponse = { environment: string; pswd_expires: string | null };
 type NavState = { oracleId?: string; verifyData?: VerifyResponse[] };
@@ -98,8 +99,8 @@ export const AccountQuery = () => {
   }, [oracleId, navigate]);
 
   const [results, setResults] = useState<QueryResults[] | null>(null);
-  //const [loading, setLoading] = useState(false);
-  //const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   if (!oracleId) return null;
@@ -110,8 +111,8 @@ export const AccountQuery = () => {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    //setLoading(true);
-    //setError(null);
+    setLoading(true);
+    setError(null);
 
     const queries = (
       Object.entries(req.queries) as [keyof QueryRequest['queries'], boolean][]
@@ -121,7 +122,7 @@ export const AccountQuery = () => {
 
     if (queries.length === 0) {
       setResults([]);
-      // setLoading(false);
+      setLoading(false);
       return;
     }
 
@@ -140,13 +141,16 @@ export const AccountQuery = () => {
 
       const mappedData = mapDataToPanel(res);
       setResults(mappedData);
-    } catch (err) {
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred while querying account.');
+      }
       setResults(null);
-      console.error('Account query failed:', err);
-      //setError(err);
       return;
     } finally {
-      //setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -172,7 +176,15 @@ export const AccountQuery = () => {
         oracleId={oracleId}
         verifyData={verifyData}
         onSubmit={handleRunQuery}
+        isLoading={loading}
       />
+      {error && (
+        <>
+          <br />
+
+          <ErrorMessage basic={error} />
+        </>
+      )}
       {results && (
         <>
           <br />
