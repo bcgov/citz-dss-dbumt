@@ -10,9 +10,7 @@ router.route(`/query`).post(queryOracleId);
 // Health check route
 router.route("/health").get((req, res) => {
   console.log(logs.API.HEALTH_CHECK + " /queryAccount/health");
-  return res
-    .status(HTTP_STATUS_CODES.OK)
-    .send("Query Account Service Healthy");
+  return res.status(HTTP_STATUS_CODES.OK).send("Query Account Service Healthy");
 });
 
 export default router;
