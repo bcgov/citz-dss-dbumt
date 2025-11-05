@@ -3,6 +3,8 @@ import { ErrorWithCode } from "@/utilities";
 import { logs } from "@/middleware";
 import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import oracledb from "oracledb";
+import { auditLogger } from "../../../utilities/auditLogger/auditLogger";
+import { LogParams } from "../../../utilities/auditLogger/types";
 
 type DataRow = Record<string, string>;
 
@@ -87,6 +89,17 @@ export const getQueryResults = async (
   const results: QueriesResult[] = [];
   const failedEnvs: string[] = [];
 
+  //AuditLogger params
+  const logParams: LogParams = {
+    IDIR: "-",
+    oracleID: username,
+    actionType: "QUERY_ACCOUNT",
+    //As we only let user query one environment at a time, we log the first one, changed to include all envs if multi-env query allowed
+    environment: environments[0].name,
+    details: { queries },
+    createdAt: new Date(),
+  };
+
   for (const env of environments) {
     let connection;
     const queryResult: QueryResult[] = [];
@@ -124,12 +137,15 @@ export const getQueryResults = async (
           environment: env.name,
           queryResult,
         });
+        logParams.status = "SUCCESS";
       }
     } catch (err) {
       failedEnvs.push(env.name);
       console.warn(
         `${logs.ORACLE.ENTITY_ERROR} failed to query ${env.name}: ${err instanceof Error ? err.message : err}`,
       );
+      logParams.status = "FAILURE";
+      logParams.message = err instanceof Error ? err.message : String(err);
     } finally {
       if (connection) {
         try {
@@ -153,9 +169,12 @@ export const getQueryResults = async (
       ? logs.ORACLE.ENV_CHECK_FAIL
       : logs.ORACLE.ENTITY_NOT_FOUND;
     console.error(log, message);
+    logParams.status = "FAILURE";
+    logParams.message = message;
+    await auditLogger(logParams);
     return { results, message };
   }
-
+  await auditLogger(logParams);
   return {
     results,
     message: "Data extracted successfully from one or more environments",

@@ -3,6 +3,8 @@ import { validatePassword } from "./validatePassword";
 import { getOracleConnection } from "../../../middleware/BCGW/connection"; // Centralized connection util
 import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import stripAnsi from "strip-ansi";
+import { auditLogger } from "../../../utilities/auditLogger/auditLogger";
+import { LogParams } from "../../../utilities/auditLogger/types";
 
 /**
  * Attempt to change an Oracle user password in a given environment.
@@ -38,6 +40,14 @@ export const changeOraclePassword = async (
 
   let connection: oracledb.Connection | null = null;
 
+  //AuditLogger params
+  const logParams: LogParams = {
+    IDIR: "-",
+    oracleID: upperOracleId,
+    actionType: "CHANGE_PASSWORD",
+    environment: targetEnv.name,
+  };
+
   try {
     console.log(
       `Attempting Oracle connection as ${upperOracleId} to ${targetEnv.name}...`,
@@ -65,13 +75,19 @@ export const changeOraclePassword = async (
       `ALTER USER ${upperOracleId} IDENTIFIED BY "${newPassword}"`,
     );
 
+    logParams.status = "SUCCESS";
+
     console.log(`Password change successful for ${upperOracleId}`);
     return { success: true };
   } catch (err: unknown) {
     const reason = err instanceof Error ? stripAnsi(err.message) : String(err);
     console.error(`password change error ${oracleId}: ${reason}`);
+    logParams.status = "FAILURE";
+    logParams.message = reason;
     return { success: false, reason };
   } finally {
+    logParams.createdAt = new Date();
+    await auditLogger(logParams);
     if (connection) {
       try {
         await connection.close();
