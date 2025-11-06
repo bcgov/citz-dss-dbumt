@@ -32,11 +32,11 @@ export const connectDatabase = async () => {
     // Connection from local ExpressJS server
     const localDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:${MONGO_EXTERNAL_PORT}/${MONGO_SERVICE_NAME}?authSource=admin`;
     // Connection from containerized ExpressJS server
-    const containerDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_SERVICE_NAME}:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=admin`;
+    const containerDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_SERVICE_NAME}:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=${APPLICATION_NAME}`;
 
     // if we are running in docker set the uri to use container URI otherwise use local URI
     const mongoURI =
-      process.env.NODE_ENV === "development" ? containerDBUri : localDBUri;
+      process.env.NODE_ENV === "development" ? localDBUri : containerDBUri;
 
     // log changes to connection to MongoDB
     mongoose.connection.on("connected", () =>
