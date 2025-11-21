@@ -23,7 +23,7 @@ export const QueryResultsPanel = ({
   //  onDownloadAll?: () => void;
 }) => {
   return (
-    <div className="mb-5">
+    <div>
       {results.map((r, i) => (
         <InfoBox key={i} header={r.envTitle}>
           {r.systemPrivileges && (

@@ -30,7 +30,7 @@ export const BaseLayout = ({
       {breadcrumbItems && <Breadcrumb items={breadcrumbItems} />}
       <div className="flex-grow">
         <div className="grid-rows-auto grid grid-cols-8 gap-2">
-          <div className="grid sm:col-start-1 sm:col-end-9 md:col-start-2 md:col-end-8 lg:col-start-3 lg:col-end-7">
+          <div className="grid sm:col-start-1 sm:col-end-9 md:col-start-2 md:col-end-8 lg:col-start-3 lg:col-end-7 pb-20">
             {children}
           </div>
         </div>
