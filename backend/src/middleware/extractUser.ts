@@ -5,10 +5,10 @@ import { Buffer } from "buffer";
 export const extractUserInfo = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const header = req.headers["x-userinfo"];
-  
+
   if (!header) {
     req.user = null;
     return next();
