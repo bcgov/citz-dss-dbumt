@@ -46,7 +46,9 @@ export const queryOracleId = async (req: Request, res: Response) => {
     );
   }
 
+  const user = req.user || null;
   const { results, message } = await getQueryResults(
+    user,
     upperUsername,
     selectedEnvs,
     queries,

@@ -5,6 +5,7 @@ import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import stripAnsi from "strip-ansi";
 import { auditLogger } from "../../../utilities/auditLogger/auditLogger";
 import { LogParams } from "../../../utilities/auditLogger/types";
+import { UserInfo } from "@/types/userInfo";
 
 /**
  * Attempt to change an Oracle user password in a given environment.
@@ -15,6 +16,7 @@ import { LogParams } from "../../../utilities/auditLogger/types";
  * @param targetEnv - Target environment (DEV / TEST / PROD)
  */
 export const changeOraclePassword = async (
+  user: UserInfo | null,
   oracleId: string,
   currentPassword: string,
   newPassword: string,
@@ -42,7 +44,8 @@ export const changeOraclePassword = async (
 
   //AuditLogger params
   const logParams: LogParams = {
-    IDIR: "-",
+    IDIR: user?.username ?? "-",
+    email: user?.email ?? "-",
     oracleID: upperOracleId,
     actionType: "CHANGE_PASSWORD",
     environment: targetEnv.name,

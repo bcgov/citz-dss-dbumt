@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IAuditLog extends Document {
   actionType: "CHANGE_PASSWORD" | "QUERY_ACCOUNT";
   IDIR: string;
+  email?: string;
   oracleID: string;
   environment: string;
   details?: object;
@@ -20,6 +21,7 @@ const auditLogSchema = new Schema<IAuditLog>({
   IDIR: { type: String, required: true },
   oracleID: { type: String, required: true },
   environment: { type: String },
+  email: { type: String },
   details: { type: Object },
   status: { type: String, required: true, enum: ["SUCCESS", "FAILURE"] },
   message: { type: String },

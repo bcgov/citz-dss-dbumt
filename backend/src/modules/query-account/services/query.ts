@@ -5,6 +5,7 @@ import { EnvironmentConfig } from "@/config/oracleEnvironments";
 import oracledb from "oracledb";
 import { auditLogger } from "../../../utilities/auditLogger/auditLogger";
 import { LogParams } from "../../../utilities/auditLogger/types";
+import { UserInfo } from "../../../types/userInfo";
 
 type DataRow = Record<string, string>;
 
@@ -72,6 +73,7 @@ export const buildQuery = (queryName: QueryType): string | null => {
  * @throws ErrorWithCode if no environments are configured or connection fails
  */
 export const getQueryResults = async (
+  user: UserInfo | null,
   username: string,
   environments: EnvironmentConfig[],
   queries: QueryType[],
@@ -91,7 +93,8 @@ export const getQueryResults = async (
 
   //AuditLogger params
   const logParams: LogParams = {
-    IDIR: "-",
+    IDIR: user?.username ?? "-",
+    email: user?.email ?? "-",
     oracleID: username,
     actionType: "QUERY_ACCOUNT",
     //As we only let user query one environment at a time, we log the first one, changed to include all envs if multi-env query allowed
