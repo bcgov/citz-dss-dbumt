@@ -33,4 +33,5 @@ export const MONGODB = {
   FIND_ERROR: `${mongoDbErr}Failed to find entry.${FM.RESET}`,
   ENTITY_UPDATED: `${mongoDbOK}Entity updated.${FM.RESET}`,
   UPDATE_ERROR: `${mongoDbErr}Failed to update entry.${FM.RESET}`,
+  ADD_ERROR: `${mongoDbErr}Failed to add entry.${FM.RESET}`,
 };

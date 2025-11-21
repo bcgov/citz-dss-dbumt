@@ -35,7 +35,9 @@ export const changePasswordController = async (req: Request, res: Response) => {
         .send("Invalid environment");
     }
 
+    const user = req.user || null;
     const result = await changeOraclePassword(
+      user,
       oracleId,
       currentPassword,
       newPassword,

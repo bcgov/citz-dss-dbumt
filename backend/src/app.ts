@@ -3,25 +3,30 @@ import express, { Application } from "express";
 import cors from "cors";
 import * as modules from "./modules";
 import errorHandler from "./middleware/errorHandler";
+import { extractUserInfo } from "./middleware/extractUser";
 
 // Define and create the express app
 const app: Application = express();
 
 const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  }),
-);
+// CORS configuration if origins are specified
+if (allowedOrigins.length != 0) {
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+      credentials: true,
+    }),
+  );
+}
 
+app.use(extractUserInfo);
 // Express Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

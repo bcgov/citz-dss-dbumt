@@ -1,4 +1,4 @@
-import app from "./express";
+import app from "./app";
 import { database, logs } from "@/middleware";
 import { ENV } from "@/config";
 

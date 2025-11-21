@@ -1,6 +1,8 @@
 {
   // Find more information on the following here: https://www.typescriptlang.org/tsconfig/
   "compilerOptions": {
+    //Including Types
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     // -- TYPE CHECKING --
     "strict": true, // All files parsed in ECMAScript mode. All Strict options set to true
     "noImplicitAny": true, // TypeScript issue an error when a variable's type can not be infered
