@@ -12,9 +12,8 @@ import {
 import { toEnvLabel } from '../utilities/EnvMap';
 import { apiFetch } from '../api/client';
 import ErrorMessage from '../components/element/ErrorMessage';
-
-type VerifyResponse = { environment: string; pswd_expires: string | null };
-type NavState = { oracleId?: string; verifyData?: VerifyResponse[] };
+import { useUser } from '../contexts/UserContext';
+import VerifyResponse from '../types/VerifyResponse';
 
 type QueryRequest = {
   oracleId: string;
@@ -92,7 +91,10 @@ export const AccountQuery = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { oracleId, verifyData } = (location.state ?? {}) as NavState;
+  // Used to get oracleId from context
+  const { oracleId } = useUser();
+
+  const verifyData = (location.state ?? {}) as VerifyResponse[];
 
   useEffect(() => {
     if (!oracleId) navigate('/login', { replace: true });

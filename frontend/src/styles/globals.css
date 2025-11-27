@@ -24,6 +24,9 @@
   --color-white-orange: #e0dedc;
   --color-danger: #f4e1e2;
   --color-warning: #fef1d8;
+  --color-valid-password: #4b8249;
+  --color-invalid-password: #ce3e39;
+  --color-neutral-password: #898785;
 }
 
 /* Hide Edge browser default eye icons for password boxes */

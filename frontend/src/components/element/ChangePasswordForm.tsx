@@ -270,10 +270,10 @@ export const ChangePasswordForm = ({
               style={{
                 color:
                   newPassword.length === 0
-                    ? '#898785' // neutral
+                    ? 'var(--color-neutral-password)' // neutral
                     : passwordValidation.length
-                      ? '#42814A' // valid
-                      : '#CE3E39', // invalid
+                      ? 'var(--color-valid-password)' // valid
+                      : 'var(--color-invalid-password)', // invalid
               }}
             >
               {newPassword.length === 0
@@ -286,7 +286,9 @@ export const ChangePasswordForm = ({
 
             <li
               style={{
-                color: passwordValidation.upper ? '#42814A' : '#898785',
+                color: passwordValidation.upper
+                  ? 'var(--color-valid-password)'
+                  : 'var(--color-neutral-password)',
               }}
             >
               {passwordValidation.upper ? '✓' : '•'} One uppercase alphabet
@@ -295,7 +297,9 @@ export const ChangePasswordForm = ({
 
             <li
               style={{
-                color: passwordValidation.lower ? '#42814A' : '#898785',
+                color: passwordValidation.lower
+                  ? 'var(--color-valid-password)'
+                  : 'var(--color-neutral-password)',
               }}
             >
               {passwordValidation.lower ? '✓' : '•'} One lowercase alphabet
@@ -304,7 +308,9 @@ export const ChangePasswordForm = ({
 
             <li
               style={{
-                color: passwordValidation.digit ? '#42814A' : '#898785',
+                color: passwordValidation.digit
+                  ? 'var(--color-valid-password)'
+                  : 'var(--color-neutral-password)',
               }}
             >
               {passwordValidation.digit ? '✓' : '•'} One number (0–9)
@@ -314,10 +320,10 @@ export const ChangePasswordForm = ({
               style={{
                 color:
                   newPassword.length === 0
-                    ? '#898785'
+                    ? 'var(--color-neutral-password)'
                     : passwordValidation.noSpecial
-                      ? '#42814A'
-                      : '#CE3E39',
+                      ? 'var(--color-valid-password)'
+                      : 'var(--color-invalid-password)',
               }}
             >
               {passwordValidation.noSpecial
@@ -332,10 +338,10 @@ export const ChangePasswordForm = ({
               style={{
                 color:
                   newPassword.length === 0
-                    ? '#898785'
+                    ? 'var(--color-neutral-password)'
                     : passwordValidation.noLeadingDigit
-                      ? '#42814A'
-                      : '#CE3E39',
+                      ? 'var(--color-valid-password)'
+                      : 'var(--color-invalid-password)',
               }}
             >
               {passwordValidation.noLeadingDigit
@@ -346,7 +352,7 @@ export const ChangePasswordForm = ({
               No number as the first character
             </li>
             {/* TODO
-              <li style={{ color: '#898785' }}>
+              <li style={{ color: 'var(--color-neutral-password)' }}>
                 • No historical password (not implemented)
               </li>
               */}

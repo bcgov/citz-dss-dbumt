@@ -25,7 +25,7 @@ export const QueryResultsPanel = ({
   return (
     <div>
       {results.map((r, i) => (
-        <InfoBox key={i} header={r.envTitle}>
+        <InfoBox key={i} header={r.envTitle} className="query-results bg-white">
           {r.systemPrivileges && (
             <div className="m-2 px-4 py-2">
               <div className="mb-2 flex items-center justify-between">
@@ -48,7 +48,7 @@ export const QueryResultsPanel = ({
               <div className="overflow-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-gray-100">
+                    <tr>
                       <th className="border px-2 py-1 text-left">GRANTEE</th>
                       <th className="border px-2 py-1 text-left">PRIVILEGE</th>
                     </tr>
@@ -72,7 +72,7 @@ export const QueryResultsPanel = ({
               <div className="overflow-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-gray-100">
+                    <tr>
                       <th className="border px-2 py-1 text-left">USERNAME</th>
                       <th className="border px-2 py-1 text-left">
                         ACCOUNT_STATUS
@@ -110,7 +110,7 @@ export const QueryResultsPanel = ({
               <div className="overflow-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-gray-100">
+                    <tr>
                       <th className="border px-2 py-1 text-left">GRANTEE</th>
                       <th className="border px-2 py-1 text-left">
                         GRANTED_ROLE

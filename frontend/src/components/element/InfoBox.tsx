@@ -7,6 +7,7 @@ import { ReactNode } from 'react';
  */
 interface InfoBoxProps {
   header: string;
+  className?: string;
   children?: ReactNode;
 }
 
@@ -31,7 +32,9 @@ interface InfoBoxFieldProps {
  */
 export const InfoBox = (props: InfoBoxProps) => {
   return (
-    <div className="bg-grey border-light-grey border-2 border-solid shadow-sm">
+    <div
+      className={`bg-grey border-light-grey border-2 border-solid shadow-sm ${props.className}`}
+    >
       <InfoBoxHeader headerText={props.header} />
       <div className="p-5">{props.children}</div>
     </div>

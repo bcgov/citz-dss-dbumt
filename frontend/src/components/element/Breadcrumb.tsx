@@ -37,10 +37,7 @@ export const Breadcrumb = ({ items }: BreadcrumbProps) => {
               {items.map((item, index) => (
                 <li key={index} className="flex items-center space-x-[8px]">
                   {item.path ? (
-                    <Link
-                      to={item.path}
-                      className="text-blue-500 hover:underline"
-                    >
+                    <Link to={item.path} className="breadcrumb-link">
                       {item.label}
                     </Link>
                   ) : (

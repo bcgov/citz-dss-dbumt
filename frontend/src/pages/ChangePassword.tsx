@@ -5,22 +5,20 @@ import { Text as BCGovText } from '@bcgov/design-system-react-components';
 import { ChangePasswordForm } from '../components/element/ChangePasswordForm';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-type VerifyResponse = {
-  environment: string;
-  pswd_expires: string | null;
-};
+import { useUser } from '../contexts/UserContext';
+import VerifyResponse from '../types/VerifyResponse';
 
 export const ChangePassword = () => {
-  // Pass oracleid to next page
+  // Used to get verification data from navigation
   const location = useLocation();
+
+  // Used to get oracleId from context
+  const { oracleId } = useUser();
+
   // Project navigation
   const navigate = useNavigate();
 
-  const { oracleId, verifyData } = (location.state ?? {}) as {
-    oracleId?: string;
-    verifyData?: VerifyResponse[];
-  };
+  const verifyData = (location.state ?? {}) as VerifyResponse[];
 
   // If no oracleid, go to login page
   useEffect(() => {
