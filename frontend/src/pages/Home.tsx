@@ -2,9 +2,10 @@ import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxField } from '../components/element/InfoBox';
+import { Text as BCGovText } from '@bcgov/design-system-react-components';
 import { RoundedTable } from '../components/element/RoundedTable';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Heading,
   InlineAlert,
@@ -14,6 +15,7 @@ import { DateWarning } from '../utilities/DateWarning';
 import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
 import { apiFetch } from '../api/client';
 import { toEnvLabel } from '../utilities/EnvMap';
+import { useUser } from '../contexts/UserContext';
 
 type VerifyResponse = {
   environment: string;
@@ -22,16 +24,18 @@ type VerifyResponse = {
 
 // Text for the page including title, hideable text, and additional information
 const title = 'Manage your BCGW Oracle account';
-const collapseText = `The Database User Management Tool (DBUMT) is managed by Data
-          Publication Services team in BC Data Service. This tool is designed
-          to help users to securely update their BC Geographic Warehouse
-          (BCGW) Oracle account database(s) password(s) and ask for account
-          details.`;
+const text = (
+  <BCGovText>
+    The Database User Management Tool (DBUMT) is managed by Data Publication
+    Services team in BC Data Service. This tool is designed to help users to
+    securely update their BC Geographic Warehouse (BCGW) Oracle account
+    database(s) password(s) and ask for account details.
+  </BCGovText>
+);
 
 /**
- * The Home page is displayed after a user verifies their IDIR and BCGW Oracle username.
- * Information on the BCGW is displayed within a collapsible section. A table of database
- * access and password expiry information is displayed.
+ * The Home page is displayed after a user verifies their IDIR and BCGW Oracle username
+ * A table of database access and password expiry information is displayed.
  *
  * @returns JSX.Element - The rendered Home component
  */
@@ -44,9 +48,9 @@ export const Home = () => {
   const [alertDbArray, setAlertDbArray] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Pass oracleid to next page
-  const location = useLocation();
-  const oracleId = location.state?.oracleId;
+  // Used to get oracleId from context
+  const { oracleId } = useUser();
+
   // Project navigation
   const navigate = useNavigate();
 
@@ -153,7 +157,7 @@ export const Home = () => {
     <BaseLayout>
       <div className="grid">
         <GoldBar />
-        <PageTitleInfo title={title} collapseText={collapseText} />
+        <PageTitleInfo title={title} text={text} />
       </div>
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
