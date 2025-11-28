@@ -125,7 +125,7 @@ export const Home = () => {
       dbNames = JoinArrayWithLast(warningDbArray, ', ', ' & ');
       plural = 's';
     }
-    return `Your BCGW ${dbNames} database password${plural} expire${plural === 's' ? '' : 's'} within 10 days.
+    return `Your BCGW ${dbNames} database password${plural} expire${plural === 's' ? '' : 's'} will expire soon.
         Please reset your password${plural} by selecting 'Change Password' action below.`;
   };
 
