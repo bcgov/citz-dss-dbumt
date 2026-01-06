@@ -12,6 +12,7 @@ on:
       - main # Only run on the main branch.
     paths:
      - 'frontend/**' # Triggers on changes to files in the frontend/ directory.
+     - '.github/**'  # Also trigger if any workflow file is changed.
 
 jobs:
   Build-Push:
