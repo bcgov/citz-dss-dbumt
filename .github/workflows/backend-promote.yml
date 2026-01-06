@@ -1,0 +1,44 @@
+name: Promote Backend to the specified environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Logical environment to deploy"
+        required: true
+        type: choice
+        # Only these options can be selected
+        options:
+          - dev
+          - test
+          - prod
+      image_sha:
+        description: "Commit SHA to deploy"
+        required: true
+
+jobs:
+  promote:
+    runs-on: ubuntu-22.04
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Install oc CLI
+        run: |
+          curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz | tar -xz
+          sudo mv oc /usr/local/bin/oc
+
+      - name: Login to OpenShift
+        run: |
+          oc login ${{ secrets.OPENSHIFT_SERVER_URL }} \
+            --token=${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }} \
+            --insecure-skip-tls-verify=true
+
+      - name: Set image in the target namespace
+        run: |
+          oc set image deployment/dbumt-api \
+            dbumt-api=image-registry.openshift-image-registry.svc:5000/tools/dbumt-api:${{ inputs.image_sha }} \
+            -n ${{ secrets.NAMESPACE }}
+
+      - name: Wait for rollout to finish
+        run: |
+          oc rollout status deployment/dbumt-api -n ${{ secrets.NAMESPACE }}
