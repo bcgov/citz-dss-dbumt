@@ -42,3 +42,10 @@ jobs:
       - name: Push Image
         run: |
           docker push -a ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api
+
+      # Get the SHA of the just-pushed image and deploy to dev environment
+      - name: Deploy to Dev
+        run: | 
+          IMAGE_SHA=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ secrets.PUBLIC_IMAGE_REPOSITORY }}/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-api:dev)
+          oc set image deployment/dbumt-api dbumt-api=$IMAGE_SHA -n ${{ secrets.NAMESPACE }}
+          oc rollout status deployment/dbumt-api -n ${{ secrets.NAMESPACE }}
