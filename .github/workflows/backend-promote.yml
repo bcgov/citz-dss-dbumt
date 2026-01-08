@@ -36,7 +36,7 @@ jobs:
       - name: Set image in the target namespace
         run: |
           oc set image deployment/dbumt-api \
-            dbumt-api=image-registry.openshift-image-registry.svc:5000/tools/dbumt-api:${{ inputs.image_sha }} \
+            dbumt-api=image-registry.openshift-image-registry.svc:5000/${{ secrets.NAMESPACE }}/dbumt-api:${{ inputs.image_sha }} \
             -n ${{ secrets.NAMESPACE }}
 
       - name: Wait for rollout to finish
