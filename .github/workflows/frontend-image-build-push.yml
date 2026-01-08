@@ -50,7 +50,7 @@ jobs:
       - name: Login to OpenShift
         run: |
           oc login ${{ secrets.OPENSHIFT_SERVER_URL }} \
-            --token=${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }} \
+            --token=${{ secrets.OPENSHIFT_DEPLOY_TOKEN }} \
             --insecure-skip-tls-verify=true
 
       # Get the SHA of the just-pushed image and deploy to dev environment
