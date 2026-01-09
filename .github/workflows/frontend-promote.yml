@@ -30,7 +30,7 @@ jobs:
       - name: Login to OpenShift
         run: |
           oc login ${{ secrets.OPENSHIFT_SERVER_URL }} \
-            --token=${{ secrets.OPENSHIFT_SA_TOOLS_TOKEN }} \
+            --token=${{ secrets.OPENSHIFT_DEPLOY_TOKEN }} \
             --insecure-skip-tls-verify=true
 
       - name: Set image in the target namespace
