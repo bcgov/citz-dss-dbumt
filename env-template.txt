@@ -31,10 +31,13 @@ CORS_ORIGIN=
 MONGO_IMAGE_TAG=
 MONGO_EXTERNAL_PORT=
 MONGO_SERVICE_NAME=
+MONGO_ROOT_USER= #Use it only on local dev environment
+MONGO_ROOT_PASSWORD= #Use it only on local dev environment
 MONGO_USER=
 MONGO_PASSWORD=
 
 # FRONTEND ENVIRONMENT
 FRONTEND_PORT=
+
 #API Base URL setting for frontend
 VITE_API_BASE_URL=
