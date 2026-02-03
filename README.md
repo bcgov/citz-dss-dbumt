@@ -17,11 +17,107 @@ This repository is managed by the Data Publication Service (DPS) team. If you ha
 
 If you wish to make a change to the repository please create an issue.
 
+## Environment Variables (.env)
+
+This project uses environment variables for configuration. Most variable names are self-explanatory. Refer to env-template.txt file to see the full list of environment variables. A few items need some notes explained below.
+
+| Item                    | Description                            |
+| ----------------------- | -------------------------------------- |
+| `APPLICATION_NAME`      | Application name, also used for Mongo database name |
+| `ORACLE_CLIENT_LOCAL_PATH`  | The applicatopm uses Oracle connection in thick mode so needs Oracle client to exist on the machine, this variable holds the path to the client     |
+| `CORS_ORIGIN`             | If you leave it blank, it will allow all origins        |
+|  `MONGO_IMAGE_TAG` | Only used by docker compose file and indicates MongoDB image tag to be used    |
+|  `MONGO_SERVICE_NAME` | Depending on how and where your MongoDB is running, it can be either the service name or the URL, for example if you are running MongoDB locally, it is `localhost` but if you are using docker, it is `MongoDB`    |
+| `MONGO_ROOT_USER`            | This is MongoDB's root (admin) username. This is only used by mongo-init.js to connect and create the application database and user. Refer to the docker-compose file to see how mongo-init.js is used   |
+| `MONGO_ROOT_PASSWORD`          | This is MongoDB's root (admin) password. This is only used by mongo-init.js to connect and create the application database and user. Refer to the docker-compose file to see how mongo-init.js is used |
+| `VITE_API_BASE_URL`          | The API base URL (Backend URL) which is used by the frontend (Vite in development) to call API. |
+
 ## Development
 
-DBUMT is currently currently being built and is in an experimental phase. Watch for the release of v1.0.0 for a more stable version.
+This section explains how to run dbumt locally for development.
 
-Instructions on how to implement DBUMT on your local machine to come.
+1- Create your local .env
+
+Copy the template file `env-template.txt` to .env to create your local env file:  
+Don’t commit your .env. It is ignored by git.
+
+2- Configure each variable in .env file
+
+3- From the reposiotry root, run  
+`docker compose up --build`
+
+This typically starts:
+
+backend API  
+frontend dev server  
+MongoDB
+
+Verify services
+
+Backend: http://localhost:<BACKEND_PORT>  
+Frontend: http://localhost:<FRONTEND_PORT>  
+MongoDB: mongodb://localhost:<MONGO_EXTERNAL_PORT>  
+
+To Stop everything run  
+`docker compose down`
+
+Alternatively, you can run them locally without docker. This can be helpful when actively developing and you have a lot of changes and development:
+
+1- You can either run MongoDB locally or run the container (only MongoDB container) created earlier.  
+
+2- Open the frontend folder in Visual Studio Code, and in the Terminal run:  
+`npm install`  
+`npm run dev`  
+This will also gives you hot-reloading to help with development and debugging.
+
+3- Open the backend folder in Visual Studio Code. Run  
+`npm install`  
+Then create .vscode/launch.json with the content bellow:
+
+```
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug with Nodemon + ts-node",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "runtimeArgs": [
+        "--exec",
+        "${workspaceFolder}/node_modules/.bin/ts-node.cmd",
+        "-r",
+        "tsconfig-paths/register",
+        "-r",
+        "dotenv/config"
+      ],
+      "args": ["./src/index.ts"],
+      "env": {
+        "DOTENV_CONFIG_PATH": "../.env",
+        "NODE_ENV": "development"
+      },
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\src\\index.ts",
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      "restart": true,
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
+
+```
+
+This gives you the debug option directy through VScode. You can Run with or without debugging.
+
 
 ## Directory
 
@@ -37,6 +133,7 @@ Instructions on how to implement DBUMT on your local machine to come.
 | `env-template.txt`   | All environment variable names required to run DBUMT locally             |
 | `LICENSE`            | The Apache 2.0 license documentation.                                    |
 | `package.json`       | Contains run commands for Podman containers                              |
+| `mongodb-init.js`          | This script is loaded as a initialize script for MongoDB by Docker compose. It uses the variables provided in .env file to create a database named <APPLICATION_NAME> and database username and password as in <MONGO_USER> and <MONGO_PASSWORD> |
 | `README.md`          | This document                                                            |
 
 ## Commands

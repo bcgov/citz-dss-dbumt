@@ -26,11 +26,12 @@ Run the application locally (use command above for development mode). The consol
 | Item                       | Description                                                                          |
 | -------------------------- | ------------------------------------------------------------------------------------ |
 | `src/`                     | Folder holding service files and API server material                                 |
-|   `config/`                |   Used to set environment variables.                                                 |
-|   `constants/`             |   Values that are set and never updated. Can be used across `backend/src`.           |
-|   `middleware/`            |   Operations that communicate between modules and external services.                 |
-|   `modules/`               |   Self-written endpoints, provide the core functionality of the backend.             |
-|   `utilities/`             |   Reusable functions, helpers, and common code for files within `backend/src`.       |
+|   `src/config/`                |   Used to set environment variables.                                                 |
+|   `src/constants/`             |   Values that are set and never updated. Can be used across `backend/src`.           |
+|   `src/middleware/`            |   Operations that communicate between modules and external services.                 |
+|   `src/modules/`               |   Self-written endpoints, provide the core functionality of the backend.             |
+|   `src/types/`               |   Interfaces and types defined here and used across the backend code     |
+|   `src/utilities/`             |   Reusable functions, helpers, and common code for files within `backend/src`.       |
 | `.prettier.cjs`            | Configuration file for formatting with prettier                                      |
 | `.prettierignore`          | Holds list of files to not be scanned or updated by prettier                         |
 | `Dockerfile`               | Used to build backend container for Docker                                           |
