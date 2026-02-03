@@ -6,9 +6,11 @@ This README will go through the GitHub Actions defined within `.github/workflows
 
 | Name                        | Triggers          | Short Description                                                 |
 | --------------------------- | ----------------- | ----------------------------------------------------------------- |
-| `backend-image-build-push`  | PR merged to main | Builds the backend image and adds to the ImageStream `dbumt-api`  |
+| `backend-image-build-push`  | PR merged to main | Builds the backend image, adds to the ImageStream `dbumt-api` and deploys it on `dev` environment |
+| `backend-promote`  | Manual | Gets an environment and a tag, deploys the `dbumt-api` image from tools namespace to the specified env |
 | `backend-test`              | Updates to PR     | Runs linting, formatting, and build test on the changes           |
-| `frontend-image-build-push` | PR merged to main | Builds the frontend image and adds to the ImageStream `dbumt-app` |
+| `frontend-image-build-push` | PR merged to main | Builds the frontend image, adds to the ImageStream `dbumt-app` and deploys it on `dev` |
+| `frontend-promote`  | Manual | Gets an environment and a tag, deploys the `dbumt-app` image from tools namespace to the specified env |
 | `frontend-test`             | Updates to PR     | Runs linting, formatting, and build test on the changes           |
 | `pr-labeller`               | Updates to PR     | Adds labels to PR based on information in `.github/labeler.yaml`  |
 | `README.md`                 | None              | This file.                                                        |
@@ -38,6 +40,17 @@ The following secrets are used within the workflows.
 | `OPENSHIFT_TOOLS_NAMESPACE` | Specifies the `<licensplate>-<environment>` |
 | `OPENSHIFT_SA_NAME` | Service account name with push permission to `PUBLIC_IMAGE_REPOSITORY` |
 | `OPENSHIFT_SA_TOOLS_TOKEN` | Token generated for the service account `OPENSHIFT_SA_NAME` |
+| `NAMESPACE` | The `dev` Openshift namespace where the image will be deployed on, defined as the same secret in each github environment settings |
+| `OPENSHIFT_SERVER_URL` | Openshift server URL where the workflow logs in to deploy the image |
+| `OPENSHIFT_DEPLOY_TOKEN` | Openshift deployment service account token, used to deploy the image. The account should have edit access |
+
+## Action Inputs
+
+The following inputs are used within the workflows.
+| Name | Description |
+| ---- | ----------- |
+`environment` | This is used by the promote workflows and is the target environment where the image will be deployed on. It's usually `test` and `prod`, but you can still enter `dev` if you want to deploy a special version to `dev` |
+| `image_tag_sha` | The image tag (which is the commit SHA) to deploy on the specified environment. The image should exist on the `tools` namespace |
 
 ## Actions Detailed Information
 
@@ -45,7 +58,7 @@ The following secrets are used within the workflows.
 
 - File Path: `.github/workflows/backend-image-build-push.yml`
 - GITHUB_TOKEN Permissions: `read`
-- Triggers: Any pull request that has changes to files within `backend/`, branches from `main`, and is closed.
+- Triggers: Any pull request that has changes to files within `backend/` or `.github/`, branches from `main`, and is closed.
 
 #### Jobs & Steps
 
@@ -65,7 +78,36 @@ The following secrets are used within the workflows.
          - `-f` specifies the name of the Dockerfile
          - `-t` add a tag to the image with the syntax <repository_name>:<tag>
      - `Push Image`
-       - Add the image to the Docker registry (ImageStream) within `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE`/<repository_name>:<PR_number>
+       - Add the image to the Docker registry (ImageStream) within `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE`/<repository_name>:<image_tag_sha>
+     - `Install oc CLI`
+       - Downloads and untar the oc tar file from Openshift website
+       - Moves the file to bin folder
+     - `Login to OpenShift`
+       - Uses oc command to login to `OPENSHIFT_SERVER_URL` by the provided token as `OPENSHIFT_DEPLOY_TOKEN`
+     - `Deploy to Dev`
+       - Gets the digest of the last pushed `dbumt-api:dev` image to `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE` and assigns it to `IMAGE_SHA`
+       - Uses oc command to rollout the image to `dbumt-api` deployment on `NAMESPACE` (Namespace name defined as a secret in `dev` on GtHub environment settings)
+
+### Promote Backend to the specified environment
+
+- File Path: `.github/workflows/backend-promote.yml`
+- Triggers: No triggers, run manually
+#### Jobs & Steps
+
+1. `promote`
+   - Set to run on the environment that the user enters. Options are `dev`, `test` and `prod`
+   - Runs on `ubuntu-22.04`
+     - This ensures that the `Docker` commands can run
+   - Steps:
+     - `Install oc CLI`
+       - Downloads and untar the oc tar file from Openshift website
+       - Moves the file to bin folder
+     - `Login to OpenShift`
+       - Uses oc command to login to `OPENSHIFT_SERVER_URL` by the provided token as `OPENSHIFT_DEPLOY_TOKEN`
+     - `Set image in the target namespace`
+       - Set image in `dbumt-api` deployment to dbumt-api:<image_tag_sha> `image_tag_sha` comes from user input
+     - `Wait for rollout to finish`
+       - Runs oc rollout status to watch the status until the deployment is done
 
 ### Backend Express Linting, Formatting, & Build Check
 
@@ -77,7 +119,7 @@ The following secrets are used within the workflows.
 
 - File Path: `.github/workflows/frontend-image-build-push.yml`
 - GITHUB_TOKEN Permissions: `read`
-- Triggers: Any pull request that has changes to files within `frontend/`, branches from `main`, and is closed.
+- Triggers: Any pull request that has changes to files within `frontend/` or `.github/`, branches from `main`, and is closed.
 
 #### Jobs & Steps
 
@@ -97,8 +139,36 @@ The following secrets are used within the workflows.
          - `-f` specifies the name of the Dockerfile
          - `-t` add a tag to the image with the syntax <repository_name>:<tag>
      - `Push Image`
-       - Add the image to the Docker registry (ImageStream) within `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE`/<repository_name>:<PR_number>
+       - Add the image to the Docker registry (ImageStream) within `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE`/<repository_name>:<image_tag_sha>
+     - `Install oc CLI`
+       - Downloads and untar the oc tar file from Openshift website
+       - Moves the file to bin folder
+     - `Login to OpenShift`
+       - Uses oc command to login to `OPENSHIFT_SERVER_URL` by the provided token as `OPENSHIFT_DEPLOY_TOKEN`
+     - `Deploy to Dev`
+       - Gets the digest of the last pushed `dbumt-app:dev` image to `PUBLIC_IMAGE_REPOSITORY`/`OPENSHIFT_TOOLS_NAMESPACE` and assigns it to `IMAGE_SHA`
+       - Uses oc command to rollout the image to `dbumt-app` deployment on `NAMESPACE` (Namespace name defined as a secret in `dev` on GtHub environment settings)
 
+### Promote frontend to the specified environment
+
+- File Path: `.github/workflows/frontend-promote.yml`
+- Triggers: No triggers, run manually
+#### Jobs & Steps
+
+1. `promote`
+   - Set to run on the environment that the user enters. Options are `dev`, `test` and `prod`
+   - Runs on `ubuntu-22.04`
+     - This ensures that the `Docker` commands can run
+   - Steps:
+     - `Install oc CLI`
+       - Downloads and untar the oc tar file from Openshift website
+       - Moves the file to bin folder
+     - `Login to OpenShift`
+       - Uses oc command to login to `OPENSHIFT_SERVER_URL` by the provided token as `OPENSHIFT_DEPLOY_TOKEN`
+     - `Set image in the target namespace`
+       - Set image in `dbumt-app` deployment to dbumt-app:<image_tag_sha> `image_tag_sha` comes from user input
+     - `Wait for rollout to finish`
+       - Runs oc rollout status to watch the status until the deployment is done
 ### Frontend Express Linting, Formatting, & Build Check
 
 - File Path: `.github/workflows/frontend-test.yml`

@@ -12,7 +12,7 @@ on:
           - dev
           - test
           - prod
-      image_sha:
+      image_tag_sha:
         description: "Commit SHA to deploy"
         required: true
 
@@ -36,7 +36,7 @@ jobs:
       - name: Set image in the target namespace
         run: |
           oc set image deployment/dbumt-app \
-            dbumt-app=image-registry.openshift-image-registry.svc:5000/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{ inputs.image_sha }} \
+            dbumt-app=image-registry.openshift-image-registry.svc:5000/${{ secrets.OPENSHIFT_TOOLS_NAMESPACE }}/dbumt-app:${{ inputs.image_tag_sha }} \
             -n ${{ secrets.NAMESPACE }}
 
       - name: Wait for rollout to finish
