@@ -24,19 +24,12 @@ export const connectDatabase = async () => {
   ) {
     console.log(logs.MONGODB.MISSING_VARS);
     throw new Error(
-      "Missing one or more of [MONGO_USER, MONGO_PASSWORD, MONGO_DATABASE_NAME, MONGO_HOST].",
+      "Missing one or more of [MONGO_USER, MONGO_PASSWORD, APPLICATION_NAME, MONGO_HOST].",
     );
   }
 
   try {
-    // Connection from local ExpressJS server
-    const localDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=admin`;
-    // Connection from containerized ExpressJS server
-    const containerDBUri = `${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_SERVICE_NAME}:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=${APPLICATION_NAME}`;
-
-    // if we are running in docker set the uri to use container URI otherwise use local URI
-    const mongoURI =
-      process.env.NODE_ENV === "development" ? localDBUri : containerDBUri;
+    const mongoURI = `${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_SERVICE_NAME}:${MONGO_EXTERNAL_PORT}/${APPLICATION_NAME}?authSource=${APPLICATION_NAME}`;
 
     // log changes to connection to MongoDB
     mongoose.connection.on("connected", () =>
