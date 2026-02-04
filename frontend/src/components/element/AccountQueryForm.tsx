@@ -5,6 +5,7 @@ import { InfoBox, InfoBoxField } from './InfoBox';
 import { apiFetch } from '../../api/client';
 import { toEnvLabel } from '../../utilities/EnvMap';
 import { Button } from '@bcgov/design-system-react-components';
+import { SwitchAccountLink } from './SwitchAccountLink';
 
 type VerifyResponse = { environment: string; pswd_expires: string | null };
 
@@ -80,11 +81,12 @@ export const AccountQueryForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <InfoBox header="BCGW Oracle Account Query">
-        <div className="m-2">
+        <div className="m-2 flex">
           <InfoBoxField
             titleText="BCGW Account/Username:"
             contentText={oracleId}
           />
+          <SwitchAccountLink />
         </div>
 
         <div className="w-md relative m-2 px-4 py-2">

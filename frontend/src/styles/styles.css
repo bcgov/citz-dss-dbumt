@@ -26,3 +26,19 @@ p.bcds-footer--copyright {
     background-color: #eeeeee;
   }
 }
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #255a90;
+  cursor: pointer;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}

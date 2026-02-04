@@ -12,6 +12,7 @@ import ErrorMessage from './ErrorMessage';
 import { apiFetch } from '../../api/client';
 import { toEnvLabel } from '../../utilities/EnvMap';
 import { Button } from '@bcgov/design-system-react-components';
+import { SwitchAccountLink } from './SwitchAccountLink';
 
 type VerifyResponse = {
   environment: string;
@@ -153,11 +154,12 @@ export const ChangePasswordForm = ({
           />
         )}
 
-        <div className="m-2">
+        <div className="m-2 flex">
           <InfoBoxField
             titleText="BCGW Account/Username:"
             contentText={_oracleId}
           />
+          <SwitchAccountLink />
         </div>
 
         <div className="w-md relative m-2 px-4 py-2">
