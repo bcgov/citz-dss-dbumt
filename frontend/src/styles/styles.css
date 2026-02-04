@@ -14,7 +14,7 @@ p.bcds-footer--copyright {
 }
 
 .breadcrumb-link {
-  color: #255a90;
+  color: var(--color-link);
   text-decoration: underline;
 }
 
@@ -31,7 +31,7 @@ p.bcds-footer--copyright {
   background: none;
   border: none;
   padding: 0;
-  color: #255a90;
+  color: var(--color-link);
   cursor: pointer;
   font: inherit;
   display: inline-flex;

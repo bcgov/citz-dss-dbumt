@@ -193,7 +193,7 @@ export const ChangePasswordForm = ({
         </div>
 
         {/* current password */}
-        <div className="w-md m-2 px-4 py-2">
+        <div className="w-md ml-2 mt-2 px-4 pt-2">
           <label
             htmlFor="current-pw"
             className="block pb-1 font-semibold text-black"
@@ -222,7 +222,20 @@ export const ChangePasswordForm = ({
             </button>
           </div>
         </div>
-
+        <div
+          className="mb-2 ml-2 px-4 text-sm leading-6"
+          style={{ color: 'var(--color-neutral-password)' }}
+        >
+          Forgot your password? Please contact&nbsp;
+          <a
+            className="breadcrumb-link"
+            target="_blank"
+            href="https://bcgov.github.io/data-publication/pages/faq.html#how-do-i-changereset-my-bcgw-password"
+          >
+            NRM Service Desk
+          </a>
+          .
+        </div>
         {/* new password */}
         <div className="w-md m-2 px-4 py-2">
           <label

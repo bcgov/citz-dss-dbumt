@@ -1,6 +1,10 @@
 @import '@bcgov/bc-sans/css/BC_Sans.css';
 @import 'tailwindcss';
 
+:root {
+  --color-link: #255a90;
+}
+
 @theme inline {
   /* Setting font formatting to BC Sans specifics*/
   --font-display: 'BC Sans', 'Noto Sans', 'Verdana', 'Arial', sans-serif;
