@@ -16,6 +16,7 @@ import { JoinArrayWithLast } from '../utilities/JoinArrayWithLast';
 import { apiFetch } from '../api/client';
 import { toEnvLabel } from '../utilities/EnvMap';
 import { useUser } from '../contexts/UserContext';
+import { SwitchAccountLink } from '../components/element/SwitchAccountLink';
 
 type VerifyResponse = {
   environment: string;
@@ -161,11 +162,12 @@ export const Home = () => {
       </div>
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
-        <div className="m-2">
+        <div className="m-2 flex">
           <InfoBoxField
             titleText="BCGW Account/Username:"
             contentText={oracleId}
           />
+          <SwitchAccountLink />
         </div>
         <div className="m-2">
           {isLoading ? (

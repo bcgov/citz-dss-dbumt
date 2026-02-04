@@ -34,8 +34,8 @@ export const ChangePassword = () => {
     <BCGovText>
       The BC Geographic Warehouse (BCGW) change password tool helps users of
       BCGW to securely update their BCGW Oracle account password every three
-      months. But, to reset an expired password, users need to contact NRM
-      Service Desk.&nbsp;
+      months. But, to reset an expired or forgotten password, users need to
+      contact <strong>NRM Service Desk</strong>.&nbsp;
       <a
         href="https://bcgov.github.io/data-publication/pages/faq.html#how-do-i-changereset-my-bcgw-password"
         target="_blank"
