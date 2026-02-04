@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../../contexts/UserContext";
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
 
 export const SwitchAccountLink = () => {
   const { setOracleId } = useUser();
@@ -7,7 +7,7 @@ export const SwitchAccountLink = () => {
 
   const handleLogout = () => {
     setOracleId(null);
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
