@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { InfoBox, InfoBoxField } from './InfoBox';
 import { apiFetch } from '../../api/client';
-import { toEnvLabel } from '../../utilities/EnvMap';
 import { Button } from '@bcgov/design-system-react-components';
 import { SwitchAccountLink } from './SwitchAccountLink';
+import { DbSelect } from './DbSelect';
 
 type VerifyResponse = { environment: string; pswd_expires: string | null };
 
@@ -15,7 +15,7 @@ interface AccountQueryFormProps {
   isLoading?: boolean;
   onSubmit: (payload: {
     oracleId: string;
-    targetEnv: string;
+    targetEnvs: string[];
     queries: {
       systemPrivileges: boolean;
       accountStatus: boolean;
@@ -63,19 +63,33 @@ export const AccountQueryForm = ({
     });
   }, [oracleId, verifyData]);
 
+  const ALL = '__ALL__';
+  //If ALL is selected, return all envs, else return the selected one in an array
+  function resolveSelectedEnvs(selected: string, envs: string[]): string[] {
+    if (!selected) return [];
+    return selected === ALL ? envs : [selected];
+  }
+
   const isValid = !!selectedDb && (systemPrivileges || accountStatus || roles);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid || isSubmitting) return;
 
     setIsSubmitting(true);
-    onSubmit({
-      oracleId,
-      targetEnv: selectedDb,
-      queries: { systemPrivileges, accountStatus, roles },
-    });
-    setIsSubmitting(false);
+    try {
+      const targetEnvs = resolveSelectedEnvs(selectedDb, databases);
+
+      await Promise.resolve(
+        onSubmit({
+          oracleId,
+          targetEnvs, // ✅ always a real list
+          queries: { systemPrivileges, accountStatus, roles },
+        }),
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -96,24 +110,14 @@ export const AccountQueryForm = ({
           >
             Select a database
           </label>
-          <select
-            id="db-select"
-            name="database"
+          <DbSelect
             value={selectedDb}
-            onChange={(e) => setSelectedDb(e.target.value)}
-            className="form-select w-full appearance-none rounded border border-gray-300 bg-white px-3 py-2 pr-10"
-            required
-            aria-describedby="db-help"
-          >
-            <option value="" disabled>
-              -- Select --
-            </option>
-            {databases.map((code) => (
-              <option key={code} value={code}>
-                {toEnvLabel(code)}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedDb}
+            databases={databases}
+            showSelectAll
+            selectAllValue={ALL}
+            selectAllLabel="All databases"
+          />
           <div id="db-help" className="sr-only">
             Choose the BCGW environment to query.
           </div>
