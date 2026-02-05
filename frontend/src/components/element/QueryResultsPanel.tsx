@@ -25,7 +25,11 @@ export const QueryResultsPanel = ({
   return (
     <div>
       {results.map((r, i) => (
-        <InfoBox key={i} header={r.envTitle} className="query-results bg-white">
+        <InfoBox
+          key={i}
+          header={r.envTitle}
+          className="query-results mb-8 bg-white"
+        >
           {r.systemPrivileges && (
             <div className="m-2 px-4 py-2">
               <div className="mb-2 flex items-center justify-between">

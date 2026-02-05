@@ -127,7 +127,7 @@ export const Home = () => {
       plural = 's';
     }
     return `Your BCGW ${dbNames} database password${plural} expire${plural === 's' ? '' : 's'} soon.
-        Please reset your password${plural} by selecting 'Change Password' action below.`;
+        Please reset your password${plural} by selecting 'Change Password' button below.`;
   };
 
   const alertDescription = () => {

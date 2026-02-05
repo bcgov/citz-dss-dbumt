@@ -17,7 +17,7 @@ import VerifyResponse from '../types/VerifyResponse';
 
 type QueryRequest = {
   oracleId: string;
-  targetEnv: string;
+  targetEnvs: string[];
   queries: {
     systemPrivileges: boolean;
     accountStatus: boolean;
@@ -130,7 +130,7 @@ export const AccountQuery = () => {
 
     const body = {
       username: req.oracleId.toUpperCase(),
-      envs: [req.targetEnv],
+      envs: req.targetEnvs,
       queries,
     };
 

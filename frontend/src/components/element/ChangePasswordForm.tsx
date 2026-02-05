@@ -10,9 +10,9 @@ import { InfoBox, InfoBoxField } from './InfoBox';
 import SuccessMessage from './SuccessMessage';
 import ErrorMessage from './ErrorMessage';
 import { apiFetch } from '../../api/client';
-import { toEnvLabel } from '../../utilities/EnvMap';
 import { Button } from '@bcgov/design-system-react-components';
 import { SwitchAccountLink } from './SwitchAccountLink';
+import { DbSelect } from './DbSelect';
 
 type VerifyResponse = {
   environment: string;
@@ -169,22 +169,12 @@ export const ChangePasswordForm = ({
           >
             Select a Database
           </label>
-          <select
-            id="db-select"
-            name="database"
+          <DbSelect
             value={selectedDb}
-            onChange={(e) => setSelectedDb(e.target.value)}
-            className="form-select w-full appearance-none rounded border border-gray-300 bg-white px-3 py-2 pr-10"
-          >
-            <option value="" disabled>
-              -- Select --
-            </option>
-            {databases.map((code) => (
-              <option key={code} value={code}>
-                {toEnvLabel(code)}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedDb}
+            databases={databases}
+            showSelectAll={false}
+          />
 
           {/* fake dropdown icon */}
           <div className="right-7.5 pointer-events-none absolute top-[47px] text-gray-600">

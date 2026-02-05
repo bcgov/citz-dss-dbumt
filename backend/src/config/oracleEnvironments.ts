@@ -39,8 +39,13 @@ export const ENVIRONMENTS: EnvironmentConfig[] = [
  * @returns A filtered list of environment configurations matching the provided names
  */
 export const getEnvironmentsByName = (names: string[]): EnvironmentConfig[] => {
-  const nameSet = new Set(names.map((name) => name.toUpperCase()));
-  return ENVIRONMENTS.filter((env) => nameSet.has(env.name.toUpperCase()));
+  try {
+    const nameSet = new Set(names.map((name) => name.toUpperCase()));
+    return ENVIRONMENTS.filter((env) => nameSet.has(env.name.toUpperCase()));
+  } catch (error) {
+    console.error("Error retrieving environments by name:", error);
+    return [];
+  }
 };
 
 /**
