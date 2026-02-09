@@ -5,7 +5,7 @@ export interface IAuditLog extends Document {
   IDIR: string;
   email?: string;
   oracleID: string;
-  environment: string;
+  environment: string[];
   details?: object;
   status: "SUCCESS" | "FAILURE";
   message?: string;
@@ -20,7 +20,7 @@ const auditLogSchema = new Schema<IAuditLog>({
   },
   IDIR: { type: String, required: true },
   oracleID: { type: String, required: true },
-  environment: { type: String },
+  environment: { type: [String], required: true },
   email: { type: String },
   details: { type: Object },
   status: { type: String, required: true, enum: ["SUCCESS", "FAILURE"] },

@@ -3,7 +3,7 @@ interface LogParams {
   IDIR: string;
   email?: string;
   oracleID: string;
-  environment: string;
+  environment: string[];
   details?: object;
   status?: "SUCCESS" | "FAILURE";
   message?: string;

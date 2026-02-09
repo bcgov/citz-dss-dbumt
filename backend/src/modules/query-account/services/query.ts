@@ -97,8 +97,7 @@ export const getQueryResults = async (
     email: user?.email ?? "-",
     oracleID: username,
     actionType: "QUERY_ACCOUNT",
-    //As we only let user query one environment at a time, we log the first one, changed to include all envs if multi-env query allowed
-    environment: environments[0].name,
+    environment: environments.map((env) => env.name),
     details: { queries },
     createdAt: new Date(),
   };

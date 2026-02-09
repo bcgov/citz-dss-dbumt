@@ -48,7 +48,8 @@ export const changeOraclePassword = async (
     email: user?.email ?? "-",
     oracleID: upperOracleId,
     actionType: "CHANGE_PASSWORD",
-    environment: targetEnv.name,
+    //environment as array to keep consistent with other logs
+    environment: [targetEnv.name],
   };
 
   try {
