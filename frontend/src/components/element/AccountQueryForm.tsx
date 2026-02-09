@@ -83,7 +83,7 @@ export const AccountQueryForm = ({
       await Promise.resolve(
         onSubmit({
           oracleId,
-          targetEnvs, // ✅ always a real list
+          targetEnvs,
           queries: { systemPrivileges, accountStatus, roles },
         }),
       );
