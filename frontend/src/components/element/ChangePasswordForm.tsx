@@ -87,6 +87,14 @@ export const ChangePasswordForm = ({
     });
   }, [_oracleId, verifyData]);
 
+  useEffect(() => {
+    //Clear text boxes when user changes database selection
+    setCurrentPassword('');
+    setNewPassword('');
+    setSuccessMessage(null);
+    setErrorMessage(null);
+  }, [selectedDb]);
+
   const passwordValidation = validatePassword(newPassword);
   const isValid =
     Object.values(passwordValidation).every(Boolean) &&
