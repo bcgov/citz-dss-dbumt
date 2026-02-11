@@ -23,7 +23,9 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
         /* ignore */
       }
     }
-    throw new Error(errorMessage);
+    const err = new Error(errorMessage) as Error & { status?: number };
+    err.status = res.status;
+    throw err;
   }
 
   return await res.json();

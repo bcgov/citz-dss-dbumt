@@ -80,17 +80,36 @@ export const Home = () => {
         }));
 
         setRowArray(mappedRows);
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error fetching expiry data:', error);
         setRowArray([]);
         setVerifyData(null);
+
+        if (typeof error === 'object' && error !== null && 'status' in error) {
+          const status = (error as { status: number }).status;
+
+          if (status === 404) {
+            navigate('/login', {
+              replace: true,
+              state: {
+                errorMessage: 'User not found. Please try again.',
+              },
+            });
+            return;
+          }
+        }
+
+        navigate('/login', {
+          replace: true,
+          state: { errorMessage: 'System error while checking account.' },
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchExpiryData();
-  }, [oracleId]);
+  }, [oracleId, navigate]);
 
   // If the rowArray updates check if we need to show the warning info and add the database name to the warning array
   useEffect(() => {
@@ -218,6 +237,7 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
+              isDisabled={!verifyData || verifyData.length === 0}
               onPress={() =>
                 navigate('/changepassword', { state: { oracleId, verifyData } })
               }
@@ -229,6 +249,7 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
+              isDisabled={!verifyData || verifyData.length === 0}
               onPress={() =>
                 navigate('/accountquery', { state: { oracleId, verifyData } })
               }

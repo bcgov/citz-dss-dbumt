@@ -1,14 +1,15 @@
 import {
   Button,
   TextField,
+  InlineAlert,
   Text as BCGovText,
 } from '@bcgov/design-system-react-components';
 import { GoldBar } from '../components/element/GoldBar';
 import { BaseLayout } from '../components/layout/BaseLayout';
 import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { InfoBox, InfoBoxFieldTitle } from '../components/element/InfoBox';
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 
 export const Login = () => {
@@ -34,6 +35,15 @@ export const Login = () => {
 
   // Project navigation
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.errorMessage) {
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state?.errorMessage]);
+
+  const errorMessage = location.state?.errorMessage;
 
   const handleSubmit = (e?: FormEvent) => {
     e?.preventDefault();
@@ -50,6 +60,14 @@ export const Login = () => {
       <PageTitleInfo title={title} text={text} />
       <br />
       <InfoBox header="BC Geographic Warehouse Oracle Account Information">
+        {errorMessage && (
+          <InlineAlert
+            variant="danger"
+            title="Verification failed"
+            description={errorMessage}
+          />
+        )}
+
         <form onSubmit={handleSubmit} noValidate>
           <InfoBoxFieldTitle titleText="BCGW Account/Username" />
           <TextField
