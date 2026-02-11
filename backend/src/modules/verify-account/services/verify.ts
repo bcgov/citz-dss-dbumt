@@ -3,6 +3,7 @@ import { getOracleConnection } from "@/middleware/BCGW/connection";
 import { ErrorWithCode } from "@/utilities";
 import { logs } from "@/middleware";
 import { EnvironmentConfig } from "@/config/oracleEnvironments";
+import { HTTP_STATUS_CODES } from "@/constants";
 import oracledb from "oracledb";
 
 interface OracleUserResult {
@@ -64,6 +65,7 @@ export const getUserExpiry = async (
 
   if (results.length === 0) {
     const allFailed = failedEnvs.length === environments.length;
+
     const message = allFailed
       ? "Internal error: Could not connect to any environments"
       : `User not found in any environment`;
@@ -71,9 +73,17 @@ export const getUserExpiry = async (
     const log = allFailed
       ? logs.ORACLE.ENV_CHECK_FAIL
       : logs.ORACLE.ENTITY_NOT_FOUND;
+
     console.error(log, message);
-    return { results, message };
+
+    if (allFailed) {
+      throw new ErrorWithCode(message, HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);
+    }
+
+    // If user wasn't found
+    return { results: [], message };
   }
+
   return { results, message: "User found in one or more environments" };
 };
 
