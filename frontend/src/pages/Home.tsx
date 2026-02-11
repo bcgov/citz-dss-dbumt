@@ -218,6 +218,7 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
+              isDisabled={!verifyData || verifyData.length === 0}
               onPress={() =>
                 navigate('/changepassword', { state: { oracleId, verifyData } })
               }
@@ -229,6 +230,7 @@ export const Home = () => {
             <Button
               variant="primary"
               size="medium"
+              isDisabled={!verifyData || verifyData.length === 0}
               onPress={() =>
                 navigate('/accountquery', { state: { oracleId, verifyData } })
               }
