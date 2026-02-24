@@ -5,15 +5,13 @@ import { PageTitleInfo } from '../components/layout/PageTitleInfo';
 import { BreadcrumbItem } from '../components/element/Breadcrumb';
 import { Text as BCGovText } from '@bcgov/design-system-react-components';
 import { AccountQueryForm } from '../components/element/AccountQueryForm';
-import {
-  QueryResultsPanel,
-  QueryResults,
-} from '../components/element/QueryResultsPanel';
+import { QueryResultsPanel } from '../components/element/QueryResultsPanel';
 import { toEnvLabel } from '../utilities/EnvMap';
 import { apiFetch } from '../api/client';
 import ErrorMessage from '../components/element/ErrorMessage';
 import { useUser } from '../contexts/UserContext';
 import VerifyResponse from '../types/VerifyResponse';
+import QueryResults from '../types/QueryResults';
 
 type QueryRequest = {
   oracleId: string;

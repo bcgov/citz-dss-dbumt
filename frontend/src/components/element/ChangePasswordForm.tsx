@@ -13,11 +13,7 @@ import { apiFetch } from '../../api/client';
 import { Button } from '@bcgov/design-system-react-components';
 import { SwitchAccountLink } from './SwitchAccountLink';
 import { DbSelect } from './DbSelect';
-
-type VerifyResponse = {
-  environment: string;
-  pswd_expires: string | null;
-};
+import VerifyResponse from '../../types/VerifyResponse';
 
 interface ChangePasswordFormProps {
   oracleId: string;

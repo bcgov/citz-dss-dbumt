@@ -1,17 +1,6 @@
 import { InfoBox } from './InfoBox';
-//import { Button } from '@bcgov/design-system-react-components';
-
-export type QueryResults = {
-  envTitle: string;
-  systemPrivileges?: { grantee: string; privilege: string }[];
-  accountStatus?: {
-    username: string;
-    account_status: string;
-    expiry_date: string;
-    default_tablespace: string;
-  }[];
-  roles?: { grantee: string; granted_role: string }[];
-};
+import { Button, InlineAlert } from '@bcgov/design-system-react-components';
+import QueryResults from '../../types/QueryResults';
 
 export const QueryResultsPanel = ({
   results,
