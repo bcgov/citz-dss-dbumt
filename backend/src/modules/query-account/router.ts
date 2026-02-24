@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { queryOracleId } from "./controllers";
+import { queryOracleId, downloadReportPdf } from "./controllers";
 import { HTTP_STATUS_CODES } from "@/constants";
 import { logs } from "@/middleware";
 
 const router = Router();
 
 router.route(`/query`).post(queryOracleId);
+router.route(`/generatePdf`).post(downloadReportPdf);
 
 // Health check route
 router.route("/health").get((req, res) => {

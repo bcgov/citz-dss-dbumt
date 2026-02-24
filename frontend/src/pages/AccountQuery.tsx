@@ -101,6 +101,8 @@ export const AccountQuery = () => {
   const [results, setResults] = useState<QueryResults[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   if (!oracleId) return null;
@@ -154,6 +156,36 @@ export const AccountQuery = () => {
     }
   };
 
+  const handleDownloadAll = async () => {
+    if (!results || results.length === 0) return;
+
+    setPdfLoading(true);
+    setPdfError(null);
+    try {
+      const blob = await apiFetch('/queryAccount/generatePdf', {
+        method: 'POST',
+        body: JSON.stringify({ results }),
+      });
+
+      if (!(blob instanceof Blob)) {
+        throw new Error('Invalid PDF response');
+      }
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${oracleId}-account-report.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      setPdfError('Unable to generate PDF. Please try again.');
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
   const title = 'BCGW Oracle account query';
   const text = (
     <BCGovText>
@@ -191,17 +223,10 @@ export const AccountQuery = () => {
           <div id="query-results">
             <QueryResultsPanel
               results={results}
+              onDownloadAll={handleDownloadAll}
+              isDownloading={pdfLoading}
+              pdfError={pdfError}
               /*onCopySection={(text) => navigator.clipboard.writeText(text)}
-              onDownloadAll={() => {
-                const blob = new Blob([JSON.stringify(results, null, 2)], {
-                  type: 'application/json',
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'bcgw-query-results.json';
-                a.click();
-                URL.revokeObjectURL(url);
               }}*/
             />
           </div>
