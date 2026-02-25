@@ -28,5 +28,16 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     throw err;
   }
 
-  return await res.json();
+  const contentType = res.headers.get('content-type');
+
+  if (contentType?.includes('application/pdf')) {
+    return res.blob();
+  }
+
+  if (contentType?.includes('application/json')) {
+    return res.json();
+  }
+
+  // fallback for text or unknown types
+  return await res.blob();
 };

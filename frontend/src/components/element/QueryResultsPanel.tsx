@@ -1,29 +1,31 @@
 import { InfoBox } from './InfoBox';
-//import { Button } from '@bcgov/design-system-react-components';
-
-export type QueryResults = {
-  envTitle: string;
-  systemPrivileges?: { grantee: string; privilege: string }[];
-  accountStatus?: {
-    username: string;
-    account_status: string;
-    expiry_date: string;
-    default_tablespace: string;
-  }[];
-  roles?: { grantee: string; granted_role: string }[];
-};
+import { Button, InlineAlert } from '@bcgov/design-system-react-components';
+import QueryResults from '../../types/QueryResults';
 
 export const QueryResultsPanel = ({
   results,
   //  onCopySection,
-  //  onDownloadAll,
+  onDownloadAll,
+  isDownloading,
+  pdfError,
 }: {
   results: QueryResults[];
   //  onCopySection?: (text: string) => void;
-  //  onDownloadAll?: () => void;
+  onDownloadAll?: () => void;
+  isDownloading: boolean;
+  pdfError: string | null;
 }) => {
   return (
     <div>
+      {pdfError && (
+        <div className="m-4">
+          <InlineAlert
+            variant="danger"
+            title="PDF Error"
+            description={pdfError}
+          />
+        </div>
+      )}
       {results.map((r, i) => (
         <InfoBox
           key={i}
@@ -135,14 +137,18 @@ export const QueryResultsPanel = ({
           )}
         </InfoBox>
       ))}
-      {/*
+
       <div className="mt-4 flex gap-3">
-        {onDownloadAll && (
-          <Button variant="primary" size="medium" type="button" onClick={onDownloadAll}>
-            Download Results
-          </Button>
-        )}
-      </div>*/}
+        <Button
+          variant="primary"
+          size="medium"
+          type="button"
+          onClick={onDownloadAll}
+          isDisabled={isDownloading || results.length === 0}
+        >
+          {isDownloading ? 'Generating PDF...' : 'Download Results'}
+        </Button>
+      </div>
     </div>
   );
 };

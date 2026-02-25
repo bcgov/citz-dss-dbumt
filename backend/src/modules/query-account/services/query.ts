@@ -6,19 +6,12 @@ import oracledb from "oracledb";
 import { auditLogger } from "../../../utilities/auditLogger/auditLogger";
 import { LogParams } from "../../../utilities/auditLogger/types";
 import { UserInfo } from "../../../types/userInfo";
-
-type DataRow = Record<string, string>;
-
-type QueryType = "accountStatus" | "roles" | "systemPrivileges";
-type QueriesResult = {
-  environment: string;
-  queryResult: QueryResult[];
-};
-
-type QueryResult = {
-  query: QueryType;
-  data: DataRow[];
-};
+import {
+  DataRow,
+  QueryType,
+  QueryResult,
+  QueriesResult,
+} from "../types/queryResult";
 
 /**
  * @summary Builds the SQL query string that retrieves the account status, expiry date, and default tablespace for a given Oracle DB username
