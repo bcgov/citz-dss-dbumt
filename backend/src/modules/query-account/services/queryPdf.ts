@@ -25,6 +25,14 @@ async function getBrowser(): Promise<Browser> {
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
+
+        '--disable-crash-reporter',
+        '--disable-crashpad',
+        '--no-zygote',
+        '--single-process',
+
+        // force writable dir
+        '--user-data-dir=/tmp/chrome-data',
       ],
     });
   }
