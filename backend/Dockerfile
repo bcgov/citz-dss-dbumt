@@ -38,6 +38,13 @@ RUN mkdir -p /opt/oracle && \
 ENV ORACLE_CLIENT_LOCAL_PATH=/opt/oracle/instantclient_23_9
 ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_23_9
 
+# Set environment variables to a writable directory like /tmp
+ENV XDG_CONFIG_HOME=/tmp/.chromium
+ENV XDG_CACHE_HOME=/tmp/.chromium
+
+# Create the directories and set permissions for the node user
+RUN mkdir -p /tmp/.chromium && chown -R node:node /tmp/.chromium
+
 # set current directory
 WORKDIR /api
 
@@ -47,13 +54,6 @@ RUN npm ci --omit=dev
 
 # Copy compiled JS from builder
 COPY --chown=node:node --from=builder /api/dist ./dist
-
-# Create writable directories for puppeteer
-RUN mkdir -p /home/node/.cache \
-    && mkdir -p /home/node/.config \
-    && chown -R node:node /home/node
-
-ENV HOME=/home/node
 
 # Drop privileges
 USER node
