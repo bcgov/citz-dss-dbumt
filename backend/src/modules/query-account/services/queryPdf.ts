@@ -23,7 +23,7 @@ async function getBrowser(): Promise<Browser> {
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
       ],
     });
   }
