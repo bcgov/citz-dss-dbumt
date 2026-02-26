@@ -7,12 +7,14 @@ export const QueryResultsPanel = ({
   //  onCopySection,
   onDownloadAll,
   isDownloading,
+  isQueryLoading,
   pdfError,
 }: {
   results: QueryResults[];
   //  onCopySection?: (text: string) => void;
   onDownloadAll?: () => void;
   isDownloading: boolean;
+  isQueryLoading: boolean;
   pdfError: string | null;
 }) => {
   return (
@@ -143,8 +145,8 @@ export const QueryResultsPanel = ({
           variant="primary"
           size="medium"
           type="button"
-          onClick={onDownloadAll}
-          isDisabled={isDownloading || results.length === 0}
+          onPress={onDownloadAll}
+          isDisabled={isDownloading || isQueryLoading || !results?.length}
         >
           {isDownloading ? 'Generating PDF...' : 'Download Results'}
         </Button>

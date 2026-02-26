@@ -94,16 +94,22 @@ export const AccountQuery = () => {
 
   const verifyData = (location.state ?? {}) as VerifyResponse[];
 
-  useEffect(() => {
-    if (!oracleId) navigate('/login', { replace: true });
-  }, [oracleId, navigate]);
-
   const [results, setResults] = useState<QueryResults[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    if (!oracleId) navigate('/login', { replace: true });
+  }, [oracleId, navigate]);
+
+  useEffect(() => {
+    if (results) {
+      setPdfError(null);
+    }
+  }, [results]);
 
   if (!oracleId) return null;
 
@@ -112,6 +118,9 @@ export const AccountQuery = () => {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
+
+    setPdfError(null);
+    setPdfLoading(false);
 
     setLoading(true);
     setError(null);
@@ -225,6 +234,7 @@ export const AccountQuery = () => {
               results={results}
               onDownloadAll={handleDownloadAll}
               isDownloading={pdfLoading}
+              isQueryLoading={loading}
               pdfError={pdfError}
               /*onCopySection={(text) => navigator.clipboard.writeText(text)}
               }}*/

@@ -12,7 +12,7 @@ TEST_PASSWORD=
 PROD_USER=
 PROD_PASSWORD=
 
-#BCGW Environment Connetion 
+#BCGW Environment Connection 
 BCGW_COPY_STRING=
 BCGW_DEV_STRING=
 BCGW_TEST_STRING=
@@ -20,6 +20,9 @@ BCGW_PROD_STRING=
 
 #Oracle Client Path
 ORACLE_CLIENT_LOCAL_PATH=
+
+#Puppeteer path used for pdf generation
+PUPPETEER_EXECUTABLE_PATH=
 
 # BACKEND ENVIRONMENT
 # Expressjs server port
