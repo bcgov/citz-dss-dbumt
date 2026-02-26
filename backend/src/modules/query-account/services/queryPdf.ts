@@ -9,13 +9,17 @@ let browser: Browser | null = null;
  * @summary Lazily initializes and returns a reusable Puppeteer browser instance.
  *
  * Ensures a single browser is reused across PDF generations
- * sandbox-related flags enabled for containerised environments
+ * Uses bundled Chromium by default (local development).
+ * Uses system Chromium if PUPPETEER_EXECUTABLE_PATH is provided (container).
  * @returns {Promise<Browser>} Active Puppeteer browser instance
  */
 async function getBrowser(): Promise<Browser> {
   if (!browser) {
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+
     browser = await puppeteer.launch({
       headless: true,
+      ...(executablePath ? { executablePath } : {}), //Local dev doesn't need a path to Chromium
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",

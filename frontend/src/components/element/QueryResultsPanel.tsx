@@ -7,12 +7,14 @@ export const QueryResultsPanel = ({
   //  onCopySection,
   onDownloadAll,
   isDownloading,
+  isQueryLoading,
   pdfError,
 }: {
   results: QueryResults[];
   //  onCopySection?: (text: string) => void;
   onDownloadAll?: () => void;
   isDownloading: boolean;
+  isQueryLoading: boolean;
   pdfError: string | null;
 }) => {
   return (
