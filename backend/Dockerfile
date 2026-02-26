@@ -48,6 +48,13 @@ RUN npm ci --omit=dev
 # Copy compiled JS from builder
 COPY --chown=node:node --from=builder /api/dist ./dist
 
+# Create writable directories for puppeteer
+RUN mkdir -p /home/node/.cache \
+    && mkdir -p /home/node/.config \
+    && chown -R node:node /home/node
+
+ENV HOME=/home/node
+
 # Drop privileges
 USER node
 
