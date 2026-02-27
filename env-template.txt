@@ -21,9 +21,6 @@ BCGW_PROD_STRING=
 #Oracle Client Path
 ORACLE_CLIENT_LOCAL_PATH=
 
-#Puppeteer path used for pdf generation
-PUPPETEER_EXECUTABLE_PATH=
-
 # BACKEND ENVIRONMENT
 # Expressjs server port
 BACKEND_PORT=
