@@ -38,25 +38,28 @@ RUN mkdir -p /opt/oracle && \
 ENV ORACLE_CLIENT_LOCAL_PATH=/opt/oracle/instantclient_23_9
 ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_23_9
 
-# Set environment variables to a writable directory like /tmp
-ENV XDG_CONFIG_HOME=/tmp/.chromium
+
+# Use system Chromium and prevent Puppeteer from downloading its own
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV CHROME_PATH=/usr/bin/chromium
+# Make Chromium cache/config writable
+ENV XDG_CONFIG_HOME=/tmp/.chromium-config
 ENV XDG_CACHE_HOME=/tmp/.chromium
 
-# Create the directories and set permissions for the node user
-RUN mkdir -p /tmp/.chromium && chown -R node:node /tmp/.chromium
+
+# Create and open up dirs for random OpenShift UID (anyuid/uid-range)
+RUN mkdir -p /api /tmp/.chromium /tmp/.chromium-config && \
+    chgrp -R 0 /api /tmp && \
+    chmod -R g+rwX /api /tmp
+
 
 # set current directory
 WORKDIR /api
-
-# copy application files
-COPY --chown=node:node package*.json ./
+COPY package*.json ./
 RUN npm ci --omit=dev
 
 # Copy compiled JS from builder
-COPY --chown=node:node --from=builder /api/dist ./dist
-
-# Drop privileges
-USER node
+COPY --from=builder /api/dist ./dist
 
 # run the backend
 CMD ["node", "dist/index.js"]

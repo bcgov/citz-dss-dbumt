@@ -10,20 +10,37 @@ let browser: Browser | null = null;
  *
  * Ensures a single browser is reused across PDF generations
  * Uses bundled Chromium by default (local development).
- * Uses system Chromium if PUPPETEER_EXECUTABLE_PATH is provided (container).
+ * Uses system Chromium if CHROME_PATH is provided (container).
  * @returns {Promise<Browser>} Active Puppeteer browser instance
  */
 async function getBrowser(): Promise<Browser> {
   if (!browser) {
-    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+    const executablePath = process.env.CHROME_PATH;
+
+    const envOverrides = ["HOME", "XDG_CACHE_HOME", "XDG_CONFIG_HOME"].reduce(
+      (acc, key) => {
+        if (process.env[key]) acc[key] = process.env[key] as string;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    const envOption = Object.keys(envOverrides).length
+      ? { ...process.env, ...envOverrides }
+      : undefined;
 
     browser = await puppeteer.launch({
       headless: true,
       ...(executablePath ? { executablePath } : {}), //Local dev doesn't need a path to Chromium
+      ...(envOption ? { env: envOption } : {}), // only provided if those env vars are set
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--no-zygote",
+        "--disable-breakpad",
+        "--disable-features=Translate,BackForwardCache,AcceptCHFrame",
       ],
     });
   }
