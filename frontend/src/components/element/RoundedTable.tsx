@@ -72,7 +72,7 @@ const RoundedRow = ({ nameText, date }: RoundedRowProps) => {
           )}
           {dateStatus === 'warning' && (
             <FontAwesomeIcon
-              className="pr-2 text-[20px] warning-color"
+              className="warning-color pr-2 text-[20px]"
               icon={faTriangleExclamation}
             />
           )}
