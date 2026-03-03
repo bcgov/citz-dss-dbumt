@@ -54,7 +54,7 @@ const RoundedRow = ({ nameText, date }: RoundedRowProps) => {
     else setStatus('white-blue');
   }, [date]);
 
-  const isAttn = dateStatus === 'danger' || dateStatus === 'warning';
+  const isAttn = dateStatus === 'danger';
 
   return (
     <div
@@ -72,7 +72,7 @@ const RoundedRow = ({ nameText, date }: RoundedRowProps) => {
           )}
           {dateStatus === 'warning' && (
             <FontAwesomeIcon
-              className="pr-2 text-[20px]"
+              className="pr-2 text-[20px] warning-color"
               icon={faTriangleExclamation}
             />
           )}
