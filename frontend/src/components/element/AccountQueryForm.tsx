@@ -97,7 +97,7 @@ export const AccountQueryForm = ({
       <InfoBox header="BCGW Oracle Account Query">
         <div className="m-2 flex">
           <InfoBoxField
-            titleText="BCGW Account/Username:"
+            titleText="BCGW Oracle Account Username:"
             contentText={oracleId}
           />
           <SwitchAccountLink />

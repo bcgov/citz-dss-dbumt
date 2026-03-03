@@ -42,3 +42,7 @@ p.bcds-footer--copyright {
 .link-button:hover {
   text-decoration: underline;
 }
+
+.warning-color {
+  color: #f8bb47;
+}

@@ -160,7 +160,7 @@ export const ChangePasswordForm = ({
 
         <div className="m-2 flex">
           <InfoBoxField
-            titleText="BCGW Account/Username:"
+            titleText="BCGW Oracle Account Username:"
             contentText={_oracleId}
           />
           <SwitchAccountLink />
