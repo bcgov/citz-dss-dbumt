@@ -16,14 +16,13 @@ export const Login = () => {
   const title = 'Manage your BCGW Oracle account';
   const text = (
     <BCGovText>
-      The Database User Management Tool (DBUMT) is managed by Data Publication
-      Services team in BC Data Service. This tool is designed to help users to
+      The Database User Management Tool (DBUMT) is designed to help users to
       securely update their BC Geographic Warehouse (BCGW) Oracle account
       database(s) password(s) and ask for account details.
       <br />
       <br />
       To use this tool please enter your Oracle account username. In most cases,
-      the username for your BCGW account matches your IDIR
+      the username for your BCGW account matches your IDIR.
     </BCGovText>
   );
 
@@ -69,7 +68,7 @@ export const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
-          <InfoBoxFieldTitle titleText="BCGW Account/Username" />
+          <InfoBoxFieldTitle titleText="BCGW Oracle Account Username" />
           <TextField
             id="oracleId"
             aria-labelledby="oracleLabel"
