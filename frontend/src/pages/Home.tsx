@@ -160,7 +160,7 @@ export const Home = () => {
       hasHave = 'have';
     }
     return `Your BCGW ${dbNames} database password${plural} ${hasHave} expired.
-      To reset your password${plural} please contact NRM Service Desk at NRMenquiries@gov.bc.ca.`;
+      To reset your password${plural} please contact Natural Resources Ministries (NRM) Service Desk at NRMenquiries@gov.bc.ca.`;
   };
 
   // If no oracleid, go to login page
