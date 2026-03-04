@@ -18,7 +18,7 @@ export const AppFooter = () => {
         </a>
       </li>
       <li>
-        <a href="https://dpdd.atlassian.net/servicedesk/customer/portal/1/group/5">
+        <a href="https://dpdd.atlassian.net/servicedesk/customer/portal/1/group/1/create/30">
           Contact Us
         </a>
       </li>

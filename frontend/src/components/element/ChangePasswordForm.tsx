@@ -226,7 +226,7 @@ export const ChangePasswordForm = ({
             target="_blank"
             href="https://bcgov.github.io/data-publication/pages/faq.html#how-do-i-changereset-my-bcgw-password"
           >
-            NRM Service Desk
+            Natural Resources Ministries (NRM) Service Desk
           </a>
           .
         </div>
