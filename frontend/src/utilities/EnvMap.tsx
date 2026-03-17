@@ -1,5 +1,5 @@
 const CODE_TO_LABEL = {
-  DEV: 'Development',
+  DEV: 'Delivery',
   TEST: 'Test',
   PROD: 'Production',
 } as const;
