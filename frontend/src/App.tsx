@@ -4,11 +4,13 @@ import { Login } from './pages/Login';
 import { AccountQuery } from './pages/AccountQuery';
 import { ChangePassword } from './pages/ChangePassword';
 import { UserProvider } from './contexts/UserContext';
+import ScrollToTop from './components/element/ScrollToTop';
 
 function App() {
   return (
     <UserProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
