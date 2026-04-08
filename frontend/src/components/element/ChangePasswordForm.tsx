@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
@@ -14,6 +14,7 @@ import { Button } from '@bcgov/design-system-react-components';
 import { SwitchAccountLink } from './SwitchAccountLink';
 import { DbSelect } from './DbSelect';
 import VerifyResponse from '../../types/VerifyResponse';
+import { toEnvLabel } from '../../utilities/EnvMap';
 
 interface ChangePasswordFormProps {
   oracleId: string;
@@ -66,6 +67,8 @@ export const ChangePasswordForm = ({
     null,
   );
 
+  const containerRef = useRef<HTMLFormElement>(null);
+
   useEffect(() => {
     if (!_oracleId) return;
 
@@ -84,12 +87,28 @@ export const ChangePasswordForm = ({
   }, [_oracleId, verifyData]);
 
   useEffect(() => {
-    //Clear text boxes when user changes database selection
+    if (successMessage && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+      if (!isVisible) {
+        containerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }
+  }, [successMessage, errorMessage]);
+
+  const clearForm = () => {
     setCurrentPassword('');
     setNewPassword('');
-    setSuccessMessage(null);
-    setErrorMessage(null);
-  }, [selectedDb]);
+    setSelectedDb('');
+  };
+
+  const handleDbChange = (db: string) => {
+    clearForm();
+    setSelectedDb(db);
+  };
 
   const passwordValidation = validatePassword(newPassword);
   const isValid =
@@ -117,8 +136,10 @@ export const ChangePasswordForm = ({
 
       setErrorMessage(null);
       setSuccessMessage(
-        `Your BCGW ${selectedDb} database password was successfully changed.`,
+        `Your BCGW ${toEnvLabel(selectedDb).toUpperCase() || ''} database password was successfully changed.`,
       );
+
+      clearForm();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       setSuccessMessage(null);
@@ -141,15 +162,9 @@ export const ChangePasswordForm = ({
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} ref={containerRef}>
       <InfoBox header="BCGW Oracle Account Change Password">
         {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
-
-        {/* {errorMessage && (
-          <SuccessMessage type="error">
-            {errorMessage }
-          </SuccessMessage>
-        )} */}
 
         {errorMessage && (
           <ErrorMessage
@@ -175,7 +190,7 @@ export const ChangePasswordForm = ({
           </label>
           <DbSelect
             value={selectedDb}
-            onChange={setSelectedDb}
+            onChange={handleDbChange}
             databases={databases}
             showSelectAll={false}
           />
@@ -382,10 +397,8 @@ export const ChangePasswordForm = ({
             variant="secondary"
             size="medium"
             type="button"
-            onClick={() => {
-              setCurrentPassword('');
-              setNewPassword('');
-              setSelectedDb('');
+            onPress={() => {
+              clearForm();
             }}
           >
             Clear Form
