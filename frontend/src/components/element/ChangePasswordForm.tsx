@@ -62,6 +62,7 @@ export const ChangePasswordForm = ({
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<ErrorMessageType | null>(
     null,
@@ -86,19 +87,6 @@ export const ChangePasswordForm = ({
     });
   }, [_oracleId, verifyData]);
 
-  useEffect(() => {
-    if (successMessage && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-      if (!isVisible) {
-        containerRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-    }
-  }, [successMessage, errorMessage]);
-
   const clearForm = () => {
     setCurrentPassword('');
     setNewPassword('');
@@ -108,6 +96,19 @@ export const ChangePasswordForm = ({
   const handleDbChange = (db: string) => {
     clearForm();
     setSelectedDb(db);
+  };
+
+  const scrollToFormTopIfNeeded = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+      if (!isVisible) {
+        containerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }
   };
 
   const passwordValidation = validatePassword(newPassword);
@@ -122,7 +123,7 @@ export const ChangePasswordForm = ({
     if (!isValid) return;
 
     const backendEnv = selectedDb;
-
+    setIsSubmitting(true);
     try {
       await apiFetch('/changePassword', {
         method: 'POST',
@@ -144,6 +145,9 @@ export const ChangePasswordForm = ({
       const message = err instanceof Error ? err.message : String(err);
       setSuccessMessage(null);
       setErrorMessage({ basic: 'Password change failed.', details: message });
+    } finally {
+      scrollToFormTopIfNeeded();
+      setIsSubmitting(false);
     }
   };
 
@@ -389,7 +393,7 @@ export const ChangePasswordForm = ({
             variant="primary"
             size="medium"
             type="submit"
-            isDisabled={!isValid}
+            isDisabled={!isValid || isSubmitting}
           >
             Change Password
           </Button>
